@@ -1,0 +1,100 @@
+.questions{
+    background-color: $off-white;
+    border-left: 5px solid $blue;
+
+    width: 80%;
+    margin: $lg auto 0 auto;
+    padding: $sm $md;
+    .lifeline-container{
+        display: flex;
+        justify-content: space-between;
+    }
+   h2{
+    text-align: center;
+    font-weight: lighter;
+   }
+
+    .lifeline{
+        position:relative ;
+        top: 3px;
+    }
+    .watch{
+        position:relative ;
+        top: 2px;
+    }
+
+    h5{
+        font-size: 1.2rem;
+        margin-bottom: $lg;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .options-container{
+        display: inline-block;
+        width: 50%;
+    }
+
+    .option{
+        background-color: $blue;
+        border-radius:$button-radius ;
+        color: $white;
+        cursor: pointer;
+        margin:$md auto ;
+        padding: $normal;
+        transition: 0.3 linear all;
+        text-align: center;
+        width: 90%;
+    }
+
+    .option:hover{
+        background-color: darken($blue, 20%);
+    }
+
+   
+ 
+}
+
+.button-container{
+        display: flex;
+        justify-content: center;
+       // margin:0 auto $sm auto;
+        padding-left: $md;
+        width: 80%;
+    }
+
+    .button-container button{
+        border: none;
+        color: $off-white;
+        cursor: pointer;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin-right: $md;
+        padding:$xs $sm ;
+    }
+
+    .button-container button:first-child{
+        background-color:darken($blue, 10%) ;
+        box-shadow:  10px 10px 5px 0px rgba(0,0,0,0.75);;
+        transition: 0.2% linear all;
+    }
+   .button-container button:first-child:hover{
+    background-color:darken($blue, 20%) ;
+   }
+
+   .button-container button:nth-child(2){
+        background-color:$orange;
+        box-shadow:  10px 10px 5px 0px rgba(0,0,0,0.75);;
+        transition: 0.2% linear all;
+    }
+   .button-container button:nth-child(2):hover{
+    background-color:darken($orange, 10%) ;
+   }
+
+     .button-container button:last-child{
+        background-color:$red;
+        box-shadow:  10px 10px 5px 0px rgba(0,0,0,0.75);;
+        transition: 0.2% linear all;
+    }
+   .button-container button:last-child:hover{
+    background-color:darken($red, 10%) ;
+   }

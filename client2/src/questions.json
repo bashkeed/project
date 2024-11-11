@@ -1,0 +1,25 @@
+[{
+  "question": "What temperature does water boil at?",
+  "optionA": "50 degree celsius",
+  "optionB": "100 degree celsius",
+  "optionC": "80 degree celsius",
+  "optionD": "70 degree celsius",
+  "answer": "100 degree celsius"
+},
+
+{
+  "question": "Who wrote Julius Ceasar, Macbeth and Hamlet?",
+  "optionA": "Wole Soyinka",
+  "optionB": "Chinua Achebe",
+  "optionC": "Daniele Steel",
+  "optionD": "William Shakespeare",
+  "answer": "William Shakespeare"
+},
+{
+  "question": "Who wrote Echoes?",
+  "optionA": "Wole Soyinka",
+  "optionB": "Chinua Achebe",
+  "optionC": "Daniele Steel",
+  "optionD": "William Shakespeare",
+  "answer": "Daniele Steel"
+}]
