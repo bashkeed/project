@@ -9,6 +9,7 @@
         display: flex;
         justify-content: space-between;
     }
+
    h2{
     text-align: center;
     font-weight: lighter;
@@ -17,6 +18,18 @@
     .lifeline{
         position:relative ;
         top: 3px;
+    }
+
+    .lifeline-icon{
+        color:  $green;
+        cursor: pointer;
+
+    }
+
+     .lifeline-icon:hover{
+        background-color: none;
+       color: darken($orange,10%);
+        
     }
     .watch{
         position:relative ;
