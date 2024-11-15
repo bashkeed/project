@@ -4,7 +4,8 @@ import connectDB from "./db.js";
 import dotenv from "dotenv";
 import User from "./userModel.js";
 import Item from "./historyModel.js";
-import argon2 from 'argon2'
+import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 
 const app = express();
 app.use(express.json());
@@ -18,50 +19,43 @@ dotenv.config();
 connectDB();
 const PORT = process.env.PORT || 3001;
 
-
 //login route
-app.post('/login', async(req,res)=>{
-    const { email, password } = req.body;
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-
-
-    try {
-      // Find user by email
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(401).json({ message: "Invalid email or password." });
-      }
-
-      // Verify the password
-      const isMatch = await argon2.verify(user.password, password);
-      if (!isMatch) {
-        return res.status(401).json({ message: "Invalid email or password." });
-      }
-
-      // If login is successful, store user information in session
-      //req.session.email = email; // Store user info (customize as needed)
-
-      res
-        .status(200)
-        .json({ message: "Login successful!", user: { email: user.email } });
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ message: 'Internal server error.' });
+  try {
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password." });
     }
+
+    // Verify the password
+    const isMatch = await argon2.verify(user.password, password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password." });
+    }
+
+    // Create JWT token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    res
+      .json({ token, userId: user._id, username: user.name })
+      .json({ message: "Login successful!", user: { email: user.email } });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
 });
-
-
-
-
-
 
 // Signup Route
 app.post("/signup", async (req, res) => {
-  console.log("i am here");
+  console.log("i am here also");
   const { name, email, password } = req.body;
 
   // Simple validation
-  if(!name || !email || !password) {
+  if (!name || !email || !password) {
     return res
       .status(400)
       .json({ message: "username, Email and password are required." });
@@ -72,11 +66,11 @@ app.post("/signup", async (req, res) => {
     return res.status(400).json({ message: "Email is not valid" });
   }
 
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password must be at least 6 characters" });
-    }
+  if (password.length < 6) {
+    return res
+      .status(400)
+      .json({ message: "Password must be at least 6 characters" });
+  }
 
   try {
     // Check if user already exists
@@ -95,9 +89,16 @@ app.post("/signup", async (req, res) => {
       email,
       password: hashedPassword, // Save the hashed password
     });
+    console.log("I am secret,", process.env.JWT_SECRET);
 
     await newUser.save();
-    res.status(201).json({ message: "User created successfully!" });
+    // Create JWT token
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    //res.status(201).json({ message: "User created successfully!" });
+    res.json({ token, userId: newUser._id, username: newUser.name });
     console.log("User created successfully");
   } catch (error) {
     console.log(error);
@@ -105,16 +106,15 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-
 // GET route to fetch items
-app.get('/api/items', async (req, res) => {
-    try {
-      const items = await Item.find();
-      console.log(items)
-      res.json(items);
-    } catch (error) {
-        res.status(500).json({ message: 'Internal server error.' });
-    }
+app.get("/api/items", async (req, res) => {
+  try {
+    const items = await Item.find();
+    console.log(items);
+    res.json(items);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error." });
+  }
 });
 
 // Start the server
