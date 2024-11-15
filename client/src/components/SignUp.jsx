@@ -103,8 +103,6 @@ const SignUp = () => {
     <>
       {showSuccess && (
         <>
-          {notify}
-          <ToastContainer />
           <div
             className="d-flex flex-column justify-content-center align-items-center bg-dark vh-100"
             role="alert"
