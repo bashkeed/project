@@ -61,7 +61,7 @@ const History = () => {
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center flex-column mt-5">
-        Loading...
+      <p>Loading</p>
         <Loader/>
       </div>
     ); // Loading state
@@ -71,7 +71,10 @@ const History = () => {
     <>
       {items.length === 0 ? (
         <div className="d-flex justify-content-center align-items-center flex-column mt-4 fs-5">
-          <p>No records found.</p>
+          <h3>No records found.</h3>
+          <p style={{ color: '#f8f8f8' }}>
+            Check your network connection and refresh the page.
+          </p>
           <span>🤖</span>
         </div>
       ) : (

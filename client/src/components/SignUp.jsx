@@ -29,13 +29,13 @@ const SignUp = () => {
 
     if (validateForm()) {
       axios
-        .post("http://127.0.0.1:3000/signup", formData)
+        .post("http://127.0.0.1:3000/api/auth/signup", formData)
         .then((result) => {
           console.log(result);
-         
+
           // Show the popup after 1 second
           const showTimeout = setTimeout(() => {
-             setShowSuccess(true); // Make the popup visible
+            setShowSuccess(true); // Make the popup visible
 
             // Automatically hide the popup after 3 seconds
             const hideTimeout = setTimeout(() => {
@@ -48,7 +48,6 @@ const SignUp = () => {
 
           // Cleanup showTimeout when the component unmounts
           return () => clearTimeout(showTimeout);
-          
         })
         .catch((error) => console.log(error));
 

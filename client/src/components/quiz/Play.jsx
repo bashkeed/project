@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment, useCallback } from "react";
 import { Helmet } from "react-helmet";
 import Icon from "@mdi/react";
+import { useNavigate } from "react-router-dom";
 import { mdilLightbulbOn, mdilArrowRight, mdilArrowLeft } from "@mdi/light-js";
 import { mdiBatteryCharging } from "@mdi/js";
 import questions from '../../questions.json'
@@ -11,6 +12,7 @@ import incorrect from "../../assets/img/audio/incorrect.mp3";
 import nextprev from "../../assets/img/audio/next-prev.mp3";
 import quit from "../../assets/img/audio/quit.mp3";
 import isEmpty from "../../utils/isEmpty";
+import classNames from "classnames";
 
 const Play = (props) => {
   const [currentQuestion, setCurrentQuestion] = useState({});
@@ -29,19 +31,25 @@ const Play = (props) => {
   const [time, setTime] = useState({ minutes: 0, seconds: 0 });
   const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
   const [interval, setIntervalState] = useState(null);
+  const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
+  const [previousButtonDisabled, setPreviousButtonDisabled] = useState(true);
+
+  // Use the useNavigate hook to handle navigation
+  const navigate = useNavigate();
 
   useEffect(() => {
     displayQuestions();
     startTimer();
+    handleDisableButton();
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, [currentQuestionIndex]);
+  }, [currentQuestionIndex, previousQuestion, nextQuestion]);
 
   const displayQuestions = useCallback(() => {
     if (!isEmpty(questions)) {
       const current = questions[currentQuestionIndex];
-      const next = questions[currentQuestionIndex + 1] || null;
-      const prev = questions[currentQuestionIndex - 1] || null;
+      const next = questions[currentQuestionIndex + 1];
+      const prev = questions[currentQuestionIndex - 1];
       setAnswer(current.answer);
 
       setCurrentQuestion(current);
@@ -64,8 +72,9 @@ const Play = (props) => {
       if (distance < 0) {
         clearInterval(intervalId);
         setTime({ minutes: 0, seconds: 0 });
-        alert('Quiz has ended');
-        history.push('/');
+        alert("Quiz has ended due to time expiration.");
+        endGame();
+        props.history.push("/");
       } else {
         setTime({ minutes, seconds });
       }
@@ -98,19 +107,33 @@ const Play = (props) => {
   const correctAnswer = () => {
     toast.success("Correct answer");
 
-    setScore(prevScore => prevScore + 1);
-    setCorrectAnswers(prev => prev + 1);
-    setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-    setNumberofAnsweredQuestions(prev => prev + 1);
+    setScore((prevScore) => prevScore + 1);
+    setCorrectAnswers((prev) => prev + 1);
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    setNumberofAnsweredQuestions((prev) => prev + 1);
+
+    if (nextQuestion === undefined) {
+      endGame();
+    } else {
+      displayQuestions();
+    }
   };
 
   const wrongAnswer = () => {
-    navigator.vibrate(1000);
+    if (navigator.vibrate) {
+      navigator.vibrate(1000); // Vibrate for 1 second
+    }
     toast.error("Wrong answer");
 
-    setWrongAnswers(prev => prev + 1);
-    setCurrentQuestionIndex(prevIndex => prevIndex + 1);
-    setNumberofAnsweredQuestions(prev => prev + 1);
+    setWrongAnswers((prev) => prev + 1);
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    setNumberofAnsweredQuestions((prev) => prev + 1);
+
+    if (nextQuestion === undefined) {
+      endGame();
+    } else {
+      displayQuestions();
+    }
   };
 
   const handleButtonClick = (e) => {
@@ -132,14 +155,14 @@ const Play = (props) => {
   const handleNextButton = () => {
     playButtonSound();
     if (nextQuestion) {
-      setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     }
   };
 
   const handlePreviousButton = () => {
     playButtonSound();
     if (previousQuestion) {
-      setCurrentQuestionIndex(prevIndex => prevIndex - 1);
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
     }
   };
 
@@ -157,8 +180,9 @@ const Play = (props) => {
       }
     }, 3000);
 
-    if (window.confirm("Are you sure you want to quit?")) {
-      props.history.push("/"); // Navigate to home if user confirms
+    const quitConfirmation = window.confirm("Are you sure you want to quit?");
+    if (quitConfirmation) {
+      endGame(); // End game and save score
     }
   };
 
@@ -188,12 +212,15 @@ const Play = (props) => {
       });
       while (true) {
         const randomNumber = Math.round(Math.random() * 3);
-        if (randomNumber !== indexOfAnswer && !previousRandomNumbers.includes(randomNumber)) {
+        if (
+          randomNumber !== indexOfAnswer &&
+          !previousRandomNumbers.includes(randomNumber)
+        ) {
           options.forEach((option, index) => {
             if (index === randomNumber) {
               option.style.visibility = "hidden";
-              setHints(prevHints => prevHints - 1);
-              setPreviousRandomNumbers(prev => [...prev, randomNumber]);
+              setHints((prevHints) => prevHints - 1);
+              setPreviousRandomNumbers((prev) => [...prev, randomNumber]);
             }
           });
           break;
@@ -219,7 +246,10 @@ const Play = (props) => {
 
       do {
         const randomNumber = Math.floor(Math.random() * 4);
-        if (randomNumber !== indexOfAnswer && !randomNumbers.includes(randomNumber)) {
+        if (
+          randomNumber !== indexOfAnswer &&
+          !randomNumbers.includes(randomNumber)
+        ) {
           randomNumbers.push(randomNumber);
           count++;
         }
@@ -231,9 +261,41 @@ const Play = (props) => {
         }
       });
 
-      setFiftyFifty(prev => prev - 1);
+      setFiftyFifty((prev) => prev - 1);
       setUsedFiftyFifty(true);
     }
+  };
+
+  const handleDisableButton = () => {
+    if (currentQuestionIndex === 0) {
+      setPreviousButtonDisabled(true);
+    } else {
+      setPreviousButtonDisabled(false);
+    }
+
+    if (nextQuestion === undefined) {
+      setNextButtonDisabled(true);
+    } else {
+      setNextButtonDisabled(false);
+    }
+  };
+
+  const endGame = () => {
+    alert("quiz has ended");
+    const playerStat = {
+      score,
+      numberOfQuestions,
+      numberofAnsweredQuestions,
+      correctAnswers,
+      wrongAnswers,
+      fiftyFifty: 2 - fiftyFifty,
+      hints: 5 - hints,
+    };
+    console.log(playerStat);
+    setTimeout(() => {
+     // Use navigate to redirect to the '/quizsummary' route, passing playerStat as state
+    navigate('/quizsummary', { state: playerStat });
+    }, 1000);
   };
 
   return (
@@ -292,11 +354,19 @@ const Play = (props) => {
           </p>
         </div>
         <div className="button-container">
-          <button id="previous" onClick={handleButtonClick}>
+          <button
+            id="previous"
+            onClick={handleButtonClick}
+            className={classNames("", { disable: previousButtonDisabled })}
+          >
             <Icon path={mdilArrowLeft} size={1} />
             Previous
           </button>
-          <button id="next" onClick={handleButtonClick}>
+          <button
+            id="next"
+            onClick={handleButtonClick}
+            className={classNames("", { disable: nextButtonDisabled })}
+          >
             Next <Icon path={mdilArrowRight} size={1} />
           </button>
           <button id="quit" onClick={handleButtonClick}>

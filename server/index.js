@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import connectDB from "./db.js";
 import dotenv from "dotenv";
-import Item from "./historyModel.js";
+import Item from "./models/historyModel.js";
 import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
@@ -18,6 +18,8 @@ connectDB();
 const PORT = process.env.PORT || 3001;
 
 app.use("/api/auth", authRoutes);
+
+
 
 // GET route to fetch items
 app.get("/api/items", async (req, res) => {

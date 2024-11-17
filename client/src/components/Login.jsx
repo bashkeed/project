@@ -18,15 +18,14 @@ const Login = () => {
      });
 
      const handleSubmit = (e) => {
-       console.log("i got here");
        e.preventDefault();
 
        if (validateForm()) {
          axios
-           .post("http://127.0.0.1:3000/login", formData)
+           .post("http://127.0.0.1:3000/api/auth/login", formData)
            .then((result) => {
              console.log(result);
-             navigate('/history')
+             navigate("/history");
            })
            .catch((error) => console.log(error));
 
