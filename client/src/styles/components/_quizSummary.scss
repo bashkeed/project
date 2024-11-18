@@ -1,0 +1,107 @@
+/* Status Container */
+.status-container {
+  display: flex;
+  flex-direction: column; /* Stack icon and heading vertically */
+  align-items: center; /* Center align both icon and heading */
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Styling for the icon */
+.status-icon {
+  margin-bottom: 10px; /* Add space between the icon and the heading */
+}
+
+/* Heading Style */
+.status-heading {
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+  text-align: center; /* Ensure the heading is centered */
+}
+
+/* Result Container */
+.result-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.remark {
+  font-size: 1.2em;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.score {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: green;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Question Stats Styling */
+.question-stats {
+  display: grid;
+  gap: 10px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1em;
+}
+
+.stat-label {
+  font-weight: bold;
+}
+
+.stat-value {
+  color: #333;
+}
+
+/* Navigation Section */
+.navigation {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.navigation ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.navigation li {
+  display: inline-block;
+  margin: 10px;
+}
+
+.navigation a {
+  font-size: 1.1em;
+  color: #007BFF;
+  text-decoration: none;
+}
+
+.navigation a:hover {
+  text-decoration: underline;
+}
+
+/* No Stats Message */
+.no-stat {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  color: #FF6347; /* Red for no stats */
+  margin-top: 20px;
+}
+
+.no-stat-p{
+    text-align: center;
+    color: #f9f9f9;
+    font-size: 1.5em;
+}

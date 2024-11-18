@@ -4,10 +4,10 @@ import Icon from "@mdi/react";
 import { useNavigate } from "react-router-dom";
 import { mdilLightbulbOn, mdilArrowRight, mdilArrowLeft } from "@mdi/light-js";
 import { mdiBatteryCharging } from "@mdi/js";
-import questions from '../../questions.json'
+import questions from "../../questions.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import correct from '../../assets/img/audio/correct.mp3'
+import correct from "../../assets/img/audio/correct.mp3";
 import incorrect from "../../assets/img/audio/incorrect.mp3";
 import nextprev from "../../assets/img/audio/next-prev.mp3";
 import quit from "../../assets/img/audio/quit.mp3";
@@ -74,7 +74,7 @@ const Play = (props) => {
         setTime({ minutes: 0, seconds: 0 });
         alert("Quiz has ended due to time expiration.");
         endGame();
-        props.history.push("/");
+        // props.history.push("/");
       } else {
         setTime({ minutes, seconds });
       }
@@ -281,9 +281,9 @@ const Play = (props) => {
   };
 
   const endGame = () => {
-    alert("quiz has ended");
+    // alert("quiz has ended");
     const playerStat = {
-      score,
+      score: Math.round((score / numberOfQuestions) * 100),
       numberOfQuestions,
       numberofAnsweredQuestions,
       correctAnswers,
@@ -293,8 +293,8 @@ const Play = (props) => {
     };
     console.log(playerStat);
     setTimeout(() => {
-     // Use navigate to redirect to the '/quizsummary' route, passing playerStat as state
-    navigate('/quizsummary', { state: playerStat });
+      // Use navigate to redirect to the '/quizsummary' route, passing playerStat as state
+      navigate("/quizsummary", { state: playerStat });
     }, 1000);
   };
 
