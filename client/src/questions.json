@@ -1,25 +1,82 @@
-[{
-  "question": "What temperature does water boil at?",
-  "optionA": "50 degree celsius",
-  "optionB": "100 degree celsius",
-  "optionC": "80 degree celsius",
-  "optionD": "70 degree celsius",
-  "answer": "100 degree celsius"
-},
-
-{
-  "question": "Who wrote Julius Ceasar, Macbeth and Hamlet?",
-  "optionA": "Wole Soyinka",
-  "optionB": "Chinua Achebe",
-  "optionC": "Daniele Steel",
-  "optionD": "William Shakespeare",
-  "answer": "William Shakespeare"
-},
-{
-  "question": "Who wrote Echoes?",
-  "optionA": "Wole Soyinka",
-  "optionB": "Chinua Achebe",
-  "optionC": "Daniele Steel",
-  "optionD": "William Shakespeare",
-  "answer": "Daniele Steel"
-}]
+[
+  {
+    "question": "What temperature does water boil at?",
+    "optionA": "50 degree celsius",
+    "optionB": "100 degree celsius",
+    "optionC": "00 degree celsius",
+    "optionD": "70 degree celsius",
+    "answer": "100 degree celsius"
+  },
+  {
+    "question": "What is the capital of France?",
+    "optionA": "London",
+    "optionB": "Berlin",
+    "optionC": "Paris",
+    "optionD": "Madrid",
+    "answer": "Paris"
+  },
+  {
+    "question": "What is the largest planet in our solar system?",
+    "optionA": "Earth",
+    "optionB": "Mars",
+    "optionC": "Jupiter",
+    "optionD": "Saturn",
+    "answer": "Jupiter"
+  },
+  {
+    "question": "How many continents are there?",
+    "optionA": "5",
+    "optionB": "6",
+    "optionC": "7",
+    "optionD": "8",
+    "answer": "7"
+  },
+  {
+    "question": "What is the chemical symbol for water?",
+    "optionA": "H2",
+    "optionB": "S04",
+    "optionC": "H2O",
+    "optionD": "O2",
+    "answer":   "H20"
+  },
+  {
+    "question": "Who wrote 'Romeo and Juliet'?",
+    "optionA": "Dickens",
+    "optionB": "Hemingway",
+    "optionC": "Austen",
+    "optionD": "Shakespeare",
+    "answer": "Shakespeare"
+  },
+  {
+    "question": "Which gas do plants use for photosynthesis?",
+    "optionA": "Oxygen",
+    "optionB": "Nitrogen",
+    "optionC": "Carbon Dioxide",
+    "optionD": "Hydrogen",
+    "answer": "Carbon Dioxide"
+  },
+  {
+    "question": "Which element is commonly known as 'gold' in the periodic table?",
+    "optionA": "Ag",
+    "optionB": "Fe",
+    "optionC": "Au",
+    "optionD": "Cu",
+    "answer": "Au"
+  },
+  {
+    "question": "What is the main language spoken in Brazil?",
+    "optionA": "Spanish",
+    "optionB": "Portuguese",
+    "optionC": "English",
+    "optionD": "French",
+    "answer": "Portuguese"
+  },
+  {
+    "question": "Which ocean is the largest?",
+    "optionA": "Atlantic Ocean",
+    "optionB": "Indian Ocean",
+    "optionC": "Pacific Ocean",
+    "optionD": "Arctic Ocean",
+    "answer": "Pacific Ocean"
+  }
+]

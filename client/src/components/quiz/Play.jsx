@@ -33,6 +33,8 @@ const Play = (props) => {
   const [interval, setIntervalState] = useState(null);
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
   const [previousButtonDisabled, setPreviousButtonDisabled] = useState(true);
+  const [selectedAnswer, setSelectedAnswer] = useState(null); // Track selected answer
+  const [answered, setAnswered] = useState(false); // Track if the question has been answered
 
   // Use the useNavigate hook to handle navigation
   const navigate = useNavigate();
@@ -57,6 +59,8 @@ const Play = (props) => {
       setPreviousQuestion(prev);
       setNumberOfQuestions(questions.length);
       setPreviousRandomNumbers([]);
+
+      // setAnswered(false);
       showOptions();
     }
   }, [currentQuestionIndex]);
@@ -72,9 +76,8 @@ const Play = (props) => {
       if (distance < 0) {
         clearInterval(intervalId);
         setTime({ minutes: 0, seconds: 0 });
-        alert("Quiz has ended due to time expiration.");
+        toast.warning("Quiz has ended due to time expiration.");
         endGame();
-        // props.history.push("/");
       } else {
         setTime({ minutes, seconds });
       }
@@ -82,8 +85,36 @@ const Play = (props) => {
     setIntervalState(intervalId);
   };
 
+  // const handleOptionsClick = (e) => {
+  //   if (e.target.innerHTML.toLowerCase() === answer.toLowerCase()) {
+  //     const correctAudio = document.getElementById("correct");
+  //     correctAudio.play();
+  //     setTimeout(() => {
+  //       correctAudio.pause();
+  //       correctAudio.currentTime = 0;
+  //     }, 3000);
+
+  //     correctAnswer();
+  //     navigator.vibrate(1000);
+  //   } else {
+  //     const incorrectAudio = document.getElementById("incorrect");
+  //     incorrectAudio.play();
+  //     setTimeout(() => {
+  //       incorrectAudio.pause();
+  //       incorrectAudio.currentTime = 0;
+  //     }, 3000);
+  //     wrongAnswer();
+  //   }
+  // };
+
   const handleOptionsClick = (e) => {
-    if (e.target.innerHTML.toLowerCase() === answer.toLowerCase()) {
+    if (answered) return; // Prevent further clicks once the question is answered
+
+    const selected = e.target.innerHTML.toLowerCase();
+    setSelectedAnswer(selected);
+    setAnswered(true); // Mark the question as answered
+
+    if (selected === answer.toLowerCase()) {
       const correctAudio = document.getElementById("correct");
       correctAudio.play();
       setTimeout(() => {
@@ -100,9 +131,11 @@ const Play = (props) => {
         incorrectAudio.pause();
         incorrectAudio.currentTime = 0;
       }, 3000);
+
       wrongAnswer();
     }
   };
+
 
   const correctAnswer = () => {
     toast.success("Correct answer");
@@ -180,7 +213,7 @@ const Play = (props) => {
       }
     }, 3000);
 
-    const quitConfirmation = window.confirm("Are you sure you want to quit?");
+    const quitConfirmation = toast.warning("Are you sure you want to quit?");
     if (quitConfirmation) {
       endGame(); // End game and save score
     }
@@ -281,7 +314,6 @@ const Play = (props) => {
   };
 
   const endGame = () => {
-    // alert("quiz has ended");
     const playerStat = {
       score: Math.round((score / numberOfQuestions) * 100),
       numberOfQuestions,
@@ -291,12 +323,12 @@ const Play = (props) => {
       fiftyFifty: 2 - fiftyFifty,
       hints: 5 - hints,
     };
-    console.log(playerStat);
     setTimeout(() => {
       // Use navigate to redirect to the '/quizsummary' route, passing playerStat as state
       navigate("/quizsummary", { state: playerStat });
     }, 1000);
   };
+
 
   return (
     <Fragment>
@@ -336,7 +368,80 @@ const Play = (props) => {
           </p>
         </div>
         <h5>{currentQuestion.question}</h5>
+
         <div className="options-container">
+          <p
+            onClick={handleOptionsClick}
+            className={classNames("option", {
+              correct:
+                selectedAnswer === currentQuestion.optionA &&
+                answered &&
+                currentQuestion.optionA === answer,
+              incorrect:
+                selectedAnswer === currentQuestion.optionA &&
+                answered &&
+                currentQuestion.optionA !== answer,
+              disabled: answered,
+            })}
+          >
+            {currentQuestion.optionA}
+          </p>
+          
+          <ToastContainer position="top-center" autoClose={3000} />
+          <p
+            onClick={handleOptionsClick}
+            className={classNames("option", {
+              correct:
+                selectedAnswer === currentQuestion.optionB &&
+                answered &&
+                currentQuestion.optionB === answer,
+              incorrect:
+                selectedAnswer === currentQuestion.optionB &&
+                answered &&
+                currentQuestion.optionB !== answer,
+              disabled: answered,
+            })}
+          >
+            {currentQuestion.optionB}
+          </p>
+        </div>
+
+        <div className="options-container">
+          <p
+            onClick={handleOptionsClick}
+            className={classNames("option", {
+              correct:
+                selectedAnswer === currentQuestion.optionC &&
+                answered &&
+                currentQuestion.optionC === answer,
+              incorrect:
+                selectedAnswer === currentQuestion.optionC &&
+                answered &&
+                currentQuestion.optionC !== answer,
+              disabled: answered,
+            })}
+          >
+            {currentQuestion.optionC}
+          </p>
+          <p
+            onClick={handleOptionsClick}
+            className={classNames("option", {
+              correct:
+                selectedAnswer === currentQuestion.optionD &&
+                answered &&
+                currentQuestion.optionD === answer,
+              incorrect:
+                selectedAnswer === currentQuestion.optionD &&
+                answered &&
+                currentQuestion.optionD !== answer,
+              disabled: answered,
+            })}
+          >
+            {currentQuestion.optionD}
+          </p>
+        </div>
+
+        {/* <div className="options-container">
           <p onClick={handleOptionsClick} className="option">
             <ToastContainer position="top-center" autoClose={3000} />
             {currentQuestion.optionA}
@@ -345,6 +450,7 @@ const Play = (props) => {
             {currentQuestion.optionB}
           </p>
         </div>
+
         <div className="options-container">
           <p onClick={handleOptionsClick} disabled className="option">
             {currentQuestion.optionC}
@@ -352,7 +458,8 @@ const Play = (props) => {
           <p onClick={handleOptionsClick} className="option">
             {currentQuestion.optionD}
           </p>
-        </div>
+        </div> */}
+
         <div className="button-container">
           <button
             id="previous"
@@ -362,6 +469,7 @@ const Play = (props) => {
             <Icon path={mdilArrowLeft} size={1} />
             Previous
           </button>
+
           <button
             id="next"
             onClick={handleButtonClick}

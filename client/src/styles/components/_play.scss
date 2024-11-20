@@ -111,3 +111,50 @@
    .button-container button:last-child:hover{
     background-color:darken($red, 10%) ;
    }
+
+
+   /* Base button styling */
+.option {
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin: 10px;
+  cursor: pointer;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+/* Correct answer button */
+.option.correct {
+  background-color: #28a745 !important; /* Dark Green */
+  color: white !important;
+  border: 2px solid #218838 !important;
+}
+
+.option.correct:hover {
+  background-color: #218838;
+}
+
+/* Incorrect answer button */
+.option.incorrect {
+  background-color: #dc3545 !important ; /* Red */
+  color: white !important ;
+  border: 2px solid #c82333 !important ;
+}
+
+.option.incorrect:hover {
+  background-color: #c82333;
+}
+
+/* Disabled buttons (for unanswered questions after selection) */
+.option.disabled {
+  background-color: #dcdcdc; /* Light grey */
+  color: #999;
+  border: 2px solid #ccc;
+  cursor: not-allowed;
+}
+
+.option.disabled:hover {
+  background-color: #dcdcdc;
+}

@@ -4,6 +4,7 @@ import Helmet from "react-helmet";
 import Icon from "@mdi/react";
 import { Link } from "react-router-dom";
 import { mdiAccountCheckOutline } from "@mdi/js";
+import confetti from "canvas-confetti";
 
 const QuizSummary = () => {
   // Use useLocation hook to get state passed via navigate()
@@ -13,21 +14,32 @@ const QuizSummary = () => {
 
   const {state} = location
   let remark, stat;
-  const userScore= state.score;
+  const userScore = state.score
   
-
+ const celebrateWithConfetti = () => {
+   confetti({
+     particleCount: 400,
+     spread: 70,
+     origin: { x: 0.5, y: 0.5 },
+     colors: ["#ff0", "#0f0", "#f00", "#00f"],
+   });
+ };
  
   if(userScore < 30 ){
     remark='you need more practice'
   }else if(userScore >30 && userScore <=50){
-    remark= 'best luck next time';
+    remark= 'better luck next time';
   }else if(userScore <=70 &&userScore >50){
-     remark = 'you can do better';
+     remark = 'good try';
   }else if(userScore >=71 && userScore <=84 ){
      remark = 'you did great!';
 
   }else{
      remark = "you are an absolute genius!";
+  }
+
+  if(userScore > 60){
+     celebrateWithConfetti();
   }
 
 if (state !== null) {
@@ -90,8 +102,13 @@ if (state !== null) {
           <li>
             <Link to={"/"}>Home</Link>
           </li>
+          <span style={{ color: "white" }}>|</span>
           <li>
             <Link to={"/quiz/play"}>Play Again</Link>
+          </li>
+          <span style={{ color: "white" }}>|</span>
+          <li>
+            <Link to={"/leaderboard"}>View Leaderboard</Link>
           </li>
         </ul>
       </section>
@@ -101,9 +118,7 @@ if (state !== null) {
   stat = (
     <>
       <h1 className="no-stat">No stats available</h1>
-      <p className="no-stat-p">
-        please take a quiz 🤗
-      </p>
+      <p className="no-stat-p">please take a quiz 🤗</p>
 
       <section className="navigation">
         <ul>
@@ -112,6 +127,9 @@ if (state !== null) {
           </li>
           <li>
             <Link to={"/quiz/play"}>Take Quiz</Link>
+          </li>
+          <li>
+            <Link to={"/leaderboard"}>Leaderboard</Link>
           </li>
         </ul>
       </section>
@@ -127,9 +145,7 @@ if (state !== null) {
       </Helmet>
       
       {stat}
-     
     
-      <pre>{JSON.stringify(playerStat, null, 2)}</pre>
     </>
   );
 };

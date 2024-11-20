@@ -7,6 +7,7 @@ import Instructions from "./components/quiz/Instructions";
 import History from "./components/History";
 import Play from "./components/quiz/Play";
 import QuizSummary from "./components/quizSummary";
+import LeaderBoard from "./components/LeaderBoard";
 
 
 function App(){
@@ -19,6 +20,7 @@ function App(){
       <Route path="/quiz/play" element={<Play />} />
       <Route path="/quiz/instructions" element={<Instructions />} />
       <Route path="/quizsummary" element={<QuizSummary />} />
+      <Route path="/leaderboard" element={<LeaderBoard />} />
     </Routes>
   );
 }
