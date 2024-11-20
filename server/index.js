@@ -4,6 +4,8 @@ import connectDB from "./db.js";
 import dotenv from "dotenv";
 import Item from "./models/historyModel.js";
 import authRoutes from "./routes/authRoutes.js";
+import questionRoutes from './routes/questionRoutes.js'
+
 
 const app = express();
 app.use(express.json());
@@ -18,6 +20,7 @@ connectDB();
 const PORT = process.env.PORT || 3001;
 
 app.use("/api/auth", authRoutes);
+app.use("/", questionRoutes);
 
 
 

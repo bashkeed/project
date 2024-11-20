@@ -25,7 +25,7 @@ const Login = () => {
            .post("http://127.0.0.1:3000/api/auth/login", formData)
            .then((result) => {
              console.log(result);
-             navigate("/history");
+             navigate("/questions");
            })
            .catch((error) => console.log(error));
 

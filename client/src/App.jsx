@@ -8,6 +8,7 @@ import History from "./components/History";
 import Play from "./components/quiz/Play";
 import QuizSummary from "./components/quizSummary";
 import LeaderBoard from "./components/LeaderBoard";
+import DailyQuestions from "./components/DailyQuestions";
 
 
 function App(){
@@ -21,6 +22,7 @@ function App(){
       <Route path="/quiz/instructions" element={<Instructions />} />
       <Route path="/quizsummary" element={<QuizSummary />} />
       <Route path="/leaderboard" element={<LeaderBoard />} />
+      <Route path="/questions" element={<DailyQuestions />} />
     </Routes>
   );
 }
