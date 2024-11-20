@@ -1,6 +1,6 @@
 // DailyQuestions.js
 import React, { useEffect, useState } from "react";
-import { fetchDailyQuestions } from "../../../server/api";
+import api from "../utils/api";
 
 const DailyQuestions = () => {
   const [questions, setQuestions] = useState([]);
@@ -10,10 +10,12 @@ const DailyQuestions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const token = localStorage.getItem("authToken"); // Replace with your auth token logic
-        const data = await fetchDailyQuestions(token);
-        setQuestions(data);
+        const data = await api.get("/question/daily-questions")
+        console.log(data);
+        
       } catch (err) {
+        console.error(err);
+        
         setError("Failed to load daily questions.");
       } finally {
         setLoading(false);

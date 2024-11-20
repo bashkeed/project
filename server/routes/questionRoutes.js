@@ -1,6 +1,6 @@
 import express from "express";
-import { getDailyQuestions } from "../controllers/questionsControllers";
-import auth from "../middleware/auth";
+import { getDailyQuestions } from "../controllers/questionsControllers.js";
+import auth from "../middleware/auth.js";
 
 
 

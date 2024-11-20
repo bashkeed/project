@@ -20,7 +20,7 @@ connectDB();
 const PORT = process.env.PORT || 3001;
 
 app.use("/api/auth", authRoutes);
-app.use("/", questionRoutes);
+app.use("/api/question", questionRoutes);
 
 
 

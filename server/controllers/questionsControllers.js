@@ -1,5 +1,5 @@
-import Question from "../models/questionModel";
-import User from "../models/userModel";
+import Question from "../models/questionModel.js";
+import User from "../models/userModel.js";
 import { isSameDay } from "date-fns";
 
 export const getDailyQuestions = async (req, res) => {

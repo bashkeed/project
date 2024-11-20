@@ -25,6 +25,7 @@ const Login = () => {
            .post("http://127.0.0.1:3000/api/auth/login", formData)
            .then((result) => {
              console.log(result);
+             localStorage.setItem("token", result.data.token);
              navigate("/questions");
            })
            .catch((error) => console.log(error));
