@@ -12,7 +12,7 @@ const DailyQuestions = () => {
       try {
         const data = await api.get("/question/daily-questions")
         console.log(data);
-        
+        setQuestions(data)
       } catch (err) {
         console.error(err);
         
@@ -35,8 +35,12 @@ const DailyQuestions = () => {
         <ul>
           {questions.map((question) => (
             <li key={question._id}>
-              <h2>{question.title}</h2>
-              <p>{question.body}</p>
+              <h2>{question.content}</h2>
+              <ul>
+                {question.options.map((option, index) => (
+                  <li key={index}>{option}</li>
+                ))}
+              </ul>
             </li>
           ))}
         </ul>
