@@ -5,12 +5,13 @@ import  { useState } from "react";
 import { Helmet } from "react-helmet";
 import { MDBIcon } from "mdb-react-ui-kit";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+
 
 
 
 const Login = () => {
      const [errors, setErrors] = useState({}); // State to hold error messages
-     const [showSuccess, setShowSuccess] = useState(false);
      const navigate = useNavigate()
      const [formData, setFormData] = useState({
        email: "",
@@ -26,11 +27,13 @@ const Login = () => {
            .then((result) => {
              console.log(result);
              localStorage.setItem("token", result.data.token);
-             navigate("/questions");
+             navigate("/quiz/play");
            })
            .catch((error) => console.log(error));
-
-         console.log("Form submitted:", formData);
+            toast.error("Invalid email or password.");
+            console.log("Form submitted:", formData);
+       }else{
+        toast.error("username or password incorrect");
        }
      };
 
@@ -70,6 +73,7 @@ const Login = () => {
 
   return (
     <>
+      <ToastContainer />
       <Helmet>
         <title>learnFly - Login</title>
       </Helmet>

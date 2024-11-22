@@ -4,7 +4,7 @@ import Icon from "@mdi/react";
 import { useNavigate } from "react-router-dom";
 import { mdilLightbulbOn, mdilArrowRight, mdilArrowLeft } from "@mdi/light-js";
 import { mdiBatteryCharging } from "@mdi/js";
-import questions from "../../questions.json";
+// import questions from "../../questions.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import correct from "../../assets/img/audio/correct.mp3";
@@ -13,6 +13,7 @@ import nextprev from "../../assets/img/audio/next-prev.mp3";
 import quit from "../../assets/img/audio/quit.mp3";
 import isEmpty from "../../utils/isEmpty";
 import classNames from "classnames";
+import api from "../../utils/api";
 
 const Play = (props) => {
   const [currentQuestion, setCurrentQuestion] = useState({});
@@ -35,20 +36,43 @@ const Play = (props) => {
   const [previousButtonDisabled, setPreviousButtonDisabled] = useState(true);
   const [selectedAnswer, setSelectedAnswer] = useState(null); // Track selected answer
   const [answered, setAnswered] = useState(false); // Track if the question has been answered
-
+  const [questions, setQuestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   // Use the useNavigate hook to handle navigation
   const navigate = useNavigate();
 
+  const fetchQuestions = async () => {
+    setLoading(true);
+    try {
+      const response = await api.get("/question/daily-questions");
+
+      console.log("API response:", response.data);
+      setQuestions(response.data); // Assuming response.data is the correct structure
+    } catch (err) {
+      console.error("API error:", err);
+      setError("Failed to load daily questions.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
+    fetchQuestions();
+  }, []);
+
+  useEffect(() => {
+    console.log("hello");
     displayQuestions();
     startTimer();
     handleDisableButton();
     // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, [currentQuestionIndex, previousQuestion, nextQuestion]);
+  }, [currentQuestionIndex, previousQuestion, nextQuestion, questions]);
 
   const displayQuestions = useCallback(() => {
     if (!isEmpty(questions)) {
+      console.log("from call back", questions);
       const current = questions[currentQuestionIndex];
       const next = questions[currentQuestionIndex + 1];
       const prev = questions[currentQuestionIndex - 1];
@@ -60,7 +84,7 @@ const Play = (props) => {
       setNumberOfQuestions(questions.length);
       setPreviousRandomNumbers([]);
 
-      // setAnswered(false);
+      //setAnswered(false);
       showOptions();
     }
   }, [currentQuestionIndex]);
@@ -135,7 +159,6 @@ const Play = (props) => {
       wrongAnswer();
     }
   };
-
 
   const correctAnswer = () => {
     toast.success("Correct answer");
@@ -329,6 +352,10 @@ const Play = (props) => {
     }, 1000);
   };
 
+  //const allOptions = questions.map((q) => q.options); // Get all options for each question
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <Fragment>
@@ -386,8 +413,6 @@ const Play = (props) => {
           >
             {currentQuestion.optionA}
           </p>
-          
-          <ToastContainer position="top-center" autoClose={3000} />
           <p
             onClick={handleOptionsClick}
             className={classNames("option", {

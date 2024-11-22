@@ -10,7 +10,7 @@ const QuizSummary = () => {
   // Use useLocation hook to get state passed via navigate()
   const location = useLocation();
   const playerStat = location.state;
- console.log(playerStat)
+  console.log(playerStat)
 
   const {state} = location
   let remark, stat;

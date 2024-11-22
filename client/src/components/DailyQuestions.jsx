@@ -1,4 +1,3 @@
-// DailyQuestions.js
 import React, { useEffect, useState } from "react";
 import api from "../utils/api";
 
@@ -10,12 +9,11 @@ const DailyQuestions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const data = await api.get("/question/daily-questions")
-        console.log(data);
-        setQuestions(data)
+        const response = await api.get("/question/daily-questions");
+        console.log("API response:", response.data);
+        setQuestions(response.data); // Assuming response.data is the correct structure
       } catch (err) {
-        console.error(err);
-        
+        console.error("API error:", err);
         setError("Failed to load daily questions.");
       } finally {
         setLoading(false);
