@@ -1,14 +1,14 @@
 import { Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
-import SignUp from "./components/SignUp";
-import Login from "./components/Login";
 import Instructions from "./components/quiz/Instructions";
 import History from "./components/History";
 import Play from "./components/quiz/Play";
 import QuizSummary from "./components/quizSummary";
 import LeaderBoard from "./components/LeaderBoard";
 import DailyQuestions from "./components/DailyQuestions";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 
 
 function App(){
