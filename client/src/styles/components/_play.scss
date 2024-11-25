@@ -44,8 +44,11 @@
     }
 
     .options-container{
-        display: inline-block;
-        width: 50%;
+        display: flex;
+        flex-wrap: wrap;
+        margin: auto;
+        width: 70%;
+        justify-content: space-between;
     }
 
     .option{
@@ -57,7 +60,7 @@
         padding: $normal;
         transition: 0.3 linear all;
         text-align: center;
-        width: 90%;
+        width: 45%;
     }
 
     .option:hover{

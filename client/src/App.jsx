@@ -9,6 +9,8 @@ import LeaderBoard from "./components/LeaderBoard";
 import DailyQuestions from "./components/DailyQuestions";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Quiz from "./pages/Quiz";
 
 
 function App(){
@@ -17,6 +19,8 @@ function App(){
       <Route path="/" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/quiz" element={<Quiz />} />
       <Route path="/history" element={<History />} />
       <Route path="/quiz/play" element={<Play />} />
       <Route path="/quiz/instructions" element={<Instructions />} />

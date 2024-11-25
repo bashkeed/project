@@ -46,7 +46,6 @@ const Play = (props) => {
     setLoading(true);
     try {
       const response = await api.get("/question/daily-questions");
-
       console.log("API response:", response.data);
       setQuestions(response.data); // Assuming response.data is the correct structure
     } catch (err) {
@@ -394,7 +393,7 @@ const Play = (props) => {
             </span>
           </p>
         </div>
-        <h5>{currentQuestion.question}</h5>
+        <h5>{currentQuestion.content}</h5>
 
         <div className="options-container">
           <p
@@ -429,9 +428,7 @@ const Play = (props) => {
           >
             {currentQuestion.optionB}
           </p>
-        </div>
-
-        <div className="options-container">
+       
           <p
             onClick={handleOptionsClick}
             className={classNames("option", {

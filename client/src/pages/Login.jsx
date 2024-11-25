@@ -27,7 +27,7 @@ const Login = () => {
            .then((result) => {
              console.log(result);
              localStorage.setItem("token", result.data.token);
-             navigate("/quiz/play");
+             navigate("/dashboard");
            })
            .catch((error) => console.log(error));
             toast.error("Invalid email or password.");
