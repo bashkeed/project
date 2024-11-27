@@ -23,6 +23,7 @@ const Quiz = () => {
   const [interval, setIntervalState] = useState(null);
   const [hints, setHints] = useState(5);
   const [fiftyFifty, setFiftyFifty] = useState(2);
+  const [startError, setStartError] = useState("");
   const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
   const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
   const [quitModalOpen, setQuitModalOpen] = useState(false); // State to control the quit modal
@@ -91,8 +92,7 @@ const Quiz = () => {
     setIntervalState(intervalId);
   };
 
-  useEffect(() => {
-    const getQuestions = async () => {
+  const getQuestions = async () => {
       if (!localStorage.getItem("token")) {
         navigate("/login");
       }
@@ -105,13 +105,17 @@ const Quiz = () => {
           localStorage.removeItem("token");
           navigate("/login");
         }
+        if (err.code === 400) {
+          navigate("/dashboard");
+        }
         console.error("API error:", err);
 
         //setError("Failed to load daily questions.");
       }
     };
 
-    getQuestions();
+  useEffect(() => {
+      getQuestions();
   }, []);
 
   const showOptions = () => {
@@ -216,11 +220,16 @@ const Quiz = () => {
   };
 
   const handleStart = async () => {
-    // const response = await api.get("/question/daily-questions");
-    //     console.log("API response:", response.data);
-    setStartQuiz(true);
-    setCurrentQuestionIndex(0);
-    startTimer();
+    try {
+      const response = await api.put("/question/start");
+      console.log("API response:", response.data);
+      setStartQuiz(true);
+      setCurrentQuestionIndex(0);
+      startTimer();
+    }catch (err) {
+      console.error("API error:", err);
+      setStartError("Failed to start quiz.");
+    }
   };
 
   const openQuitModal = () => {

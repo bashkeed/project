@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
   ],
   dailyQuestions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }],
   lastDailyFetch: { type: Date },
-  quizStartTime: { type: Date },
   hasAnsweredDailyQuestions: { type: Boolean, default: false },
   totalScore: { type: Number, default: 0 },
   scores: [

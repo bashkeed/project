@@ -14,12 +14,22 @@ export const getDailyQuestions = async (req, res) => {
     // Check if the user has fetched and answered the daily questions today
     if (
       user.dailyQuestions.length &&
-      isSameDay(user.lastDailyFetch, new Date()) &&
-      user.hasAnsweredDailyQuestions
+      isSameDay(user.lastDailyFetch, new Date()) 
     ) {
-      return res.json({
-        message: "Questions already fetched and answered for today.",
-      });
+      if(
+        user.hasAnsweredDailyQuestions){
+
+          return res.status(400).json({
+            message: "Questions already fetched and answered for today.",
+          });
+        }
+        else{
+          const dailyQuestions = await user.populate({
+            path: 'dailyQuestions',
+            select: 'content options correctAnswer',
+          }) 
+          return res.json(dailyQuestions.dailyQuestions);
+        }
     }
 
     // Fetch new set of daily questions
@@ -44,3 +54,22 @@ export const getDailyQuestions = async (req, res) => {
       .json({ error: "An error occurred while fetching daily questions." });
   }
 };
+
+export const startedDailyQuiz = async (req, res) => {
+  try {
+    const id = req.userId;
+    if (!id) return res.status(400).json({ error: "User ID is required" });
+
+    const user = await User.findById(id)
+
+    user.hasAnsweredDailyQuestions = true;
+    await user.save();
+    res.json({ message: "Daily quiz started successfully." });
+  }
+  catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while starting daily quiz." });
+  }
+}
