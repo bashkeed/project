@@ -48,7 +48,7 @@
         display: flex;
         flex-wrap: wrap;
         margin: auto;
-        width: 70%;
+        width: 100%;
         justify-content: space-between;
     }
 
@@ -77,7 +77,7 @@
         justify-content: center;
        // margin:0 auto $sm auto;
         padding-left: $md;
-        width: 80%;
+        width: 100%;
     }
 
     .button-container button{
@@ -88,6 +88,8 @@
         margin-right: $md;
         padding:$xs $sm ;
     }
+
+   
 
     .button-container button:first-child{
         background-color:darken($blue, 10%) ;
@@ -161,4 +163,37 @@
 
 .option.disabled:hover {
   background-color: #dcdcdc;
+}
+
+@media (max-width: 576px) {
+  .options-container{
+    position: relative;
+    top: -50px;
+    gap: 10px;
+   
+  }
+
+  .button-container{
+    display: flex;
+    width: 100%;
+    position: relative;
+    top: -30px;
+    height: 70px;       
+   
+  }
+
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 30px;
+    font-size: 18px;
+    width: 100%;         /* Make the button take full width */
+    height: 100px;        /* Set a specific height */
+    border-radius: 10px; /* Increase border radius */
+    gap: 10px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 13px;
+  }
 }

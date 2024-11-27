@@ -1,3 +1,4 @@
+import React from "react"; // Ensure React is imported
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";

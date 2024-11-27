@@ -11,48 +11,49 @@ import quit from "../assets/img/audio/quit.mp3";
 import classNames from "classnames";
 import Icon from "@mdi/react";
 import { mdiBatteryCharging } from "@mdi/js";
+import QuitConfirmation from "../components/QuitConfirmation";
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [startQuiz, setStartQuiz] = useState(false);
-// const [currentQuestion, setCurrentQuestion] = useState({});
+  // const [currentQuestion, setCurrentQuestion] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [time, setTime] = useState({ minutes: 0, seconds: 0 });
   const [answers, setAnswers] = useState({});
   const [interval, setIntervalState] = useState(null);
-   const [hints, setHints] = useState(5);
-   const [fiftyFifty, setFiftyFifty] = useState(2);
-   const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
-   const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
+  const [hints, setHints] = useState(5);
+  const [fiftyFifty, setFiftyFifty] = useState(2);
+  const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
+  const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
+  const [quitModalOpen, setQuitModalOpen] = useState(false); // State to control the quit modal
 
   const navigate = useNavigate();
 
   const selecAnswer = (questionId, answer) => {
     console.log(questionId);
-    
+
     setAnswers({ ...answers, [questionId]: answer });
     if (currentQuestion.correctAnswer === answer) {
-       const correctAudio = document.getElementById("correct");
-       correctAudio.play();
-       setTimeout(() => {
-         correctAudio.pause();
-         correctAudio.currentTime = 0;
-       }, 3000);
+      const correctAudio = document.getElementById("correct");
+      correctAudio.play();
+      setTimeout(() => {
+        correctAudio.pause();
+        correctAudio.currentTime = 0;
+      }, 3000);
       toast.success("Correct answer");
-
     } else {
       const incorrectAudio = document.getElementById("incorrect");
-       incorrectAudio.play();
-       setTimeout(() => {
-         incorrectAudio.pause();
-         incorrectAudio.currentTime = 0;
-       }, 3000);
+      incorrectAudio.play();
+      setTimeout(() => {
+        incorrectAudio.pause();
+        incorrectAudio.currentTime = 0;
+      }, 3000);
       toast.error("Wrong answer");
     }
     if (currentQuestionIndex < questions.length - 1) {
-        handleNext()
-    }else{
-        // handleSubmit()
+      handleNext();
+    } else {
+      // handleSubmit()
     }
   };
 
@@ -61,7 +62,6 @@ const Quiz = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
     console.log(answers);
-    
   };
 
   // Handle previous question
@@ -91,7 +91,6 @@ const Quiz = () => {
     setIntervalState(intervalId);
   };
 
-
   useEffect(() => {
     const getQuestions = async () => {
       if (!localStorage.getItem("token")) {
@@ -101,13 +100,13 @@ const Quiz = () => {
         const response = await api.get("/question/daily-questions");
         console.log("API response:", response.data);
         setQuestions(response.data); // Assuming response.data is the correct structure
-      } catch(err) {
+      } catch (err) {
         if (err.code === 401) {
           localStorage.removeItem("token");
           navigate("/login");
         }
         console.error("API error:", err);
-        
+
         //setError("Failed to load daily questions.");
       }
     };
@@ -115,98 +114,129 @@ const Quiz = () => {
     getQuestions();
   }, []);
 
-   const showOptions = () => {
-     const options = Array.from(document.querySelectorAll(".option"));
-     options.forEach((option) => {
-       option.style.visibility = "visible";
-     });
-     setUsedFiftyFifty(false);
-   };
+  const showOptions = () => {
+    const options = Array.from(document.querySelectorAll(".option"));
+    options.forEach((option) => {
+      option.style.visibility = "visible";
+    });
+    setUsedFiftyFifty(false);
+  };
 
+  const handleFiftyFifty = () => {
+    if (fiftyFifty > 0 && !usedFiftyFifty) {
+      const options = Array.from(document.querySelectorAll(".option"));
+      let indexOfAnswer;
 
-   const handleFiftyFifty = () => {
-     if (fiftyFifty > 0 && !usedFiftyFifty) {
-       const options = Array.from(document.querySelectorAll(".option"));
-       let indexOfAnswer;
+      options.forEach((option, index) => {
+        if (
+          option.innerHTML.toLowerCase() ===
+          currentQuestion.correctAnswer.toLowerCase()
+        ) {
+          indexOfAnswer = index;
+        }
+      });
 
-       options.forEach((option, index) => {
-         if (
-           option.innerHTML.toLowerCase() === currentQuestion.correctAnswer.toLowerCase()
-         ) {
-           indexOfAnswer = index;
-         }
-       });
+      const randomNumbers = [];
+      let count = 0;
 
-       const randomNumbers = [];
-       let count = 0;
+      do {
+        const randomNumber = Math.floor(Math.random() * 4);
+        if (
+          randomNumber !== indexOfAnswer &&
+          !randomNumbers.includes(randomNumber)
+        ) {
+          randomNumbers.push(randomNumber);
+          count++;
+        }
+      } while (count < 2);
 
-       do {
-         const randomNumber = Math.floor(Math.random() * 4);
-         if (
-           randomNumber !== indexOfAnswer &&
-           !randomNumbers.includes(randomNumber)
-         ) {
-           randomNumbers.push(randomNumber);
-           count++;
-         }
-       } while (count < 2);
+      options.forEach((option, index) => {
+        if (randomNumbers.includes(index)) {
+          option.style.visibility = "hidden";
+        }
+      });
 
-       options.forEach((option, index) => {
-         if (randomNumbers.includes(index)) {
-           option.style.visibility = "hidden";
-         }
-       });
+      setFiftyFifty((prev) => prev - 1);
+      setUsedFiftyFifty(true);
+    }
+  };
 
-       setFiftyFifty((prev) => prev - 1);
-       setUsedFiftyFifty(true);
-     }
-   };
+  const handleHints = () => {
+    if (hints > 0) {
+      const options = Array.from(document.querySelectorAll(".option"));
+      let indexOfAnswer;
+      options.forEach((option, index) => {
+        if (
+          option.innerHTML.toLowerCase() ===
+          currentQuestion.correctAnswer.toLowerCase()
+        ) {
+          indexOfAnswer = index;
+        }
+      });
+      while (true) {
+        const randomNumber = Math.round(Math.random() * 3);
+        if (
+          randomNumber !== indexOfAnswer &&
+          !previousRandomNumbers.includes(randomNumber)
+        ) {
+          options.forEach((option, index) => {
+            if (index === randomNumber) {
+              option.style.visibility = "hidden";
+              setHints((prevHints) => prevHints - 1);
+              setPreviousRandomNumbers((prev) => [...prev, randomNumber]);
+            }
+          });
+          break;
+        }
+        if (previousRandomNumbers.length >= 3) break;
+      }
+    }
+  };
 
-     const handleHints = () => {
-       if (hints > 0) {
-         const options = Array.from(document.querySelectorAll(".option"));
-         let indexOfAnswer;
-         options.forEach((option, index) => {
-           if (
-             option.innerHTML.toLowerCase() === currentQuestion.correctAnswer.toLowerCase()
-           ) {
-             indexOfAnswer = index;
-           }
-         });
-         while (true) {
-           const randomNumber = Math.round(Math.random() * 3);
-           if (
-             randomNumber !== indexOfAnswer &&
-             !previousRandomNumbers.includes(randomNumber)
-           ) {
-             options.forEach((option, index) => {
-               if (index === randomNumber) {
-                 option.style.visibility = "hidden";
-                 setHints((prevHints) => prevHints - 1);
-                 setPreviousRandomNumbers((prev) => [...prev, randomNumber]);
-               }
-             });
-             break;
-           }
-           if (previousRandomNumbers.length >= 3) break;
-         }
-       }
-     };
+  const playQuitSound = () => {
+    const quitAudio = document.getElementById("quit");
+    if (quitAudio) {
+      quitAudio.play();
+    }
+  };
+  const handleQuitButton = () => {
+    playQuitSound();
+    setTimeout(() => {
+      const quitAudio = document.getElementById("quit");
+      if (quitAudio) {
+        quitAudio.pause();
+        quitAudio.currentTime = 0;
+      }
+    }, 3000);
 
-
-
-
-
+    // const quitConfirmation = toast.warning("Are you sure you want to quit?");
+    // if (quitConfirmation) {
+    //   endGame(); // End game and save score
+    // }
+  };
 
   const handleStart = async () => {
     // const response = await api.get("/question/daily-questions");
     //     console.log("API response:", response.data);
     setStartQuiz(true);
-   setCurrentQuestionIndex(0);
-   startTimer();
+    setCurrentQuestionIndex(0);
+    startTimer();
   };
-  const currentQuestion = questions[currentQuestionIndex];
 
+  const openQuitModal = () => {
+    setQuitModalOpen(true);
+  };
+
+  const closeQuitModal = () => {
+    setQuitModalOpen(false);
+  };
+
+   const confirmQuit = () => {
+     // Handle the quit logic here, like redirecting to the homepage or resetting the quiz state
+     navigate("/dashboard"); // Example: Navigate to the dashboard
+   };
+
+  const currentQuestion = questions[currentQuestionIndex];
 
   return questions ? (
     startQuiz ? (
@@ -215,12 +245,10 @@ const Quiz = () => {
         <Helmet>
           <title>Quiz Page</title>
         </Helmet>
-
         <audio id="correct" src={correct}></audio>
         <audio id="incorrect" src={incorrect}></audio>
         <audio id="nextprev" src={nextprev}></audio>
         <audio id="quit" src={quit}></audio>
-
         <div className="questions">
           <h2>Quiz Mode</h2>
 
@@ -295,11 +323,17 @@ const Quiz = () => {
             >
               Next <Icon path={mdilArrowRight} size={1} />
             </button>
-            {/* <button id="quit" onClick={handleButtonClick}>
-        Quit
-      </button> */}
+            <button id="quit" onClick={openQuitModal}>
+              Quit
+            </button>
           </div>
         </div>
+        <QuitConfirmation
+          isOpen={quitModalOpen}
+          onClose={closeQuitModal}
+          onConfirm={confirmQuit}
+        />
+        ;
       </Fragment>
     ) : (
       <div>

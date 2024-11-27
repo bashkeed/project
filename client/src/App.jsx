@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import React from "react"; // Ensure React is imported
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import Instructions from "./components/quiz/Instructions";

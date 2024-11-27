@@ -30,12 +30,16 @@ const Login = () => {
              navigate("/dashboard");
            })
            .catch((error) => console.log(error));
-            toast.error("Invalid email or password.");
+           // toast.error("Invalid email or password.");
             console.log("Form submitted:", formData);
        }else{
         toast.error("username or password incorrect");
        }
      };
+
+     
+
+
 
      const handleChange = (e) => {
        setFormData({
@@ -79,7 +83,7 @@ const Login = () => {
       </Helmet>
 
       <div className="d-flex justify-content-center align-items-center bg-secondary vh-100 style">
-        <div className="bg-white-subtle p-3 rounded w-25 skin">
+        <div className="bg-white-subtle p-3 rounded w- skin">
           <h2>Login</h2>
           <form onSubmit={handleSubmit}>
             {/* email field */}
@@ -90,7 +94,7 @@ const Login = () => {
                 placeholder="enter email"
                 autoComplete="off"
                 name="email"
-                className="form-control rounded-1"
+                className="form-control rounded-1 ctrl"
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -105,7 +109,7 @@ const Login = () => {
                 placeholder="enter password"
                 autoComplete="off"
                 name="password"
-                className="form-control rounded-1"
+                className="form-control rounded-1 ctrl"
                 value={formData.password}
                 onChange={handleChange}
               />
