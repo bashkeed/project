@@ -173,17 +173,12 @@
    
   }
 
-  .button-container{
-    display: flex;
-    width: 100%;
-    position: relative;
-    top: -30px;
-    height: 70px;       
-   
-  }
+  
 
   
   .button-container {
+     position: relative;
+    top: -30px;
     display: flex;
     flex-direction: column;
     padding: 15px 30px;

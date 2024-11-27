@@ -16,7 +16,7 @@ import QuitConfirmation from "../components/QuitConfirmation";
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [startQuiz, setStartQuiz] = useState(false);
-  // const [currentQuestion, setCurrentQuestion] = useState({});
+  const [questionChanged, setQuestionChanged] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [time, setTime] = useState({ minutes: 0, seconds: 0 });
   const [answers, setAnswers] = useState({});
@@ -213,10 +213,9 @@ const Quiz = () => {
       }
     }, 3000);
 
-    // const quitConfirmation = toast.warning("Are you sure you want to quit?");
-    // if (quitConfirmation) {
+  
     //   endGame(); // End game and save score
-    // }
+    
   };
 
   const handleStart = async () => {
@@ -244,6 +243,10 @@ const Quiz = () => {
      // Handle the quit logic here, like redirecting to the homepage or resetting the quiz state
      navigate("/dashboard"); // Example: Navigate to the dashboard
    };
+
+    useEffect(() => {
+      showOptions();
+    }, [currentQuestionIndex]);
 
   const currentQuestion = questions[currentQuestionIndex];
 
