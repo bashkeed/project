@@ -8,7 +8,7 @@ const Instructions = () => {
       <Helmet>
         <title>Quiz Intructions - learnFly</title>
       </Helmet>
-      <div className="instructions container d-flex flex-column align-items-center">
+      <div className="instructions container d-flex flex-column align-items-center border  ">
         <h1>HOW TO PLAY THE GAME</h1>
         <h5>be sure to read this guide from start to finish</h5>
         <ul className="browser-default" id="main-list">
@@ -20,11 +20,11 @@ const Instructions = () => {
           <li>each question consist of 4 options</li>
         </ul>
       </div>
-      <div className="d-flex justify-content-between mb-3 mx-lg-3 mb-2">
-        <span className="left">
+      <div className="d-flex justify-content-between mb-3 mx-lg-3 mb-2 border dashed m-3 ">
+        <span className="left p-2">
           <Link to={""}>go back</Link>
         </span>
-        <span className="right">
+        <span className="right p-2 ">
           <Link to={'/quiz/play'}>right, lets play</Link>
         </span>
       </div>

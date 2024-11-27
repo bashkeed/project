@@ -463,24 +463,6 @@ const Play = (props) => {
           </p>
         </div>
 
-        {/* <div className="options-container">
-          <p onClick={handleOptionsClick} className="option">
-            <ToastContainer position="top-center" autoClose={3000} />
-            {currentQuestion.optionA}
-          </p>
-          <p onClick={handleOptionsClick} className="option">
-            {currentQuestion.optionB}
-          </p>
-        </div>
-
-        <div className="options-container">
-          <p onClick={handleOptionsClick} disabled className="option">
-            {currentQuestion.optionC}
-          </p>
-          <p onClick={handleOptionsClick} className="option">
-            {currentQuestion.optionD}
-          </p>
-        </div> */}
 
         <div className="button-container">
           <button

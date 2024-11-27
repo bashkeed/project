@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { mdilLightbulbOn, mdilArrowRight, mdilArrowLeft } from "@mdi/light-js";
-import { toast } from "react-toastify";
+import { toast,ToastContainer } from "react-toastify";
 import { Helmet } from "react-helmet";
 import correct from "../assets/img/audio/correct.mp3";
 import incorrect from "../assets/img/audio/incorrect.mp3";
@@ -10,14 +10,20 @@ import nextprev from "../assets/img/audio/next-prev.mp3";
 import quit from "../assets/img/audio/quit.mp3";
 import classNames from "classnames";
 import Icon from "@mdi/react";
+import { mdiBatteryCharging } from "@mdi/js";
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [startQuiz, setStartQuiz] = useState(false);
-//   const [currentQuestion, setCurrentQuestion] = useState({});
+// const [currentQuestion, setCurrentQuestion] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [time, setTime] = useState({ minutes: 0, seconds: 0 });
   const [answers, setAnswers] = useState({});
+  const [interval, setIntervalState] = useState(null);
+   const [hints, setHints] = useState(5);
+   const [fiftyFifty, setFiftyFifty] = useState(2);
+   const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
+   const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
 
   const navigate = useNavigate();
 
@@ -26,8 +32,21 @@ const Quiz = () => {
     
     setAnswers({ ...answers, [questionId]: answer });
     if (currentQuestion.correctAnswer === answer) {
+       const correctAudio = document.getElementById("correct");
+       correctAudio.play();
+       setTimeout(() => {
+         correctAudio.pause();
+         correctAudio.currentTime = 0;
+       }, 3000);
       toast.success("Correct answer");
+
     } else {
+      const incorrectAudio = document.getElementById("incorrect");
+       incorrectAudio.play();
+       setTimeout(() => {
+         incorrectAudio.pause();
+         incorrectAudio.currentTime = 0;
+       }, 3000);
       toast.error("Wrong answer");
     }
     if (currentQuestionIndex < questions.length - 1) {
@@ -63,7 +82,7 @@ const Quiz = () => {
       if (distance < 0) {
         clearInterval(intervalId);
         setTime({ minutes: 0, seconds: 0 });
-        toast.warning("Quiz has ended due to time expiration.");
+        toast.info("Quiz has ended due to time expiration.");
         // endGame();
       } else {
         setTime({ minutes, seconds });
@@ -71,6 +90,7 @@ const Quiz = () => {
     }, 1000);
     setIntervalState(intervalId);
   };
+
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -81,24 +101,109 @@ const Quiz = () => {
         const response = await api.get("/question/daily-questions");
         console.log("API response:", response.data);
         setQuestions(response.data); // Assuming response.data is the correct structure
-      } catch (err) {
+      } catch(err) {
         if (err.code === 401) {
           localStorage.removeItem("token");
           navigate("/login");
         }
         console.error("API error:", err);
-        setError("Failed to load daily questions.");
+        
+        //setError("Failed to load daily questions.");
       }
     };
 
     getQuestions();
   }, []);
 
+   const showOptions = () => {
+     const options = Array.from(document.querySelectorAll(".option"));
+     options.forEach((option) => {
+       option.style.visibility = "visible";
+     });
+     setUsedFiftyFifty(false);
+   };
+
+
+   const handleFiftyFifty = () => {
+     if (fiftyFifty > 0 && !usedFiftyFifty) {
+       const options = Array.from(document.querySelectorAll(".option"));
+       let indexOfAnswer;
+
+       options.forEach((option, index) => {
+         if (
+           option.innerHTML.toLowerCase() === currentQuestion.correctAnswer.toLowerCase()
+         ) {
+           indexOfAnswer = index;
+         }
+       });
+
+       const randomNumbers = [];
+       let count = 0;
+
+       do {
+         const randomNumber = Math.floor(Math.random() * 4);
+         if (
+           randomNumber !== indexOfAnswer &&
+           !randomNumbers.includes(randomNumber)
+         ) {
+           randomNumbers.push(randomNumber);
+           count++;
+         }
+       } while (count < 2);
+
+       options.forEach((option, index) => {
+         if (randomNumbers.includes(index)) {
+           option.style.visibility = "hidden";
+         }
+       });
+
+       setFiftyFifty((prev) => prev - 1);
+       setUsedFiftyFifty(true);
+     }
+   };
+
+     const handleHints = () => {
+       if (hints > 0) {
+         const options = Array.from(document.querySelectorAll(".option"));
+         let indexOfAnswer;
+         options.forEach((option, index) => {
+           if (
+             option.innerHTML.toLowerCase() === currentQuestion.correctAnswer.toLowerCase()
+           ) {
+             indexOfAnswer = index;
+           }
+         });
+         while (true) {
+           const randomNumber = Math.round(Math.random() * 3);
+           if (
+             randomNumber !== indexOfAnswer &&
+             !previousRandomNumbers.includes(randomNumber)
+           ) {
+             options.forEach((option, index) => {
+               if (index === randomNumber) {
+                 option.style.visibility = "hidden";
+                 setHints((prevHints) => prevHints - 1);
+                 setPreviousRandomNumbers((prev) => [...prev, randomNumber]);
+               }
+             });
+             break;
+           }
+           if (previousRandomNumbers.length >= 3) break;
+         }
+       }
+     };
+
+
+
+
+
+
   const handleStart = async () => {
     // const response = await api.get("/question/daily-questions");
     //     console.log("API response:", response.data);
     setStartQuiz(true);
-    setCurrentQuestion(questions[0]);
+   setCurrentQuestionIndex(0);
+   startTimer();
   };
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -106,6 +211,7 @@ const Quiz = () => {
   return questions ? (
     startQuiz ? (
       <Fragment>
+        <ToastContainer />
         <Helmet>
           <title>Quiz Page</title>
         </Helmet>
@@ -117,19 +223,20 @@ const Quiz = () => {
 
         <div className="questions">
           <h2>Quiz Mode</h2>
+
           <div className="lifeline-container">
-            {/* <p>
-        <span onClick={handleFiftyFifty} className="lifeline-icon">
-          <Icon path={mdiBatteryCharging} size={1} />
-          <span className="lifeline">{fiftyFifty}</span>
-        </span>
-      </p>
-      <p>
-        <span onClick={handleHints} className="lifeline-icon">
-          <Icon path={mdilLightbulbOn} size={1} />
-          <span className="lifeline">{hints}</span>
-        </span>
-      </p> */}
+            <p>
+              <span onClick={handleFiftyFifty} className="lifeline-icon">
+                <Icon path={mdiBatteryCharging} size={1} />
+                <span className="lifeline">{fiftyFifty}</span>
+              </span>
+            </p>
+            <p>
+              <span onClick={handleHints} className="lifeline-icon">
+                <Icon path={mdilLightbulbOn} size={1} />
+                <span className="lifeline">{hints}</span>
+              </span>
+            </p>
           </div>
           <div>
             <p>
@@ -167,27 +274,31 @@ const Quiz = () => {
           </div>
 
           <div className="button-container">
-      <button
-        id="previous"
-        disabled= {(currentQuestionIndex === 0)}
-        onClick={handlePrevious}
-        className={classNames("", { disable: (currentQuestionIndex === 0) })}
-      >
-        <Icon path={mdilArrowLeft} size={1} />
-        Previous
-      </button>
-      <button
-        id="next"
-        disabled= {!(currentQuestionIndex < questions.length - 1)}
-        onClick={handleNext}
-        className={classNames("", { disable: !(currentQuestionIndex < questions.length - 1) })}
-      >
-        Next <Icon path={mdilArrowRight} size={1} />
-      </button>
-      {/* <button id="quit" onClick={handleButtonClick}>
+            <button
+              id="previous"
+              disabled={currentQuestionIndex === 0}
+              onClick={handlePrevious}
+              className={classNames("", {
+                disable: currentQuestionIndex === 0,
+              })}
+            >
+              <Icon path={mdilArrowLeft} size={1} />
+              Previous
+            </button>
+            <button
+              id="next"
+              disabled={!(currentQuestionIndex < questions.length - 1)}
+              onClick={handleNext}
+              className={classNames("", {
+                disable: !(currentQuestionIndex < questions.length - 1),
+              })}
+            >
+              Next <Icon path={mdilArrowRight} size={1} />
+            </button>
+            {/* <button id="quit" onClick={handleButtonClick}>
         Quit
       </button> */}
-    </div>
+          </div>
         </div>
       </Fragment>
     ) : (
