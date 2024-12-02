@@ -4,7 +4,7 @@ import Icon from "@mdi/react";
 import { useNavigate } from "react-router-dom";
 import { mdilLightbulbOn, mdilArrowRight, mdilArrowLeft } from "@mdi/light-js";
 import { mdiBatteryCharging } from "@mdi/js";
-// import questions from "../../questions.json";
+import questions from "../../questions.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import correct from "../../assets/img/audio/correct.mp3";
@@ -36,30 +36,27 @@ const Play = (props) => {
   const [previousButtonDisabled, setPreviousButtonDisabled] = useState(true);
   const [selectedAnswer, setSelectedAnswer] = useState(null); // Track selected answer
   const [answered, setAnswered] = useState(false); // Track if the question has been answered
-  const [questions, setQuestions] = useState([]);
+  //const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   // Use the useNavigate hook to handle navigation
   const navigate = useNavigate();
 
-  const fetchQuestions = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get("/question/daily-questions");
-      console.log("API response:", response.data);
-      setQuestions(response.data); // Assuming response.data is the correct structure
-    } catch (err) {
-      console.error("API error:", err);
-      setError("Failed to load daily questions.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchQuestions = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await api.get("/question/daily-questions");
+  //     console.log("API response:", response.data);
+  //     setQuestions(response.data); // Assuming response.data is the correct structure
+  //   } catch (err) {
+  //     console.error("API error:", err);
+  //     setError("Failed to load daily questions.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchQuestions();
-  }, []);
-
+  
   useEffect(() => {
     console.log("hello");
     displayQuestions();
@@ -71,7 +68,7 @@ const Play = (props) => {
 
   const displayQuestions = useCallback(() => {
     if (!isEmpty(questions)) {
-      console.log("from call back", questions);
+    
       const current = questions[currentQuestionIndex];
       const next = questions[currentQuestionIndex + 1];
       const prev = questions[currentQuestionIndex - 1];

@@ -192,3 +192,35 @@
     margin-bottom: 13px;
   }
 }
+
+/* Quiz.css */
+.countdown-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  font-size: 4rem;
+}
+
+.countdown-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.countdown-number {
+  font-size: 5rem;
+  font-weight: bold;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+

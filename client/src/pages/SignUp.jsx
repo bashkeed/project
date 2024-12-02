@@ -1,57 +1,56 @@
-
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { mdiAccountCheckOutline } from "@mdi/js";
 import { MDBIcon } from "mdb-react-ui-kit";
 import Icon from "@mdi/react";
-// import Toast from './Toast';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import the styles
 
-
-
 const SignUp = () => {
-    const [errors, setErrors] = useState({}); // State to hold error messages
-    const [showSuccess, setShowSuccess] = useState(false);
-    
-    const [formData, setFormData] = useState({
-      name: "",
-      email: "",
-      password: "",
-    });
-
+  const [errors, setErrors] = useState({}); // State to hold error messages
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [loading, setLoading] = useState(false); // State to manage loading
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
 
   const handleSubmit = (e) => {
-    console.log("i got here");
     e.preventDefault();
 
     if (validateForm()) {
+      setLoading(true); // Show the loader
       axios
         .post("http://127.0.0.1:3000/api/auth/signup", formData)
         .then((result) => {
-          console.log(result);
-
+          setLoading(false); // Hide the loader
+          setShowSuccess(true); // Show success message
           // Show the popup after 1 second
           const showTimeout = setTimeout(() => {
             setShowSuccess(true); // Make the popup visible
-
             // Automatically hide the popup after 3 seconds
             const hideTimeout = setTimeout(() => {
               setShowSuccess(false);
             }, 3000);
-
             // Cleanup hideTimeout when popup is shown
             return () => clearTimeout(hideTimeout);
           }, 1000); // Adjust this value for the delay before showing
-
           // Cleanup showTimeout when the component unmounts
           return () => clearTimeout(showTimeout);
         })
-        .catch((error) => console.log(error));
-
-      console.log("Form submitted:", formData);
+        .catch((error) => {
+          setLoading(false); // Hide the loader
+          if (error.response && error.response.status === 400) {
+            toast.error("User already exists. Please log in.");
+          } else {
+            toast.error("An error occurred. Please try again.");
+          }
+          console.log(error);
+        });
     }
   };
 
@@ -94,32 +93,28 @@ const SignUp = () => {
     setErrors(tempErrors);
     return isValid;
   };
-   
-     const notify = () => toast("Wow so easy!");
-   
 
   return (
     <>
       {showSuccess && (
-        <>
-          <div
-            className="d-flex flex-column justify-content-center align-items-center bg-dark vh-100"
-            role="alert"
-          >
-            <h1 style={{ color: "#fff" }}>user succesfully registerd!</h1>
-            <Icon
-              path={mdiAccountCheckOutline}
-              size={3}
-              style={{ color: "green" }}
-            />
-          </div>
-        </>
+        <div
+          className="d-flex flex-column justify-content-center align-items-center bg-dark vh-100"
+          role="alert"
+        >
+          <h1 style={{ color: "#fff" }}>User successfully registered!</h1>
+          <Icon
+            path={mdiAccountCheckOutline}
+            size={3}
+            style={{ color: "green" }}
+          />
+        </div>
       )}
+      <ToastContainer />
       <Helmet>
         <title>learnFly - Signup</title>
       </Helmet>
-      <div className="d-flex justify-content-center align-items-center bg-secondary vh-100 style">
-        <div className="bg-white p-3 rounded w-25 skin">
+      <div className="d-flex justify-content-center align-items-center bg-secondary vh-100 vw-100 style contain">
+        <div className="bg-white p-3 rounded skin mr-6">
           <h2>Sign up</h2>
           <form onSubmit={handleSubmit}>
             {/* name field */}
@@ -127,7 +122,7 @@ const SignUp = () => {
               <MDBIcon fas icon="user me-1" size="sm" />
               <input
                 type="text"
-                placeholder="enter username"
+                placeholder="Enter username"
                 autoComplete="off"
                 name="name"
                 className="form-control rounded-1"
@@ -141,7 +136,7 @@ const SignUp = () => {
               <MDBIcon fas icon="envelope me-1" size="sm" />
               <input
                 type="email"
-                placeholder="enter email"
+                placeholder="Enter email"
                 autoComplete="off"
                 name="email"
                 className="form-control rounded-1"
@@ -150,34 +145,56 @@ const SignUp = () => {
               />
               {errors.email && <p className="errors">{errors.email}</p>}
             </div>
-
             {/* password field */}
-            <div className="mb-3">
+            <div className="mb-3 position-relative">
               <MDBIcon fas icon="lock me-1" size="sm" />
               <input
-                type="password"
-                placeholder="enter password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
                 autoComplete="off"
                 name="password"
                 className="form-control rounded-1"
                 value={formData.password}
                 onChange={handleChange}
               />
+              <MDBIcon
+                fas
+                icon={showPassword ? "eye-slash" : "eye"}
+                size="sm"
+                className="position-absolute"
+                style={{
+                  top: "45px",
+                  right: "10px",
+                  cursor: "pointer",
+                  transform: "translateY(-50%)",
+                }}
+                onClick={() => setShowPassword(!showPassword)}
+              />
               {errors.password && <p className="errors">{errors.password}</p>}
             </div>
             <button
               type="submit"
               className="btn btn-success w-100 rounded-1 transparent"
+              disabled={loading} // Disable button during loading
             >
-              Register
+              {loading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  <span className="sr-only">Loading...</span>
+                </>
+              ) : (
+                "Register"
+              )}
             </button>
           </form>
-          {/* button */}
-
-          <p>Already have an account ?</p>
+          <p>Already have an account?</p>
           <Link
             to={"/login"}
-            className="btn btn-default border w-100 bg-light rounded-1 text-decoration-none transparent"
+            className="btn btn-default border w-100 rounded-1 text-decoration-none transparent1"
           >
             Login
           </Link>
@@ -185,6 +202,6 @@ const SignUp = () => {
       </div>
     </>
   );
-}
+};
 
-export default SignUp
+export default SignUp;

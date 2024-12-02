@@ -9,9 +9,6 @@ body{
   width: 100vw;
 }
 
-.home{
-  flex: 1;
-}
 
 
 .home{
@@ -19,74 +16,37 @@ body{
     background-size: cover;
     background-position: center;
     height: 100vh;
-    width: 50vw;
+    width: 100vw;
     display: flex;
     justify-content: center;
+    margin: auto;
     // background-image: linear-gradient(125deg,#2c3e50,#27ae60,#2980b9,#e74c3c,#8e44ad);
     // animation: bganimation 15s infinite;
     
 
     section{
         background-color: rgba(137, 115, 115, 0.7);
-        height: 75%;
-        width: 70%;
+        height: 90%;
+        width: 100%;
         padding-left: $md;
         padding-right: $md;
         border-radius: $button-radius;
         margin-top: 35px;
         margin-left: $lg;
         opacity: .6;
+        margin-bottom: 35px;
     }
 
-    .arrow{
-      cursor: pointer;
+    @media (max-width:425px){
+    section{
+    height: 100vh;
+      margin-top: 10px;
+     }
+  
     }
-    .arrow:hover{
-      color:#CFA11D
-     }
 
-     .form-control{
-      margin-bottom: 10px;
-     }
 
-     
-    // .auth-container{
-    //     width: 100%;
-    //     display: flex;
-    //     justify-content: space-around;
-    //     margin-top: $lg;
-    // }
 
-    // #login-button{
-    //     background-color: red;
-    //     color: #fff;
-    // }
-
-    // #signup-button{
-    //     background-color:$orange;
-    // }
-
-    // #play-button-container{
-    //     width: 100%;
-    // }
-
-    // #play-button{
-    //     background-color: green;
-    //     color: #fff;
-    //     cursor: pointer;
-    //     padding: $normal;
-    //     display: block;
-    //     border-radius: $button-radius;
-    // }
-
-    // .auth-container .auth-buttons{
-    //     color: #fff;
-    //     cursor: pointer;
-    //     border-radius: 30px;
-    //     padding: $normal 0;
-    //     text-align: center;
-    //     width: 45%;
-    // }
     
 
 .heart{
@@ -119,13 +79,7 @@ p{
 
 }
 
-.success-message{
-  text-align:"center";
-  background-color: 'lightblue';
-  border: '1px solid blue';
-  border-radius: '5px';
-  width: 300px;
-}
+
 
 
 strong{
@@ -134,34 +88,12 @@ strong{
   text-shadow: #fff;
 }
 
-// .signup-side{
-//   background-image: url('../../assets/img/book.jpg');
-//     background-size: cover;
-//     height: 100vh;
-//     width: 100vw;   
-// }
 
-// .signup-container{
-//   margin-top: 25px;
-//   border-radius: 10px;
-//   width: 70%;
-//   height: 75%;
-//   background-color: gray;
-//   padding-left: $md;
-//   padding-right: $md;
-//   margin-left: $md;
-//   opacity: .5;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-// }
-.stretch{
-  color: #fff;
-  cursor: pointer;
-}
 
 .reg:hover{
    transform: scaleX(1.1); /* Stretch horizontally */
    color:  #fff !important;
    border: #fff solid 1px !important;
 }
+
+

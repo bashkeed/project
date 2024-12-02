@@ -13,11 +13,17 @@
         }
     }
     
-    // .skin{
-    //     opacity: .5;
-    // }
-
-    .transparent{
+   
+ .transparent{
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    border: 2px solid #2980b9; /* Solid border color */
+    color: #2980b9; /* Text color */
+    padding: 10px 20px; /* Padding for button */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    }
+    transparent1{
     background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
     border: 2px solid #2980b9; /* Solid border color */
     color: #2980b9; /* Text color */
@@ -31,9 +37,23 @@
     .transparent:hover {
     background-color: transparent; /* Transparent background on hover */
     color: #e74c3c; /* Change text color on hover */
-}
+   }
+
+    .transparent1:hover {
+    background-color: transparent; /* Transparent background on hover */
+    color: #efff; /* Change text color on hover */
+   }
 
 .errors{
       font-size: 12px;
       color: red;
      }
+
+   /* Add this to your CSS file */
+.catchy-heading {
+  font-family: 'Comic Sans MS', cursive, sans-serif; /* Example of a catchy font */
+  color: #ff6347; /* Tomato color */
+  font-size: 2rem; /* Adjust size as needed */
+  text-shadow: 1px 1px 2px #000000; /* Optional: add a shadow for extra effect */
+  text-align: center; /* Center align the text */
+}

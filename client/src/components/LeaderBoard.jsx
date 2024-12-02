@@ -12,38 +12,40 @@ function LeaderBoard() {
 
   return (
     <>
-      <h2 className="caption">Introducing our national brain boxes</h2>
-      <div className="animation">
-        <div className="stripe stripe1"></div>
-        <div className="stripe stripe2"></div>
-        <div className="stripe stripe3"></div>
-      </div>
-      <div className="leaderboard">
-        <div className="header">
-          <div className="header-item">Position</div>
-          <div className="header-item">Name</div>
-          <div className="header-item">Score</div>
+      <div className="skin">
+        <h2 className="caption">Introducing our national brain boxes!</h2>
+        <div className="animation">
+          <div className="stripe stripe1"></div>
+          <div className="stripe stripe2"></div>
+          <div className="stripe stripe3"></div>
         </div>
-        {data.map((item, index) => (
-          <div key={index} className="row">
-            <div className="item">{item.position}</div>
-            <div className="item">{item.name}</div>
-            <div className="item score">{item.score}</div>
+        <div className="leaderboard">
+          <div className="header">
+            <div className="header-item">Position</div>
+            <div className="header-item">Name</div>
+            <div className="header-item">Score</div>
           </div>
-        ))}
-      </div>
+          {data.map((item, index) => (
+            <div key={index} className="row">
+              <div className="item">{index + 1}</div>
+              <div className="item">{item.name}</div>
+              <div className="item score">{item.score}</div>
+            </div>
+          ))}
+        </div>
 
-      <section className="navigation">
-        <ul>
-          <li>
-            <Link to={"/"}>Home</Link>
-          </li>
-          <span style={{ color: "white" }}>|</span>
-          <li>
-            <Link to={"/quiz/play"}>Take Quiz</Link>
-          </li>
-        </ul>
-      </section>
+        <section className="navigation">
+          <ul>
+            <li>
+              <Link to={"/"}>Home</Link>
+            </li>
+            <span style={{ color: "white" }}>|</span>
+            <li>
+              <Link to={"/quiz/play"}>Take Quiz</Link>
+            </li>
+          </ul>
+        </section>
+      </div>
     </>
   );
 }

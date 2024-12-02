@@ -1,0 +1,136 @@
+
+
+.card {
+  border: none; /* Remove card border */
+  border-radius: 10px; /* Add rounded corners */
+}
+
+.card-body {
+  padding: 2rem; /* Add padding to the card body */
+}
+
+.lead {
+  font-size: 1.25rem; /* Increase the size of the lead text */
+}
+
+.scores {
+  font-size: 1.1rem; /* Slightly increase the size of the scores text */
+}
+
+.btn-primary {
+  background-color: #007bff; /* Custom primary button color */
+  border-color: #007bff; /* Custom primary button border color */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker primary button color on hover */
+  border-color: #0056b3; /* Darker primary button border color on hover */
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Custom danger button color */
+  border-color: #dc3545; /* Custom danger button border color */
+}
+
+.btn-danger:hover {
+  background-color: #c82333; /* Darker danger button color on hover */
+  border-color: #bd2130; /* Darker danger button border color on hover */
+}
+
+table {
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  text-align: center; /* Center-align table text */
+}
+/* Animation classes for CSSTransition */
+.fade-enter {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms, transform 500ms;
+}
+.fade-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 500ms, transform 500ms;
+}
+
+/* Responsive sidebar */
+.sidebar {
+  min-height: 100vh;
+}
+
+/* Responsive content */
+.content {
+  overflow-y: auto;
+}
+
+
+/* Add this to your CSS file */
+.fanciful-paragraph {
+  font-family: 'Garamond', serif; /* Example of an elegant font */
+  color: #4b0082; /* Indigo color for a vibrant look */
+  font-size: 1.2rem; /* Slightly larger font size */
+  line-height: 1.6; /* Increase line height for better readability */
+  background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%); /* Gradient background */
+  padding: 15px; /* Padding for spacing */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: justify; /* Justify text alignment */
+  margin: 20px 0; /* Margin for spacing */
+}
+
+
+/* Add this to your CSS file */
+.fanciful-scores {
+  font-family: 'Georgia', serif; /* Elegant font */
+  color: #2e8b57; /* Sea green color */
+  background: linear-gradient(to right, #f0f8ff, #e6e6fa); /* Light gradient background */
+  padding: 20px; /* Padding for spacing */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: center; /* Centered text */
+  margin: 20px 0; /* Margin for spacing */
+}
+
+.fanciful-scores .card-text {
+  font-size: 1.2rem; /* Larger font size */
+  margin: 10px 0; /* Margin for spacing between texts */
+}
+
+.fanciful-scores strong {
+  color: #ff4500; /* Orange-red color for emphasis */
+}
+
+/* Add this to your CSS file */
+.fanciful-history-card {
+  font-family: 'Georgia', serif; /* Elegant font */
+  color: #2e8b57; /* Sea green color */
+  background: linear-gradient(to right, #f0f8ff, #e6e6fa); /* Light gradient background */
+  padding: 20px; /* Padding for spacing */
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: center; /* Centered text */
+  margin: 20px 0; /* Margin for spacing */
+}
+
+.fanciful-history-card h2 {
+  font-size: 2rem; /* Larger font size for heading */
+  color: #ff4500; /* Orange-red color for emphasis */
+  margin-bottom: 15px; /* Spacing below the heading */
+}
+
+.fanciful-history-card p {
+  font-size: 1.2rem; /* Larger font size for paragraph */
+  color: #4b0082; /* Indigo color for text */
+}

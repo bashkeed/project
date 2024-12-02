@@ -4,8 +4,8 @@ import connectDB from "./db.js";
 import dotenv from "dotenv";
 import Item from "./models/historyModel.js";
 import authRoutes from "./routes/authRoutes.js";
-import questionRoutes from './routes/questionRoutes.js'
-
+import questionRoutes from "./routes/questionRoutes.js";
+import quizRoutes from "./routes/quizRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -21,8 +21,7 @@ const PORT = process.env.PORT || 3001;
 
 app.use("/api/auth", authRoutes);
 app.use("/api/question", questionRoutes);
-
-
+app.use("/api/quiz", quizRoutes);
 
 // GET route to fetch items
 app.get("/api/items", async (req, res) => {

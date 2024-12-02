@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import api from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { mdilLightbulbOn, mdilArrowRight, mdilArrowLeft } from "@mdi/light-js";
-import { toast,ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { Helmet } from "react-helmet";
 import correct from "../assets/img/audio/correct.mp3";
 import incorrect from "../assets/img/audio/incorrect.mp3";
@@ -27,10 +27,11 @@ const Quiz = () => {
   const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
   const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
   const [quitModalOpen, setQuitModalOpen] = useState(false); // State to control the quit modal
+  const [countdown, setCountdown] = useState(3); // State for countdown
 
   const navigate = useNavigate();
 
-  const selecAnswer = (questionId, answer) => {
+  const selectAnswer = (questionId, answer) => {
     console.log(questionId);
 
     setAnswers({ ...answers, [questionId]: answer });
@@ -54,7 +55,7 @@ const Quiz = () => {
     if (currentQuestionIndex < questions.length - 1) {
       handleNext();
     } else {
-      // handleSubmit()
+      handleSubmit();
     }
   };
 
@@ -93,29 +94,31 @@ const Quiz = () => {
   };
 
   const getQuestions = async () => {
-      if (!localStorage.getItem("token")) {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    }
+    try {
+      const response = await api.get("/question/daily-questions");
+      console.log("API response:", response.data);
+      setQuestions(response.data); // Assuming response.data is the correct structure
+    } catch (err) {
+      console.log(err.status);
+
+      if (err.status === 401) {
+        localStorage.removeItem("token");
         navigate("/login");
       }
-      try {
-        const response = await api.get("/question/daily-questions");
-        console.log("API response:", response.data);
-        setQuestions(response.data); // Assuming response.data is the correct structure
-      } catch (err) {
-        if (err.code === 401) {
-          localStorage.removeItem("token");
-          navigate("/login");
-        }
-        if (err.code === 400) {
-          navigate("/dashboard");
-        }
-        console.error("API error:", err);
+      // if (err.status === 400) {
+      //   navigate("/dashboard");
+      // }
+      console.error("API error:", err);
 
-        //setError("Failed to load daily questions.");
-      }
-    };
+      //setError("Failed to load daily questions.");
+    }
+  };
 
   useEffect(() => {
-      getQuestions();
+    getQuestions();
   }, []);
 
   const showOptions = () => {
@@ -213,19 +216,17 @@ const Quiz = () => {
       }
     }, 3000);
 
-  
     //   endGame(); // End game and save score
-    
   };
 
   const handleStart = async () => {
     try {
-      const response = await api.put("/question/start");
+      const response = await api.put("/quiz/start");
       console.log("API response:", response.data);
       setStartQuiz(true);
       setCurrentQuestionIndex(0);
       startTimer();
-    }catch (err) {
+    } catch (err) {
       console.error("API error:", err);
       setStartError("Failed to start quiz.");
     }
@@ -239,14 +240,39 @@ const Quiz = () => {
     setQuitModalOpen(false);
   };
 
-   const confirmQuit = () => {
-     // Handle the quit logic here, like redirecting to the homepage or resetting the quiz state
-     navigate("/dashboard"); // Example: Navigate to the dashboard
-   };
+  const confirmQuit = () => {
+    handleSubmit();
+    navigate("/dashboard"); // Example: Navigate to the dashboard
+  };
 
-    useEffect(() => {
-      showOptions();
-    }, [currentQuestionIndex]);
+  const handleSubmit = async () => {
+    console.log("i got here");
+
+    try {
+      const response = await api.put("/quiz/submit", answers);
+      console.log("API response:", response.data);
+    } catch (err) {
+      console.error("API error:", err);
+    }
+  };
+
+  useEffect(() => {
+    showOptions();
+  }, [currentQuestionIndex]);
+
+  // Countdown logic
+  useEffect(() => {
+    let countdownInterval;
+    if (countdown > 0) {
+      countdownInterval = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    } else if (countdown === 0) {
+      clearInterval(countdownInterval);
+      handleStart(); // Start the quiz after the countdown
+    }
+    return () => clearInterval(countdownInterval);
+  }, [countdown]);
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -293,7 +319,7 @@ const Quiz = () => {
           <div className="options-container">
             {currentQuestion?.options.map((option, index) => (
               <button
-                onClick={() => selecAnswer(currentQuestion._id, option)}
+                onClick={() => selectAnswer(currentQuestion._id, option)}
                 disabled={answers[currentQuestion._id]}
                 key={index}
                 className={classNames("option", {
@@ -348,8 +374,9 @@ const Quiz = () => {
         ;
       </Fragment>
     ) : (
-      <div>
-        <button onClick={handleStart}>Start Quiz</button>
+      <div className="countdown-container">
+        <div className="countdown-title">Your quiz starts in</div>
+        <div className="countdown-number">{countdown}</div>
       </div>
     )
   ) : (
