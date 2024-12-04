@@ -97,7 +97,7 @@ const Dashboard = () => {
    const celebrateWithConfetti = () => {
      confetti({
        particleCount: 500,
-       spread: 70,
+       spread: 90,
        origin: { x: 0.5, y: 0.5 },
        colors: ["#ff0", "#0f0", "#f00", "#00f"],
      });

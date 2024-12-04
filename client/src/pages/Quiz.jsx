@@ -55,8 +55,6 @@ const Quiz = () => {
     }
     if (currentQuestionIndex < questions.length - 1) {
       handleNext();
-    } else {
-      handleSubmit();
     }
   };
 
