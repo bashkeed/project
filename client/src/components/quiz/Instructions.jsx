@@ -8,7 +8,7 @@ const Instructions = () => {
       <Helmet>
         <title>Quiz Intructions - learnFly</title>
       </Helmet>
-      <div className="instructions container d-flex flex-column align-items-center border  ">
+      <div className="instructions container d-flex flex-column align-items-center border">
         <h1>HOW TO PLAY THE GAME</h1>
         <h5>be sure to read this guide from start to finish</h5>
         <ul className="browser-default" id="main-list">

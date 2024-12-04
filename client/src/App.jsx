@@ -3,7 +3,6 @@ import React from "react"; // Ensure React is imported
 //import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import Instructions from "./components/quiz/Instructions";
-import History from "./components/History";
 import Play from "./components/quiz/Play";
 import QuizSummary from "./components/quizSummary";
 import LeaderBoard from "./components/LeaderBoard";
@@ -22,7 +21,6 @@ function App(){
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/quiz" element={<Quiz />} />
-      <Route path="/history" element={<History />} />
       <Route path="/quiz/play" element={<Play />} />
       <Route path="/quiz/instructions" element={<Instructions />} />
       <Route path="/quizsummary" element={<QuizSummary />} />

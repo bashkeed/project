@@ -6,6 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import api from "../utils/api";
 import { ClipLoader } from "react-spinners"; // Import the loader
+import LoaderDash from '../components/LoaderDash';
+import confetti from "canvas-confetti";
+import correct from "../assets/img/audio/correct.mp3";
+
 
 const Dashboard = () => {
   const [cumulativeScore, setCumulativeScore] = useState(0);
@@ -13,34 +17,36 @@ const Dashboard = () => {
   const [username, setUsername] = useState("");
   const [leaderboard, setLeaderboard] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [historyOfTheDay, setHistoryOfTheDay] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [loading, setLoading] = useState(true); // State to manage loading
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar visibility
   const navigate = useNavigate();
-
-  const historyOfTheDay = [
-    "Nigeria is in the continent of Africa",
-    "Abuja is the capital of Nigeria",
-    "Nigeria is the most populous country in Africa",
-  ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [userProfileResponse, scoresResponse, leaderboardResponse] =
-          await Promise.all([
-            api.get("/quiz/user-profile"),
-            api.get("/quiz/user-scores"),
-            api.get("/quiz/leaderboard"),
-          ]);
+        const [
+          userProfileResponse,
+          scoresResponse,
+          leaderboardResponse,
+          historyResponse,
+        ] = await Promise.all([
+          api.get("/user/user-profile"),
+          api.get("/user/user-scores"),
+          api.get("/user/leaderboard"),
+          // api.get("/history/history"),
+        ]);
 
         setUsername(userProfileResponse.data.username);
         setCumulativeScore(scoresResponse.data.cumulativeScore);
         setLatestScore(scoresResponse.data.latestScore);
         setLeaderboard(leaderboardResponse.data);
+        // setHistoryOfTheDay(historyResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch data.");
-         navigate("/login");
+        navigate("/login");
         if (error.response && error.response.status === 401) {
           localStorage.removeItem("token");
           navigate("/login");
@@ -53,12 +59,12 @@ const Dashboard = () => {
     fetchData();
   }, [navigate]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHistoryIndex((prevIndex) => (prevIndex + 1) % historyOfTheDay.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [historyOfTheDay.length]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setHistoryIndex((prevIndex) => (prevIndex + 1) % historyOfTheDay.length);
+  //   }, 10000);
+  //   return () => clearInterval(interval);
+  // }, [historyOfTheDay.length]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -69,46 +75,104 @@ const Dashboard = () => {
     navigate("/quiz");
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleMenuItemClick = () => {
+    setIsSidebarOpen(false);
+  };
+
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      return "Good morning";
+    } else if (currentHour < 18) {
+      return "Good afternoon";
+    } else {
+      return "Good evening";
+    }
+  };
+
+   const celebrateWithConfetti = () => {
+     confetti({
+       particleCount: 500,
+       spread: 70,
+       origin: { x: 0.5, y: 0.5 },
+       colors: ["#ff0", "#0f0", "#f00", "#00f"],
+     });
+   };
+
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <ClipLoader size={50} color={"#123abc"} loading={loading} />
+      <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      
+       <LoaderDash/>
       </div>
     );
   }
 
   return (
-    <div className="container-fluid vh-100 d-flex flex-column rounded">
+    <div className="container-fluid vh-100 d-flex flex-column ">
+      
+        <audio id="correct" src={correct}></audio>
       <div className="row flex-grow-1">
-        <div className="col-12 col-md-3 bg-secondary text-white p-4 sidebar">
-          <h2 className="mb-4 catchy-heading">👤 Hi, {username}!</h2>
+        <button className="btn btn-tertiary d-md-none" onClick={toggleSidebar}>
+          ☰
+        </button>
+        <div
+          className={`col-12 col-md-3 bg-secondary text-white p-4 sidebar ${
+            isSidebarOpen ? "open" : ""
+          }`}
+        >
+          <h2 className="mb-4 catchy-heading">
+            👤 hi, {username}!
+          </h2>
 
           <button
-            className="btn btn-light mb-3 w-100"
-            onClick={() => setShowLeaderboard(false)}
+            className="btn btn-light mb-3 w-100 box"
+            onClick={() => {
+              setShowLeaderboard(false);
+              handleMenuItemClick();
+            }}
           >
             📜 History of the Day
           </button>
           <button
-            className="btn btn-light mb-3 w-100"
-            onClick={() => setShowLeaderboard(true)}
+            className="btn btn-light mb-3 w-100 box"
+            onClick={() => {
+              setShowLeaderboard(true);
+              handleMenuItemClick();
+                celebrateWithConfetti();
+                const correctAudio = document.getElementById("correct");
+                correctAudio.play();
+            }}
           >
             📈 Show Leaderboard
           </button>
           <button
-            onClick={handleStartQuiz}
-            className="btn btn-primary mb-3 w-100"
+            onClick={() => {
+              handleStartQuiz();
+              handleMenuItemClick();
+            }}
+            className="btn btn-primary mb-3 w-100 box"
           >
             Start Quiz
           </button>
-          <button onClick={handleLogout} className="btn btn-danger w-100">
+          <button
+            onClick={() => {
+              handleLogout();
+              handleMenuItemClick();
+            }}
+            className="btn btn-danger w-100 box"
+          >
             Log Out
           </button>
         </div>
         <div className="col-12 col-md-9 p-4 content">
           <div className="card text-center shadow p-4">
             <div className="card-body">
-              <h1 className="card-title mb-4 catchy-heading">{username}!</h1>
+              <h1 className="card-title mb-4 catchy-heading">{getGreeting()}!</h1>
               <p className="lead fanciful-paragraph">
                 Welcome to your dashboard, here you can access your personalized
                 learning resources and track your progress.
@@ -155,7 +219,7 @@ const Dashboard = () => {
                   >
                     <div className="history-card fanciful-history-card">
                       <h2>Did you know ?</h2>
-                      <p>{historyOfTheDay[historyIndex]}</p>
+                      {/* <p>{historyOfTheDay[historyIndex]?.text}</p> */}
                     </div>
                   </CSSTransition>
                 </TransitionGroup>

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Helmet } from "react-helmet";
 import Icon from "@mdi/react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { mdiCubeOutline,} from "@mdi/js";
+import { mdiCubeOutline } from "@mdi/js";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { mdiFlag, mdiHeart } from "@mdi/js";
@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>learnFly - home</title>
+        <title>learnFly - Home</title>
       </Helmet>
       <div className="container">
         <div className="home">
@@ -38,19 +38,30 @@ const Home = () => {
               </p>
               <p>
                 made for <strong>Nigerians</strong>, by{" "}
-                <strong>Nigerians</strong>
+                <strong>Nigerians </strong>
                 <span>
                   <Icon path={mdiHeart} size={2} className="heart" />
                 </span>
               </p>
-              <div className="d-flex ">
-                <Link
-                  to={"/signup"}
-                  className="btn btn-success rounded-2 transparent reg m-2"
-                >
-                  Sign Up
+              <div className="d-flex flex-column align-items-start">
+                <Link to={"/signup"}>
+                  <button class="button" data-text="Awesome">
+                    <span class="actual-text">&nbsp; Sign Up&nbsp;</span>
+                    <span aria-hidden="true" class="hover-text">
+                      &nbsp; &nbsp;
+                    </span>
+                  </button>
                 </Link>
-                <p className="">to get started</p>
+
+                <Link to={"/login"}>
+                  <button class="button" data-text="Awesome">
+                    <span class="actual-text">&nbsp; Login&nbsp;</span>
+                    <span aria-hidden="true" class="hover-text">
+                      &nbsp; &nbsp;
+                    </span>
+                  </button>
+                </Link>
+                <p className="mt-2">to get started</p>
               </div>
             </div>
           </section>

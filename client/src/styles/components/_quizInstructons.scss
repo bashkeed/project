@@ -19,9 +19,23 @@
     }
 }
 
-@media (max-width:$md-breakpoint){
+// @media (max-width:$md-breakpoint){
+//     .instructions{
+//         width: 100% !important;
+//         height: 150% !important;
+//     }
+// }
+
+
+@media (max-width:425px){
     .instructions{
-        width: 100% !important;
+        width: 90% !important;
         height: 150% !important;
+    }
+
+      h1{
+        color: #fff;
+        font-size: $sm !important;
+        text-align: center;
     }
 }

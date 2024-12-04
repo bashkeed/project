@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import api from "../utils/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { mdilLightbulbOn, mdilArrowRight, mdilArrowLeft } from "@mdi/light-js";
 import { toast, ToastContainer } from "react-toastify";
 import { Helmet } from "react-helmet";
@@ -24,6 +24,7 @@ const Quiz = () => {
   const [hints, setHints] = useState(5);
   const [fiftyFifty, setFiftyFifty] = useState(2);
   const [startError, setStartError] = useState("");
+  const [takenError, setTakenError] = useState(false);
   const [usedFiftyFifty, setUsedFiftyFifty] = useState(false);
   const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
   const [quitModalOpen, setQuitModalOpen] = useState(false); // State to control the quit modal
@@ -102,15 +103,15 @@ const Quiz = () => {
       console.log("API response:", response.data);
       setQuestions(response.data); // Assuming response.data is the correct structure
     } catch (err) {
-      console.log(err.status);
+      console.log(err);
 
       if (err.status === 401) {
         localStorage.removeItem("token");
         navigate("/login");
       }
-      // if (err.status === 400) {
-      //   navigate("/dashboard");
-      // }
+      if (err.status === 400) {
+        setTakenError(true);
+      }
       console.error("API error:", err);
 
       //setError("Failed to load daily questions.");
@@ -269,7 +270,9 @@ const Quiz = () => {
       }, 1000);
     } else if (countdown === 0) {
       clearInterval(countdownInterval);
-      handleStart(); // Start the quiz after the countdown
+      if (!takenError) {
+        handleStart(); // Start the quiz after the countdown
+      }
     }
     return () => clearInterval(countdownInterval);
   }, [countdown]);
@@ -373,6 +376,22 @@ const Quiz = () => {
         />
         ;
       </Fragment>
+    ) : takenError ? (
+      <div className="message-container d-flex justify-content-center align-items-center bg-dark flex-column">
+        <h1 className="text-white text-center fancy-heading">
+          Oops! Looks like you've taken today's Quiz already!
+          <span>🧐</span>
+        </h1>
+
+        <p className="mt-3 text-center fancy-text">
+          <Link
+            to="/dashboard"
+            className="btn btn-primary text-decoration-none box custom"
+          >
+            Dashboard
+          </Link>
+        </p>
+      </div>
     ) : (
       <div className="countdown-container">
         <div className="countdown-title">Your quiz starts in</div>

@@ -31,11 +31,11 @@ const Login = () => {
         .catch((error) => {
           setLoading(false); // Hide the loader
 
-         if (error.response && error.response.status === 401) {
-           toast.error("Invalid email or password.");
-         } else {
-           toast.error("An error occurred. Please try again.");
-         }
+          if (error.response && error.response.status === 401) {
+            toast.error("Invalid email or password.");
+          } else {
+            toast.error("An error occurred. Please try again.");
+          }
 
           console.log(error);
         });
@@ -94,7 +94,7 @@ const Login = () => {
               <MDBIcon fas icon="envelope me-1" size="sm" />
               <input
                 type="email"
-                placeholder="enter email"
+                placeholder="Enter email"
                 autoComplete="off"
                 name="email"
                 className="form-control rounded-1 ctrl"
@@ -109,7 +109,7 @@ const Login = () => {
               <MDBIcon fas icon="lock me-1" size="sm" />
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="enter password"
+                placeholder="Enter password"
                 autoComplete="off"
                 name="password"
                 className="form-control rounded-1 ctrl"
@@ -150,15 +150,12 @@ const Login = () => {
               )}
             </button>
           </form>
-          {/* button */}
-
-          <p>Don't have an account? Sign up</p>
-          <Link
-            to={"/signup"}
-            className="btn btn-default border w-100 bg-light rounded-1 text-decoration-none transparent"
-          >
-            Register
-          </Link>
+          <p className="mt-3 text-center">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-decoration-none">
+              Sign up
+            </Link>
+          </p>
         </div>
       </div>
     </>

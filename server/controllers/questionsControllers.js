@@ -10,27 +10,27 @@ export const getDailyQuestions = async (req, res) => {
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // Check if the user has fetched and answered the daily questions today
-    // if (
-    //   user.dailyQuestions.length &&
-    //   isSameDay(user.lastDailyFetch, new Date())
-    // ) {
-    //   // if(
-    //   //   user.hasAnsweredDailyQuestions){
+    //Check if the user has fetched and answered the daily questions today
+    if (
+      user.dailyQuestions.length &&
+      isSameDay(user.lastDailyFetch, new Date())
+    ) {
+      if(
+        user.hasAnsweredDailyQuestions){
 
-    //   //     return res.status(400).json({
-    //   //       message: "Questions already fetched and answered for today.",
-    //   //     });
-    //   //   }
-    //   //   else
-    //   {
-    //     const dailyQuestions = await user.populate({
-    //       path: "dailyQuestions",
-    //       select: "content options correctAnswer",
-    //     });
-    //     return res.json(dailyQuestions.dailyQuestions);
-    //   }
-    // }
+         return res.status(400).json({
+           message: "Questions already fetched and answered for today.",
+        });
+        }
+        else
+      {
+        const dailyQuestions = await user.populate({
+          path: "dailyQuestions",
+          select: "content options correctAnswer",
+        });
+        return res.json(dailyQuestions.dailyQuestions);
+      }
+    }
 
     // Fetch new set of daily questions
     const excludedQuestions = user.completedQuestions || [];
