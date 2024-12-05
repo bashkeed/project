@@ -316,3 +316,17 @@
 .custom:hover {
   color: #fff !important; /* Hover color */
 }
+
+
+
+.custom-congrats {
+  margin-top: 1.5rem; /* Adjust margin top */
+}
+
+.custom-congrats-text {
+  font-size: 1rem; /* Reduced font size */
+  font-weight: bold;
+  color: #ffc107; /* Bootstrap warning color for yellow */
+  margin-left: 1rem; /* Adjust margin left */
+  opacity: 0.8; /* Add opacity */
+}

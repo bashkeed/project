@@ -114,7 +114,7 @@ const SignUp = () => {
         <title>learnFly - Signup</title>
       </Helmet>
       <div className="d-flex justify-content-center align-items-center bg-secondary vh-100 vw-100 style contain">
-        <div className="bg-white p-3 rounded skin mr-6">
+        <div className="bg-white p-3 rounded mr-6">
           <h2>Sign up</h2>
           <form onSubmit={handleSubmit}>
             {/* name field */}

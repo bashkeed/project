@@ -86,7 +86,7 @@ const Login = () => {
       </Helmet>
 
       <div className="d-flex justify-content-center align-items-center bg-secondary vh-100 style">
-        <div className="bg-white-subtle p-3 rounded skin">
+        <div className="bg-white p-3 rounded  ">
           <h2>Login</h2>
           <form onSubmit={handleSubmit}>
             {/* email field */}

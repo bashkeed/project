@@ -5,10 +5,11 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import api from "../utils/api";
-import { ClipLoader } from "react-spinners"; // Import the loader
+//import { ClipLoader } from "react-spinners"; // Import the loader
 import LoaderDash from '../components/LoaderDash';
 import confetti from "canvas-confetti";
 import correct from "../assets/img/audio/correct.mp3";
+import dragon from '../assets/img/audio/dragon.mp3';
 
 
 const Dashboard = () => {
@@ -21,8 +22,22 @@ const Dashboard = () => {
   const [historyIndex, setHistoryIndex] = useState(0);
   const [loading, setLoading] = useState(true); // State to manage loading
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar visibility
+   const [isAudioAllowed, setIsAudioAllowed] = useState(false);
   const navigate = useNavigate();
 
+
+ useEffect(() => {
+  if(isAudioAllowed){
+   const dashAudio = document.getElementById("dragon");
+   if (dashAudio) {
+     dashAudio.play().catch((error) => console.log(error));
+   }
+  }
+ }, [isAudioAllowed]);
+
+ const handleUserInteraction = () => {
+   setIsAudioAllowed(true);
+ };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,6 +58,7 @@ const Dashboard = () => {
         setLatestScore(scoresResponse.data.latestScore);
         setLeaderboard(leaderboardResponse.data);
         // setHistoryOfTheDay(historyResponse.data);
+         
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch data.");
@@ -58,6 +74,11 @@ const Dashboard = () => {
 
     fetchData();
   }, [navigate]);
+
+  
+      
+ 
+  
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -111,11 +132,13 @@ const Dashboard = () => {
       </div>
     );
   }
-
+ 
   return (
+     <div onClick={handleUserInteraction}>
     <div className="container-fluid vh-100 d-flex flex-column ">
-      
-        <audio id="correct" src={correct}></audio>
+      <audio id="correct" src={correct}></audio>
+      <audio id="dragon" src={dragon}></audio>
+   
       <div className="row flex-grow-1">
         <button className="btn btn-tertiary d-md-none" onClick={toggleSidebar}>
           ☰
@@ -125,9 +148,7 @@ const Dashboard = () => {
             isSidebarOpen ? "open" : ""
           }`}
         >
-          <h2 className="mb-4 catchy-heading">
-            👤 hi, {username}!
-          </h2>
+          <h2 className="mb-4 catchy-heading">👤 hi, {username}!</h2>
 
           <button
             className="btn btn-light mb-3 w-100 box"
@@ -143,9 +164,9 @@ const Dashboard = () => {
             onClick={() => {
               setShowLeaderboard(true);
               handleMenuItemClick();
-                celebrateWithConfetti();
-                const correctAudio = document.getElementById("correct");
-                correctAudio.play();
+              celebrateWithConfetti();
+              const correctAudio = document.getElementById("correct");
+              correctAudio.play();
             }}
           >
             📈 Show Leaderboard
@@ -172,7 +193,9 @@ const Dashboard = () => {
         <div className="col-12 col-md-9 p-4 content">
           <div className="card text-center shadow p-4">
             <div className="card-body">
-              <h1 className="card-title mb-4 catchy-heading">{getGreeting()}!</h1>
+              <h1 className="card-title mb-4 catchy-heading">
+                {getGreeting()}!
+              </h1>
               <p className="lead fanciful-paragraph">
                 Welcome to your dashboard, here you can access your personalized
                 learning resources and track your progress.
@@ -229,6 +252,7 @@ const Dashboard = () => {
         </div>
       </div>
       <ToastContainer />
+    </div>
     </div>
   );
 };

@@ -10,8 +10,9 @@ import nextprev from "../assets/img/audio/next-prev.mp3";
 import quit from "../assets/img/audio/quit.mp3";
 import classNames from "classnames";
 import Icon from "@mdi/react";
-import { mdiBatteryCharging } from "@mdi/js";
+import { mdiBatteryCharging, mdiStar } from "@mdi/js";
 import QuitConfirmation from "../components/QuitConfirmation";
+import 'animate.css'; // Import animate.css
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
@@ -29,6 +30,8 @@ const Quiz = () => {
   const [previousRandomNumbers, setPreviousRandomNumbers] = useState([]);
   const [quitModalOpen, setQuitModalOpen] = useState(false); // State to control the quit modal
   const [countdown, setCountdown] = useState(3); // State for countdown
+  const [consecutiveCorrect, setConsecutiveCorrect] = useState(0); // Track consecutive correct answers
+  const [showStar, setShowStar] = useState(false); // Show star and caption
 
   const navigate = useNavigate();
 
@@ -44,6 +47,20 @@ const Quiz = () => {
         correctAudio.currentTime = 0;
       }, 3000);
       toast.success("Correct answer");
+
+        setConsecutiveCorrect(consecutiveCorrect + 1);
+
+      if (consecutiveCorrect + 1 === 3) {
+        setShowStar(true);
+        setTimeout(() => {
+          setShowStar(false);
+        }, 3000);
+        setConsecutiveCorrect(0); // Reset the count after showing the star
+      }
+    
+   
+
+
     } else {
       const incorrectAudio = document.getElementById("incorrect");
       incorrectAudio.play();
@@ -52,6 +69,7 @@ const Quiz = () => {
         incorrectAudio.currentTime = 0;
       }, 3000);
       toast.error("Wrong answer");
+      setConsecutiveCorrect(0); // Reset the count on wrong answer
     }
     if (currentQuestionIndex < questions.length - 1) {
       handleNext();
@@ -214,7 +232,8 @@ const Quiz = () => {
         quitAudio.currentTime = 0;
       }
     }, 3000);
-
+    handleSubmit();
+    navigate("/dashboard"); // Example: Navigate to the dashboard
     //   endGame(); // End game and save score
   };
 
@@ -289,8 +308,16 @@ const Quiz = () => {
         <audio id="nextprev" src={nextprev}></audio>
         <audio id="quit" src={quit}></audio>
         <div className="questions">
-          <h2>Quiz Mode</h2>
-
+          <h2 className="mb-2">Quiz Mode</h2>
+          {showStar && (
+            <div className="d-flex justify-content-center align-items-center mt-6 custom-congrats flex-column animate__animated animate__bounce">
+              <Icon path={mdiStar} size={3} className="text-warning" />
+              <span className="ml-4 custom-congrats-text">
+                Wow! 3 Gbosa for you!
+              </span>
+            </div>
+          )}
+          ;
           <div className="lifeline-container">
             <p>
               <span onClick={handleFiftyFifty} className="lifeline-icon">
@@ -316,7 +343,6 @@ const Quiz = () => {
             </p>
           </div>
           <h5>{currentQuestion.content}</h5>
-
           <div className="options-container">
             {currentQuestion?.options.map((option, index) => (
               <button
@@ -339,7 +365,6 @@ const Quiz = () => {
               </button>
             ))}
           </div>
-
           <div className="button-container">
             <button
               id="previous"
@@ -363,14 +388,14 @@ const Quiz = () => {
               Next <Icon path={mdilArrowRight} size={1} />
             </button>
             <button id="quit" onClick={openQuitModal}>
-              Quit
+              Submit
             </button>
           </div>
         </div>
         <QuitConfirmation
           isOpen={quitModalOpen}
           onClose={closeQuitModal}
-          onConfirm={confirmQuit}
+          onConfirm={handleQuitButton}
         />
         ;
       </Fragment>
