@@ -14,8 +14,10 @@ import quit from "../../assets/img/audio/quit.mp3";
 import isEmpty from "../../utils/isEmpty";
 import classNames from "classnames";
 import api from "../../utils/api";
+import { authStore } from "../../store/authStore";
 
 const Play = (props) => {
+  const {playerStats, updatePlayerStats } = authStore
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [nextQuestion, setNextQuestion] = useState({});
   const [previousQuestion, setPreviousQuestion] = useState({});
@@ -342,6 +344,7 @@ const Play = (props) => {
       fiftyFifty: 2 - fiftyFifty,
       hints: 5 - hints,
     };
+    updatePlayerStats(playerStat);
     setTimeout(() => {
       // Use navigate to redirect to the '/quizsummary' route, passing playerStat as state
       navigate("/quizsummary", { state: playerStat });
