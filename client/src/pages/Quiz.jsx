@@ -15,9 +15,9 @@ import QuitConfirmation from "../components/QuitConfirmation";
 import 'animate.css'; // Import animate.css
 
 const Quiz = () => {
+  const [numberofAnsweredQuestions, setNumberofAnsweredQuestions] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [startQuiz, setStartQuiz] = useState(false);
-  const [questionChanged, setQuestionChanged] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [time, setTime] = useState({ minutes: 0, seconds: 0 });
   const [answers, setAnswers] = useState({});
@@ -32,6 +32,9 @@ const Quiz = () => {
   const [countdown, setCountdown] = useState(3); // State for countdown
   const [consecutiveCorrect, setConsecutiveCorrect] = useState(0); // Track consecutive correct answers
   const [showStar, setShowStar] = useState(false); // Show star and caption
+  const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0);
 
   const navigate = useNavigate();
 
@@ -49,6 +52,9 @@ const Quiz = () => {
       toast.success("Correct answer");
 
         setConsecutiveCorrect(consecutiveCorrect + 1);
+        setScore((prev) => prev + 1);
+        setCorrectAnswers((prev) => prev + 1)
+        setNumberofAnsweredQuestions((prev) => prev + 1);
 
       if (consecutiveCorrect + 1 === 3) {
         setShowStar(true);
@@ -70,6 +76,8 @@ const Quiz = () => {
       }, 3000);
       toast.error("Wrong answer");
       setConsecutiveCorrect(0); // Reset the count on wrong answer
+      setWrongAnswers((prev)=> prev + 1 )
+      setNumberofAnsweredQuestions((prev) => prev + 1);
     }
     if (currentQuestionIndex < questions.length - 1) {
       handleNext();
@@ -102,7 +110,8 @@ const Quiz = () => {
         clearInterval(intervalId);
         setTime({ minutes: 0, seconds: 0 });
         toast.info("Quiz has ended due to time expiration.");
-        // endGame();
+        handleSubmit();
+        navigate("/dashboard");
       } else {
         setTime({ minutes, seconds });
       }

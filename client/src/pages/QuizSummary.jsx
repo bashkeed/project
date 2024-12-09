@@ -11,12 +11,12 @@ const QuizSummary = () => {
   // Use useLocation hook to get state passed via navigate()
   const location = useLocation();
   const {playerStats} = authStore();
-  const playerStat = location.state;
-  console.log(playerStat)
+  //const playerStat = location.state;
+  console.log(playerStats)
 
-  const {state} = location
+  c//onst {state} = location
   let remark, stat;
-  const userScore = state.score
+  const userScore = playerStats.score;
   
  const celebrateWithConfetti = () => {
    confetti({
@@ -44,7 +44,7 @@ const QuizSummary = () => {
      celebrateWithConfetti();
   }
 
-if (state !== null) {
+if (playerStats.score !== null) {
   stat = (
     <>
       <div className="status-container">
@@ -61,40 +61,40 @@ if (state !== null) {
       <div className="result-container">
         <h4 className="remark">{remark}</h4>
         <h2 className="score">
-          Your Score: {playerStat.score.toFixed(0)}&#37;
+          Your Score: {playerStats.score.toFixed(0)}&#37;
         </h2>
 
         <div className="question-stats">
           <div className="stat-item">
             <span className="stat-label">Number of Questions:</span>
-            <span className="stat-value">{playerStat.numberOfQuestions}</span>
+            <span className="stat-value">{playerStats.numberOfQuestions}</span>
           </div>
 
           <div className="stat-item">
             <span className="stat-label">Attempted Questions:</span>
             <span className="stat-value">
-              {playerStat.numberofAnsweredQuestions}
+              {playerStats.numberofAnsweredQuestions}
             </span>
           </div>
 
           <div className="stat-item">
             <span className="stat-label">Correct Answers:</span>
-            <span className="stat-value">{playerStat.correctAnswers}</span>
+            <span className="stat-value">{playerStats.correctAnswers}</span>
           </div>
 
           <div className="stat-item">
             <span className="stat-label">Wrong Answers:</span>
-            <span className="stat-value">{playerStat.wrongAnswers}</span>
+            <span className="stat-value">{playerStats.wrongAnswers}</span>
           </div>
 
           <div className="stat-item">
             <span className="stat-label">Hints Used:</span>
-            <span className="stat-value">{playerStat.hints}</span>
+            <span className="stat-value">{playerStats.hints}</span>
           </div>
 
           <div className="stat-item">
             <span className="stat-label">50-50 Used:</span>
-            <span className="stat-value">{playerStat.fiftyFifty}</span>
+            <span className="stat-value">{playerStats.fiftyFifty}</span>
           </div>
         </div>
       </div>
