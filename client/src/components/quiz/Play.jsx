@@ -14,7 +14,7 @@ import quit from "../../assets/img/audio/quit.mp3";
 import isEmpty from "../../utils/isEmpty";
 import classNames from "classnames";
 import api from "../../utils/api";
-import { authStore } from "../../store/authStore";
+
 
 const Play = (props) => {
   const {playerStats, updatePlayerStats } = authStore

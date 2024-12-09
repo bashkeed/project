@@ -12,7 +12,7 @@ import classNames from "classnames";
 import Icon from "@mdi/react";
 import { mdiBatteryCharging, mdiStar } from "@mdi/js";
 import QuitConfirmation from "../components/QuitConfirmation";
-import 'animate.css'; // Import animate.css
+import "animate.css"; // Import animate.css
 import { quizStore } from "../store/quizStore";
 
 const Quiz = () => {
@@ -36,7 +36,7 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
-  const {updatePlayerStats} = quizStore()
+  const { updatePlayerStats } = quizStore();
 
   const navigate = useNavigate();
 
@@ -53,10 +53,10 @@ const Quiz = () => {
       }, 3000);
       toast.success("Correct answer");
 
-        setConsecutiveCorrect(consecutiveCorrect + 1);
-        setScore((prev) => prev + 1);
-        setCorrectAnswers((prev) => prev + 1)
-        setNumberofAnsweredQuestions((prev) => prev + 1);
+      setConsecutiveCorrect(consecutiveCorrect + 1);
+      setScore((prev) => prev + 1);
+      setCorrectAnswers((prev) => prev + 1);
+      setNumberofAnsweredQuestions((prev) => prev + 1);
 
       if (consecutiveCorrect + 1 === 3) {
         setShowStar(true);
@@ -65,10 +65,6 @@ const Quiz = () => {
         }, 3000);
         setConsecutiveCorrect(0); // Reset the count after showing the star
       }
-    
-   
-
-
     } else {
       const incorrectAudio = document.getElementById("incorrect");
       incorrectAudio.play();
@@ -78,7 +74,7 @@ const Quiz = () => {
       }, 3000);
       toast.error("Wrong answer");
       setConsecutiveCorrect(0); // Reset the count on wrong answer
-      setWrongAnswers((prev)=> prev + 1 )
+      setWrongAnswers((prev) => prev + 1);
       setNumberofAnsweredQuestions((prev) => prev + 1);
     }
     if (currentQuestionIndex < questions.length - 1) {
@@ -244,7 +240,7 @@ const Quiz = () => {
       }
     }, 3000);
     handleSubmit();
-    navigate("/dashboard"); // Example: Navigate to the dashboard
+    //navigate("/dashboard"); // Example: Navigate to the dashboard
     //   endGame(); // End game and save score
   };
 
@@ -269,21 +265,26 @@ const Quiz = () => {
     setQuitModalOpen(false);
   };
 
-  const confirmQuit = () => {
-    handleSubmit();
-    navigate("/dashboard"); // Example: Navigate to the dashboard
-  };
-
   const handleSubmit = async () => {
-    console.log("i got here");
+    console.log("i got here to hnadle");
 
     try {
+       const numberOfQuestions = questions.length;
       const response = await api.put("/quiz/submit", answers);
       console.log("API response:", response.data);
-      updatePlayerStats({})
-      navigate("quizsummary")
-
+      updatePlayerStats({
+        score: Math.round((score / numberOfQuestions) * 100),
+        numberOfQuestions,
+        numberofAnsweredQuestions,
+        correctAnswers,
+        wrongAnswers,
+        fiftyFifty: 2 - fiftyFifty,
+        hints: 5 - hints,
+      });
+      navigate("quizsummary");
     } catch (err) {
+      console.log("failed to submit");
+
       console.error("API error:", err);
     }
   };

@@ -4,7 +4,7 @@ import React from "react"; // Ensure React is imported
 import Home from "./pages/Home";
 import Instructions from "./components/quiz/Instructions";
 import Play from "./components/quiz/Play";
-import QuizSummary from "./pages/quizSummary";
+import QuizSummary from "./pages/QuizSummary";
 import LeaderBoard from "./components/LeaderBoard";
 import DailyQuestions from "./components/DailyQuestions";
 import SignUp from "./pages/SignUp";
