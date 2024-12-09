@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export const authStore = create((set) => ({
+export const quizStore = create((set) => ({
     user: null,
     playerStats: null,
     setUser: (user) => {

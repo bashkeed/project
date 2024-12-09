@@ -13,6 +13,7 @@ import Icon from "@mdi/react";
 import { mdiBatteryCharging, mdiStar } from "@mdi/js";
 import QuitConfirmation from "../components/QuitConfirmation";
 import 'animate.css'; // Import animate.css
+import { quizStore } from "../store/quizStore";
 
 const Quiz = () => {
   const [numberofAnsweredQuestions, setNumberofAnsweredQuestions] = useState(0);
@@ -35,6 +36,7 @@ const Quiz = () => {
   const [score, setScore] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
+  const {updatePlayerStats} = quizStore()
 
   const navigate = useNavigate();
 
@@ -278,6 +280,9 @@ const Quiz = () => {
     try {
       const response = await api.put("/quiz/submit", answers);
       console.log("API response:", response.data);
+      updatePlayerStats({})
+      navigate("quizsummary")
+
     } catch (err) {
       console.error("API error:", err);
     }

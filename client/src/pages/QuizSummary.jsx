@@ -5,12 +5,12 @@ import Icon from "@mdi/react";
 import { Link } from "react-router-dom";
 import { mdiAccountCheckOutline } from "@mdi/js";
 import confetti from "canvas-confetti";
-import { authStore } from "../store/authStore";
+import { quizStore } from "../store/quizStore";
 
 const QuizSummary = () => {
   // Use useLocation hook to get state passed via navigate()
   const location = useLocation();
-  const {playerStats} = authStore();
+  const {playerStats} = quizStore();
   //const playerStat = location.state;
   console.log(playerStats)
 

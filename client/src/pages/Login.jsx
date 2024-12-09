@@ -26,7 +26,7 @@ const Login = () => {
         .then((result) => {
           setLoading(false); // Hide the loader
           localStorage.setItem("token", result.data.token);
-          navigate("/dashboard");
+          result.data.role==="admin"?navigate("/admindashboard"):navigate("/dashboard");
         })
         .catch((error) => {
           setLoading(false); // Hide the loader
