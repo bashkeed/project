@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import Helmet from "react-helmet";
 import Icon from "@mdi/react";
 import { Link } from "react-router-dom";
@@ -109,18 +108,18 @@ const QuizSummary = () => {
               </li>
               <span style={{ color: "white" }}>|</span>
               <li>
-                <Link to={"/quiz/play"}>Play Again</Link>
+                <Link to={"/quiz"}>Play</Link>
               </li>
               <span style={{ color: "white" }}>|</span>
               <li>
-                <Link to={"/leaderboard"}>View Leaderboard</Link>
+                <Link to={"/dashboard"}>Dashboard</Link>
               </li>
             </ul>
           </section>
         </>
       ) : (
         <>
-          <h1 className="no-stat">No stats available</h1>
+          <h1 className="no-stat">No stats available!</h1>
           <p className="no-stat-p">please take a quiz 🤗</p>
 
           <section className="navigation">
@@ -129,10 +128,10 @@ const QuizSummary = () => {
                 <Link to={"/"}>Home</Link>
               </li>
               <li>
-                <Link to={"/quiz/play"}>Take Quiz</Link>
+                <Link to={"/quiz"}>Take Quiz</Link>
               </li>
               <li>
-                <Link to={"/leaderboard"}>Leaderboard</Link>
+                <Link to={"/dashboard"}>Dashboard</Link>
               </li>
             </ul>
           </section>

@@ -3,6 +3,6 @@ import fetchHistoryData from "../controllers/historyController.js";
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
-router.get("/history", auth, fetchHistoryData);
+router.get("/", auth, fetchHistoryData);
 
 export default router;

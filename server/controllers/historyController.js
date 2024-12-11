@@ -1,15 +1,15 @@
-import { History, FetchHistory } from "../models/historyModel.js"; 
+import { History, FetchHistory } from "../models/historyModel.js";
 
-const fetchHistoryData = async () => {
+const fetchHistoryData = async (req, res) => {
   try {
     // Get the current date and set time to the start of the day
     const today = new Date();
-
 
     // Check if data has been fetched today
     const fetchHistory = await FetchHistory.findOne({ date: today }).populate(
       "fetchedDocuments"
     );
+    console.log(FetchHistory);
 
     if (fetchHistory) {
       console.log(
@@ -36,7 +36,7 @@ const fetchHistoryData = async () => {
       await newFetchHistory.save();
 
       console.log("Fetched new documents:", newDocuments);
-      return newDocuments;
+      return res.json(newDocuments);
     }
   } catch (error) {
     console.error("Error fetching history data:", error);
@@ -44,4 +44,3 @@ const fetchHistoryData = async () => {
   }
 };
 export default fetchHistoryData;
-

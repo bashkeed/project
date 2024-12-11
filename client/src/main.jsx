@@ -6,9 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./styles/components/styles.scss";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 );

@@ -269,7 +269,7 @@ const Quiz = () => {
     console.log("i got here to hnadle");
 
     try {
-       const numberOfQuestions = questions.length;
+      const numberOfQuestions = questions.length;
       const response = await api.put("/quiz/submit", answers);
       console.log("API response:", response.data);
       updatePlayerStats({
@@ -281,7 +281,7 @@ const Quiz = () => {
         fiftyFifty: 2 - fiftyFifty,
         hints: 5 - hints,
       });
-      navigate("quizsummary");
+      navigate("/quizsummary");
     } catch (err) {
       console.log("failed to submit");
 
@@ -325,8 +325,9 @@ const Quiz = () => {
         <div className="questions">
           <h2 className="mb-2">Quiz Mode</h2>
           {showStar && (
-            <div className="d-flex justify-content-center align-items-center mt-6 custom-congrats flex-column animate__animated animate__bounce">
-              <Icon path={mdiStar} size={3} className="text-warning" />
+            <div className="d-flex justify-content-center align-items-center mt-6 custom-congrats flex-column splash-container">
+              {/* <Icon path={mdiStar} size={3} className="text-warning" /> */}
+              <div className="splash">⭐</div>
               <span className="ml-4 custom-congrats-text">
                 Wow! 3 Gbosa for you!
               </span>

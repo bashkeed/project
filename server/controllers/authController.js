@@ -22,8 +22,7 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user._id, role:user.role }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res
-      .json({ token,role:user.role})
+    res.json({ token, role:user.role})
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error." });
@@ -32,13 +31,13 @@ export const login = async (req, res) => {
 
 export const signup = async (req, res) => {
   console.log("i am here also");
-  const { name, email, password } = req.body;
+  const { number,name, email, password } = req.body;
 
   // Simple validation
-  if (!name || !email || !password) {
+  if (!number || !name || !email || !password) {
     return res
       .status(400)
-      .json({ message: "username, Email and password are required." });
+      .json({ message: "Number, Username, Email and password are required." });
   }
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,6 +64,7 @@ export const signup = async (req, res) => {
 
     // Create new user with hashed password
     const newUser = new User({
+      number,
       name,
       email,
       password: hashedPassword, // Save the hashed password

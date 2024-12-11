@@ -91,7 +91,12 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             {/* email field */}
             <div className="mb-3">
-              <MDBIcon fas icon="envelope me-1" size="sm" />
+              <MDBIcon
+                fas
+                icon="envelope me-1"
+                size="sm"
+                style={{ color: "blue" }}
+              />
               <input
                 type="email"
                 placeholder="Enter email"
@@ -106,7 +111,12 @@ const Login = () => {
 
             {/* password field */}
             <div className="mb-3 position-relative">
-              <MDBIcon fas icon="lock me-1" size="sm" />
+              <MDBIcon
+                fas
+                icon="lock me-1"
+                size="sm"
+                style={{ color: "blue" }}
+              />
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter password"

@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
+  number: {
+    type: String,
+    required: true,
+    default:'0'
+  },
   name: {
     type: String,
     required: true,
@@ -16,8 +21,8 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default:"user",
-    enum:["user", "admin"]
+    default: "user",
+    enum: ["user", "admin"],
   },
   completedQuestions: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
@@ -28,12 +33,11 @@ const userSchema = new mongoose.Schema({
   totalScore: { type: Number, default: 0 },
   scores: [
     {
-        questionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Question' },
-        correct: { type: Boolean, required: true },
-        answeredAt: { type: Date, default: Date.now },
+      questionId: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
+      correct: { type: Boolean, required: true },
+      answeredAt: { type: Date, default: Date.now },
     },
-],
-
+  ],
 });
 const User = mongoose.model("User", userSchema);
 export default User;

@@ -6,11 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import api from "../utils/api";
 //import { ClipLoader } from "react-spinners"; // Import the loader
-import LoaderDash from '../components/LoaderDash';
+import LoaderDash from "../components/LoaderDash";
 import confetti from "canvas-confetti";
 import correct from "../assets/img/audio/correct.mp3";
-import dragon from '../assets/img/audio/dragon.mp3';
-
+import dragon from "../assets/img/audio/dragon.mp3";
 
 const Dashboard = () => {
   const [cumulativeScore, setCumulativeScore] = useState(0);
@@ -22,22 +21,21 @@ const Dashboard = () => {
   const [historyIndex, setHistoryIndex] = useState(0);
   const [loading, setLoading] = useState(true); // State to manage loading
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar visibility
-   const [isAudioAllowed, setIsAudioAllowed] = useState(false);
+  const [isAudioAllowed, setIsAudioAllowed] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (isAudioAllowed) {
+      const dashAudio = document.getElementById("dragon");
+      if (dashAudio) {
+        dashAudio.play().catch((error) => console.log(error));
+      }
+    }
+  }, [isAudioAllowed]);
 
- useEffect(() => {
-  if(isAudioAllowed){
-   const dashAudio = document.getElementById("dragon");
-   if (dashAudio) {
-     dashAudio.play().catch((error) => console.log(error));
-   }
-  }
- }, [isAudioAllowed]);
-
- const handleUserInteraction = () => {
-   setIsAudioAllowed(true);
- };
+  const handleUserInteraction = () => {
+    setIsAudioAllowed(true);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,15 +48,14 @@ const Dashboard = () => {
           api.get("/user/user-profile"),
           api.get("/user/user-scores"),
           api.get("/user/leaderboard"),
-          // api.get("/history/history"),
+          api.get("/history"),
         ]);
 
         setUsername(userProfileResponse.data.username);
         setCumulativeScore(scoresResponse.data.cumulativeScore);
         setLatestScore(scoresResponse.data.latestScore);
         setLeaderboard(leaderboardResponse.data);
-        // setHistoryOfTheDay(historyResponse.data);
-         
+        setHistoryOfTheDay(historyResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch data.");
@@ -75,17 +72,12 @@ const Dashboard = () => {
     fetchData();
   }, [navigate]);
 
-  
-      
- 
-  
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setHistoryIndex((prevIndex) => (prevIndex + 1) % historyOfTheDay.length);
-  //   }, 10000);
-  //   return () => clearInterval(interval);
-  // }, [historyOfTheDay.length]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHistoryIndex((prevIndex) => (prevIndex + 1) % historyOfTheDay.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [historyOfTheDay.length]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -115,144 +107,148 @@ const Dashboard = () => {
     }
   };
 
-   const celebrateWithConfetti = () => {
-     confetti({
-       particleCount: 500,
-       spread: 90,
-       origin: { x: 0.5, y: 0.5 },
-       colors: ["#ff0", "#0f0", "#f00", "#00f"],
-     });
-   };
+  const celebrateWithConfetti = () => {
+    confetti({
+      particleCount: 500,
+      spread: 90,
+      origin: { x: 0.5, y: 0.5 },
+      colors: ["#ff0", "#0f0", "#f00", "#00f"],
+    });
+  };
 
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      
-       <LoaderDash/>
+        <LoaderDash />
       </div>
     );
   }
- 
+
   return (
-     <div onClick={handleUserInteraction}>
-    <div className="container-fluid vh-100 d-flex flex-column ">
-      <audio id="correct" src={correct}></audio>
-      <audio id="dragon" src={dragon}></audio>
-   
-      <div className="row flex-grow-1">
-        <button className="btn btn-tertiary d-md-none" onClick={toggleSidebar}>
-          ☰
-        </button>
-        <div
-          className={`col-12 col-md-3 bg-secondary text-white p-4 sidebar ${
-            isSidebarOpen ? "open" : ""
-          }`}
-        >
-          <h2 className="mb-4 catchy-heading">👤 hi, {username}!</h2>
+    <div onClick={handleUserInteraction}>
+      <div className="container-fluid vh-100 d-flex flex-column ">
+        <audio id="correct" src={correct}></audio>
+        <audio id="dragon" src={dragon}></audio>
 
+        <div className="row flex-grow-1">
           <button
-            className="btn btn-light mb-3 w-100 box"
-            onClick={() => {
-              setShowLeaderboard(false);
-              handleMenuItemClick();
-            }}
+            className="btn btn-tertiary d-md-none"
+            onClick={toggleSidebar}
           >
-            📜 History of the Day
+            ☰
           </button>
-          <button
-            className="btn btn-light mb-3 w-100 box"
-            onClick={() => {
-              setShowLeaderboard(true);
-              handleMenuItemClick();
-              celebrateWithConfetti();
-              const correctAudio = document.getElementById("correct");
-              correctAudio.play();
-            }}
+          <div
+            className={`col-12 col-md-3 bg-secondary text-white p-4 sidebar ${
+              isSidebarOpen ? "open" : ""
+            }`}
           >
-            📈 Show Leaderboard
-          </button>
-          <button
-            onClick={() => {
-              handleStartQuiz();
-              handleMenuItemClick();
-            }}
-            className="btn btn-primary mb-3 w-100 box"
-          >
-            Start Quiz
-          </button>
-          <button
-            onClick={() => {
-              handleLogout();
-              handleMenuItemClick();
-            }}
-            className="btn btn-danger w-100 box"
-          >
-            Log Out
-          </button>
-        </div>
-        <div className="col-12 col-md-9 p-4 content">
-          <div className="card text-center shadow p-4">
-            <div className="card-body">
-              <h1 className="card-title mb-4 catchy-heading">
-                {getGreeting()}!
-              </h1>
-              <p className="lead fanciful-paragraph">
-                Welcome to your dashboard, here you can access your personalized
-                learning resources and track your progress.
-              </p>
-              <hr className="my-4" />
-              <div className="scores mb-4 fanciful-scores">
-                <p className="card-text">
-                  Cumulative Score: <strong>{cumulativeScore}</strong>
-                </p>
-                <p className="card-text">
-                  Latest Score: <strong>{latestScore}</strong>
-                </p>
-              </div>
+            <h2 className="mb-4 catchy-heading">
+              👤 hi, {username.toUpperCase()}!
+            </h2>
 
-              <hr className="my-4" />
-              {showLeaderboard ? (
-                <>
-                  <h2 className="mb-4">Leaderboard</h2>
-                  <table className="table table-striped">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Total Score</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {leaderboard.map((user, index) => (
-                        <tr key={user._id}>
-                          <th scope="row">{index + 1}</th>
-                          <td>{user.name}</td>
-                          <td>{user.totalScore}</td>
+            <button
+              className="btn btn-light mb-3 w-100 box"
+              onClick={() => {
+                setShowLeaderboard(false);
+                handleMenuItemClick();
+              }}
+            >
+              📜 History of the Day
+            </button>
+            <button
+              className="btn btn-light mb-3 w-100 box"
+              onClick={() => {
+                setShowLeaderboard(true);
+                handleMenuItemClick();
+                celebrateWithConfetti();
+                const correctAudio = document.getElementById("correct");
+                correctAudio.play();
+              }}
+            >
+              📈 Show Leaderboard
+            </button>
+            <button
+              onClick={() => {
+                handleStartQuiz();
+                handleMenuItemClick();
+              }}
+              className="btn btn-primary mb-3 w-100 box"
+            >
+              Start Quiz
+            </button>
+            <button
+              onClick={() => {
+                handleLogout();
+                handleMenuItemClick();
+              }}
+              className="btn btn-danger w-100 box"
+            >
+              Log Out
+            </button>
+          </div>
+          <div className="col-12 col-md-9 p-4 content">
+            <div className="card text-center shadow p-4">
+              <div className="card-body">
+                <h1 className="card-title mb-4 catchy-heading">
+                  {getGreeting()}!
+                </h1>
+                <p className="lead fanciful-paragraph">
+                  Welcome to your dashboard, here you can access your
+                  personalized learning resources and track your progress.
+                </p>
+                <hr className="my-4" />
+                <div className="scores mb-4 fanciful-scores">
+                  <p className="card-text">
+                    Cumulative Score: <strong>{cumulativeScore}</strong>
+                  </p>
+                  <p className="card-text">
+                    Latest Score: <strong>{latestScore}</strong>
+                  </p>
+                </div>
+
+                <hr className="my-4" />
+                {showLeaderboard ? (
+                  <>
+                    <h2 className="mb-4">Leaderboard</h2>
+                    <table className="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Username</th>
+                          <th scope="col">Total Score</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </>
-              ) : (
-                <TransitionGroup>
-                  <CSSTransition
-                    key={historyIndex}
-                    timeout={500}
-                    classNames="fade"
-                  >
-                    <div className="history-card fanciful-history-card">
-                      <h2>Did you know ?</h2>
-                      {/* <p>{historyOfTheDay[historyIndex]?.text}</p> */}
-                    </div>
-                  </CSSTransition>
-                </TransitionGroup>
-              )}
+                      </thead>
+                      <tbody>
+                        {leaderboard.map((user, index) => (
+                          <tr key={user._id}>
+                            <th scope="row">{index + 1}</th>
+                            <td>{user.name}</td>
+                            <td>{user.totalScore}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                ) : (
+                  <TransitionGroup>
+                    <CSSTransition
+                      key={historyIndex}
+                      timeout={500}
+                      classNames="fade"
+                    >
+                      <div className="history-card fanciful-history-card">
+                        <h2>Did you know ?</h2>
+                        <p>{historyOfTheDay[historyIndex]?.text}</p>
+                      </div>
+                    </CSSTransition>
+                  </TransitionGroup>
+                )}
+              </div>
             </div>
           </div>
         </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
-    </div>
     </div>
   );
 };

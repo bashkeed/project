@@ -15,15 +15,11 @@ export const getDailyQuestions = async (req, res) => {
       user.dailyQuestions.length &&
       isSameDay(user.lastDailyFetch, new Date())
     ) {
-      if(
-        user.hasAnsweredDailyQuestions){
-
-         return res.status(400).json({
-           message: "Questions already fetched and answered for today.",
+      if (user.hasAnsweredDailyQuestions) {
+        return res.status(400).json({
+          message: "Questions already fetched and answered for today.",
         });
-        }
-        else
-      {
+      } else {
         const dailyQuestions = await user.populate({
           path: "dailyQuestions",
           select: "content options correctAnswer",
