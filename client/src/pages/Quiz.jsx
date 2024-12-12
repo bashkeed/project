@@ -266,7 +266,7 @@ const Quiz = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("i got here to hnadle");
+    // console.log("i got here to hnadle");
 
     try {
       const numberOfQuestions = questions.length;
@@ -329,11 +329,11 @@ const Quiz = () => {
               {/* <Icon path={mdiStar} size={3} className="text-warning" /> */}
               <div className="splash">⭐</div>
               <span className="ml-4 custom-congrats-text">
-                Wow! 3 Gbosa for you!
+                Wow! 3 Gbosa for you!✊
               </span>
             </div>
           )}
-          ;
+          
           <div className="lifeline-container">
             <p>
               <span onClick={handleFiftyFifty} className="lifeline-icon">

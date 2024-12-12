@@ -126,7 +126,7 @@ const Dashboard = () => {
 
   return (
     <div onClick={handleUserInteraction}>
-      <div className="container-fluid vh-100 d-flex flex-column ">
+      <div className="container-fluid vh-100 d-flex flex-column rounded ">
         <audio id="correct" src={correct}></audio>
         <audio id="dragon" src={dragon}></audio>
 
@@ -222,7 +222,7 @@ const Dashboard = () => {
                         {leaderboard.map((user, index) => (
                           <tr key={user._id}>
                             <th scope="row">{index + 1}</th>
-                            <td>{user.name}</td>
+                            <td>{user.name.toUpperCase()}</td>
                             <td>{user.totalScore}</td>
                           </tr>
                         ))}

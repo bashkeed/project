@@ -9,7 +9,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Quiz from "./pages/Quiz";
-
+import Admin from "./pages/Admin";
 
 function App(){
   return (
@@ -19,7 +19,7 @@ function App(){
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/quiz" element={<Quiz />} />
-      {/* <Route path="/quiz/instructions" element={<Instructions />} /> */}
+      <Route path="/admin" element={<Admin />} />
       <Route path="/quizsummary" element={<QuizSummary />} />
       <Route path="/questions" element={<DailyQuestions />} />
     </Routes>

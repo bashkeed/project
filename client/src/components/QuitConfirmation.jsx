@@ -12,7 +12,7 @@ const QuitConfirmation = ({ isOpen, onClose, onConfirm }) => {
           <button onClick={onClose} className="btn btn-secondary mr-2">
             No
           </button>
-          <button onClick={onConfirm} className="btn btn-danger">
+          <button onClick={onConfirm} className="btn btn-success">
             Yes
           </button>
         </div>

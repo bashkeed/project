@@ -136,6 +136,7 @@ const Login = () => {
                   right: "10px",
                   cursor: "pointer",
                   transform: "translateY(-50%)",
+                  color: "blue",
                 }}
                 onClick={() => setShowPassword(!showPassword)}
               />
@@ -149,7 +150,7 @@ const Login = () => {
               {loading ? (
                 <>
                   <span
-                    className="spinner-border spinner-border-sm"
+                    className="spinner-border spinner-border-sm "
                     role="status"
                     aria-hidden="true"
                   ></span>

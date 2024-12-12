@@ -220,7 +220,8 @@ const SignUp = () => {
                   top: "45px",
                   right: "10px",
                   cursor: "pointer",
-                  transform: "translateY(-50%)",color:'blue',
+                  transform: "translateY(-50%)",
+                  color:'blue',
                 }}
                 onClick={() => setShowPassword(!showPassword)}
               />
