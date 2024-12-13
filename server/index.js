@@ -7,6 +7,7 @@ import questionRoutes from "./routes/questionRoutes.js";
 import quizRoutes from "./routes/quizRoutes.js";
 import historyRoute from "./routes/historyRoute.js";
 import userRoutes from "./routes/userRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -25,6 +26,7 @@ app.use("/api/question", questionRoutes);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/history", historyRoute);
 app.use("/api/user", userRoutes);
+app.use("/api/admin", adminRoutes);
 
 // GET route to fetch items
 app.get("/api/items", async (req, res) => {

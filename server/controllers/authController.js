@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 import argon2 from "argon2";
 
+
+
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -28,6 +30,11 @@ export const login = async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 };
+const validatePhoneNumber = (number) => {
+  const phoneRegex =
+    /^(\+?234|0)?(70[0-9]|80[0-9]|81[0-9]|90[0-9]|91[0-9]|70[0-9]|71[0-9])[0-9]{7}$/;
+  return phoneRegex.test(number);
+};
 
 export const signup = async (req, res) => {
   console.log("i am here also");
@@ -45,10 +52,13 @@ export const signup = async (req, res) => {
     return res.status(400).json({ message: "Email is not valid" });
   }
 
-  if (password.length < 6) {
+  if (password.length < 8 && !validatePhoneNumber) {
     return res
       .status(400)
-      .json({ message: "Password must be at least 6 characters" });
+      .json({
+        error:
+          "Invalid phone number. It should be an 11-digit Nigerian phone number.",
+      });
   }
 
   try {

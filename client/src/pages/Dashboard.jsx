@@ -9,7 +9,7 @@ import api from "../utils/api";
 import LoaderDash from "../components/LoaderDash";
 import confetti from "canvas-confetti";
 import correct from "../assets/img/audio/correct.mp3";
-import dragon from "../assets/img/audio/dragon.mp3";
+import dragon from "../assets/img/audio/happy.mp3";
 
 const Dashboard = () => {
   const [cumulativeScore, setCumulativeScore] = useState(0);
@@ -100,7 +100,7 @@ const Dashboard = () => {
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
       return "Good morning";
-    } else if (currentHour < 18) {
+    } else if (currentHour < 16) {
       return "Good afternoon";
     } else {
       return "Good evening";
@@ -126,7 +126,7 @@ const Dashboard = () => {
 
   return (
     <div onClick={handleUserInteraction}>
-      <div className="container-fluid vh-100 d-flex flex-column rounded ">
+      <div className="container-fluid vh-100 d-flex flex-column rounded">
         <audio id="correct" src={correct}></audio>
         <audio id="dragon" src={dragon}></audio>
 
@@ -138,7 +138,7 @@ const Dashboard = () => {
             ☰
           </button>
           <div
-            className={`col-12 col-md-3 bg-secondary text-white p-4 sidebar ${
+            className={`col-12 col-md-3 bg-warning text-white p-4 sidebar ${
               isSidebarOpen ? "open" : ""
             }`}
           >
@@ -147,7 +147,7 @@ const Dashboard = () => {
             </h2>
 
             <button
-              className="btn btn-light mb-3 w-100 box"
+              className="btn btn-primary mb-3 w-100 box"
               onClick={() => {
                 setShowLeaderboard(false);
                 handleMenuItemClick();
@@ -156,7 +156,7 @@ const Dashboard = () => {
               📜 History of the Day
             </button>
             <button
-              className="btn btn-light mb-3 w-100 box"
+              className="btn btn-primary mb-3 w-100 box "
               onClick={() => {
                 setShowLeaderboard(true);
                 handleMenuItemClick();
@@ -174,7 +174,7 @@ const Dashboard = () => {
               }}
               className="btn btn-primary mb-3 w-100 box"
             >
-              Start Quiz
+              🎯 Start Quiz
             </button>
             <button
               onClick={() => {
@@ -183,17 +183,17 @@ const Dashboard = () => {
               }}
               className="btn btn-danger w-100 box"
             >
-              Log Out
+              ❌ Log Out
             </button>
           </div>
-          <div className="col-12 col-md-9 p-4 content">
-            <div className="card text-center shadow p-4">
+          <div className="col-12 col-md-9 p-4 bg-info rounded ml-2 content">
+            <div className="card text-center shadow p-4 bg-info">
               <div className="card-body">
                 <h1 className="card-title mb-4 catchy-heading">
                   {getGreeting()}!
                 </h1>
                 <p className="lead fanciful-paragraph">
-                  Welcome to your dashboard, here you can access your
+                  Welcome to your dashboard. here you can access your
                   personalized learning resources and track your progress.
                 </p>
                 <hr className="my-4" />

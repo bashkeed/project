@@ -108,8 +108,15 @@ const Quiz = () => {
         clearInterval(intervalId);
         setTime({ minutes: 0, seconds: 0 });
         toast.info("Quiz has ended due to time expiration.");
+        playQuitSound();
+        setTimeout(() => {
+          const quitAudio = document.getElementById("quit");
+          if (quitAudio) {
+            quitAudio.pause();
+            quitAudio.currentTime = 0;
+          }
+        }, 3000);
         handleSubmit();
-        navigate("/dashboard");
       } else {
         setTime({ minutes, seconds });
       }
@@ -240,8 +247,6 @@ const Quiz = () => {
       }
     }, 3000);
     handleSubmit();
-    //navigate("/dashboard"); // Example: Navigate to the dashboard
-    //   endGame(); // End game and save score
   };
 
   const handleStart = async () => {
@@ -328,12 +333,12 @@ const Quiz = () => {
             <div className="d-flex justify-content-center align-items-center mt-6 custom-congrats flex-column splash-container">
               {/* <Icon path={mdiStar} size={3} className="text-warning" /> */}
               <div className="splash">⭐</div>
-              <span className="ml-4 custom-congrats-text">
+              <span className="ml-4 custom-congrats-text h3">
                 Wow! 3 Gbosa for you!✊
               </span>
             </div>
           )}
-          
+
           <div className="lifeline-container">
             <p>
               <span onClick={handleFiftyFifty} className="lifeline-icon">
@@ -433,7 +438,9 @@ const Quiz = () => {
       </div>
     ) : (
       <div className="countdown-container">
-        <div className="countdown-title">Your quiz starts in</div>
+        <div className="countdown-title catchy-heading">
+          Your quiz starts in
+        </div>
         <div className="countdown-number">{countdown}</div>
       </div>
     )

@@ -105,8 +105,8 @@ const SignUp = () => {
     if (!formData.password) {
       tempErrors.password = "Password is required";
       isValid = false;
-    } else if (formData.password.length < 6) {
-      tempErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length <8 ) {
+      tempErrors.password = "Password must be at least 8 characters";
       isValid = false;
     }
 

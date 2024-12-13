@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 import { MDBIcon } from "mdb-react-ui-kit";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 const Login = () => {
   const [errors, setErrors] = useState({}); // State to hold error messages
@@ -26,7 +27,7 @@ const Login = () => {
         .then((result) => {
           setLoading(false); // Hide the loader
           localStorage.setItem("token", result.data.token);
-          result.data.role==="admin"?navigate("/admindashboard"):navigate("/dashboard");
+          result.data.role==="admin"?navigate("/admin"):navigate("/dashboard");
         })
         .catch((error) => {
           setLoading(false); // Hide the loader
@@ -69,8 +70,8 @@ const Login = () => {
     if (!formData.password) {
       tempErrors.password = "Password is required";
       isValid = false;
-    } else if (formData.password.length < 6) {
-      tempErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length < 8) {
+      tempErrors.password = "Password must be at least 8 characters";
       isValid = false;
     }
 
@@ -78,12 +79,19 @@ const Login = () => {
     return isValid;
   };
 
+               
+
+
   return (
     <>
+   
+
       <ToastContainer />
       <Helmet>
         <title>learnFly - Login</title>
       </Helmet>
+
+      
 
       <div className="d-flex justify-content-center align-items-center bg-secondary vh-100 style">
         <div className="bg-white p-3 rounded  ">
@@ -97,6 +105,8 @@ const Login = () => {
                 size="sm"
                 style={{ color: "blue" }}
               />
+             
+
               <input
                 type="email"
                 placeholder="Enter email"

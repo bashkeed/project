@@ -25,6 +25,7 @@
 .btn-primary:hover {
   background-color: #0056b3; /* Darker primary button color on hover */
   border-color: #0056b3; /* Darker primary button border color on hover */
+  color: #fff;
 }
 
 .btn-danger {
@@ -241,6 +242,7 @@ button {
 
 .catchy-heading {
   font-size: 1.5rem; /* Default font size for larger viewports */
+  color: #fff;
 }
 
 @media (max-width: 1200px) {
