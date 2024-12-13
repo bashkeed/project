@@ -29,9 +29,13 @@ import {
   TableRow,
   Paper,
   Grid,
+  TablePagination,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PeopleIcon from "@mui/icons-material/People";
+import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/system";
 
 const StyledCard = styled(Card)({
@@ -43,6 +47,9 @@ const Admin = () => {
   const [users, setUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,6 +78,26 @@ const Admin = () => {
     navigate("/login");
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchText(event.target.value);
+    setPage(0);
+  };
+
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
@@ -79,10 +106,15 @@ const Admin = () => {
     );
   }
 
-  const chartData = users.map((user) => ({
+  const chartData = filteredUsers.map((user) => ({
     name: user.name,
     totalScore: user.totalScore,
   }));
+
+  const paginatedUsers = filteredUsers.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   return (
     <Box sx={{ flexGrow: 1, p: 3 }}>
@@ -154,6 +186,21 @@ const Admin = () => {
           </Card>
         </Grid>
         <Grid item xs={12}>
+          <TextField
+            label="Search Users"
+            variant="outlined"
+            fullWidth
+            value={searchText}
+            onChange={handleSearchChange}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            sx={{ mb: 2 }}
+          />
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -166,10 +213,10 @@ const Admin = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.map((user, index) => (
+                {paginatedUsers.map((user, index) => (
                   <TableRow key={user._id}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{user.name.toUpperCase()}</TableCell>
+                    <TableCell>{page * rowsPerPage + index + 1}</TableCell>
+                    <TableCell>{user.name}</TableCell>
                     <TableCell>{user.number}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.totalScore}</TableCell>
@@ -178,6 +225,15 @@ const Admin = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={filteredUsers.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </Grid>
       </Grid>
       <ToastContainer />

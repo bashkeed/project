@@ -109,13 +109,6 @@ const Quiz = () => {
         setTime({ minutes: 0, seconds: 0 });
         toast.info("Quiz has ended due to time expiration.");
         playQuitSound();
-        setTimeout(() => {
-          const quitAudio = document.getElementById("quit");
-          if (quitAudio) {
-            quitAudio.pause();
-            quitAudio.currentTime = 0;
-          }
-        }, 3000);
         handleSubmit();
       } else {
         setTime({ minutes, seconds });
