@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,6 +21,13 @@ const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAudioAllowed, setIsAudioAllowed] = useState(false);
   const navigate = useNavigate();
+
+   const leader = useRef(null);
+   const history = useRef(null);
+
+    const scrollToSection = (sectionRef) => {
+      sectionRef.current.scrollIntoView({ behavior: "smooth" });
+    };
 
   useEffect(() => {
     if (isAudioAllowed) {
@@ -143,6 +150,7 @@ const Dashboard = () => {
               onClick={() => {
                 setShowLeaderboard(false);
                 handleMenuItemClick();
+                scrollToSection(leader);
               }}
             >
               📜 History of the Day
@@ -155,6 +163,7 @@ const Dashboard = () => {
                 celebrateWithConfetti();
                 const correctAudio = document.getElementById("correct");
                 correctAudio.play();
+                scrollToSection(leader);
               }}
             >
               📈 Show Leaderboard
@@ -210,7 +219,7 @@ const Dashboard = () => {
                 {showLeaderboard ? (
                   <>
                     <h2 className="mb-4 catchy-heading">Leaderboard</h2>
-                    <table className="table table-striped">
+                    <table className="table table-striped" ref={leader}>
                       <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -233,7 +242,10 @@ const Dashboard = () => {
                   <Carousel>
                     {historyOfTheDay.map((item, index) => (
                       <Carousel.Item key={index}>
-                        <div className="history-card fanciful-history-card bg-info">
+                        <div
+                          className="history-card fanciful-history-card bg-info"
+                          ref={history}
+                        >
                           <h2>Did you know ?</h2>
                           <p>{item.text}</p>
                         </div>

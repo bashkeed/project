@@ -165,10 +165,10 @@ const Admin = () => {
           <StyledCard>
             <CardContent>
               <Typography variant="h5" component="div" gutterBottom>
-                {getGreeting()} , Admin
+                {getGreeting()}, Admin
               </Typography>
               <Typography variant="body1" component="p">
-                Welcome to the admin dashboard. Here you can manage user data
+                Welcome to the admin dashboard. Here you can manage & visualise user data
                 and track their progress.
               </Typography>
               <Button
