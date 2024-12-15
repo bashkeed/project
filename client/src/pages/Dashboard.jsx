@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Carousel } from "react-bootstrap";
 import api from "../utils/api";
-//import { ClipLoader } from "react-spinners"; // Import the loader
 import LoaderDash from "../components/LoaderDash";
 import confetti from "canvas-confetti";
 import correct from "../assets/img/audio/correct.mp3";
@@ -18,9 +17,8 @@ const Dashboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [historyOfTheDay, setHistoryOfTheDay] = useState([]);
-  const [historyIndex, setHistoryIndex] = useState(0);
-  const [loading, setLoading] = useState(true); // State to manage loading
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar visibility
+  const [loading, setLoading] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAudioAllowed, setIsAudioAllowed] = useState(false);
   const navigate = useNavigate();
 
@@ -36,6 +34,7 @@ const Dashboard = () => {
   const handleUserInteraction = () => {
     setIsAudioAllowed(true);
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,19 +64,12 @@ const Dashboard = () => {
           navigate("/login");
         }
       } finally {
-        setLoading(false); // Hide the loader once data is fetched
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [navigate]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHistoryIndex((prevIndex) => (prevIndex + 1) % historyOfTheDay.length);
-    }, 10000);
-    return () => clearInterval(interval);
-  }, [historyOfTheDay.length]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -192,6 +184,14 @@ const Dashboard = () => {
                 <h1 className="card-title mb-4 catchy-heading">
                   {getGreeting()}!
                 </h1>
+                <div className="marquee-container bg-success text-white p-2 mt-1 rounded">
+                  <marquee>
+                    If you like this application, please consider financially
+                    supporting the developer by contacting him via this number
+                    +234 8068849042. Thank you. Zubair Bashir
+                  </marquee>
+                </div>
+
                 <p className="lead fanciful-paragraph">
                   Welcome to your dashboard. here you can access your
                   personalized learning resources and track your progress.
@@ -209,7 +209,7 @@ const Dashboard = () => {
                 <hr className="my-4" />
                 {showLeaderboard ? (
                   <>
-                    <h2 className="mb-4">Leaderboard</h2>
+                    <h2 className="mb-4 catchy-heading">Leaderboard</h2>
                     <table className="table table-striped">
                       <thead>
                         <tr>
@@ -230,18 +230,16 @@ const Dashboard = () => {
                     </table>
                   </>
                 ) : (
-                  <TransitionGroup>
-                    <CSSTransition
-                      key={historyIndex}
-                      timeout={500}
-                      classNames="fade"
-                    >
-                      <div className="history-card fanciful-history-card">
-                        <h2>Did you know ?</h2>
-                        <p>{historyOfTheDay[historyIndex]?.text}</p>
-                      </div>
-                    </CSSTransition>
-                  </TransitionGroup>
+                  <Carousel>
+                    {historyOfTheDay.map((item, index) => (
+                      <Carousel.Item key={index}>
+                        <div className="history-card fanciful-history-card bg-info">
+                          <h2>Did you know ?</h2>
+                          <p>{item.text}</p>
+                        </div>
+                      </Carousel.Item>
+                    ))}
+                  </Carousel>
                 )}
               </div>
             </div>

@@ -27,7 +27,7 @@ export const submitQuiz = async (req, res) => {
   try {
     const user = await User.findById(id).populate({
       path: "dailyQuestions",
-      select: "content options correctAnswer",
+      select: "question options correctAnswer",
     });
     if (!user) return res.status(404).json({ error: "User not found" });
     const excludedQuestions = user.completedQuestions || [];

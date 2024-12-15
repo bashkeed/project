@@ -22,7 +22,7 @@ export const getDailyQuestions = async (req, res) => {
       } else {
         const dailyQuestions = await user.populate({
           path: "dailyQuestions",
-          select: "content options correctAnswer",
+          select: "question options correctAnswer",
         });
         return res.json(dailyQuestions.dailyQuestions);
       }
@@ -49,4 +49,24 @@ export const getDailyQuestions = async (req, res) => {
       .status(500)
       .json({ error: "An error occurred while fetching daily questions." });
   }
+};
+
+
+export const createQuestion = async (req, res) => {
+  const { question, options, correctAnswer } = req.body;
+
+  if (!question || !options || options.length !== 4 || !correctAnswer) {
+    res.status(400);
+    throw new Error("All fields are required and options should be four");
+  }
+
+  const newQuestion = new Question({
+    question,
+    options: options.map((opt) => (opt)),
+    correctAnswer,
+  });
+
+  const createdQuestion = await newQuestion.save();
+  res.status(201).json(createdQuestion);
+  console.log(createQuestion)
 };

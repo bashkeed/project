@@ -46,7 +46,7 @@ export const getUserScores = async (req, res) => {
 
 export const getLeaderboard = async (req, res) => {
   try {
-    const leaderboard = await User.find({}, "name totalScore")
+    const leaderboard = await User.find({ role: { $ne: "admin" } }, "name totalScore")
       .sort({ totalScore: -1 })
       .limit(10)
       .exec();

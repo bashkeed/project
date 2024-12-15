@@ -108,8 +108,8 @@ const Quiz = () => {
         clearInterval(intervalId);
         setTime({ minutes: 0, seconds: 0 });
         toast.info("Quiz has ended due to time expiration.");
-        playQuitSound();
-        handleSubmit();
+        handleQuitButton();
+  
       } else {
         setTime({ minutes, seconds });
       }
@@ -356,7 +356,7 @@ const Quiz = () => {
               </span>
             </p>
           </div>
-          <h5>{currentQuestion.content}</h5>
+          <h5>{currentQuestion.question}</h5>
           <div className="options-container">
             {currentQuestion?.options.map((option, index) => (
               <button

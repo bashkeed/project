@@ -28,16 +28,7 @@ app.use("/api/history", historyRoute);
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
 
-// GET route to fetch items
-app.get("/api/items", async (req, res) => {
-  try {
-    const items = await Item.find();
-    console.log(items);
-    res.json(items);
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error." });
-  }
-});
+
 
 // Start the server
 app.listen(PORT, () => {
