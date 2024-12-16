@@ -148,7 +148,7 @@ const SignUp = () => {
               />
               <input
                 type="text"
-                placeholder="Enter number"
+                placeholder="Enter phone number"
                 autoComplete="off"
                 name="number"
                 className="form-control "
