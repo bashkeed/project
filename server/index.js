@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["learnfly-nine.vercel.app", "http://localhost:5173"],
+    origin: ["https://learnfly-nine.vercel.app", "http://localhost:5173"],
   })
 );
 
