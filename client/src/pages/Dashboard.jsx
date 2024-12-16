@@ -10,6 +10,7 @@ import confetti from "canvas-confetti";
 import correct from "../assets/img/audio/correct.mp3";
 import dragon from "../assets/img/audio/happy.mp3";
 
+
 const Dashboard = () => {
   const [cumulativeScore, setCumulativeScore] = useState(0);
   const [latestScore, setLatestScore] = useState(0);
@@ -22,12 +23,12 @@ const Dashboard = () => {
   const [isAudioAllowed, setIsAudioAllowed] = useState(false);
   const navigate = useNavigate();
 
-   const leader = useRef(null);
-   const history = useRef(null);
+  const leader = useRef(null);
+  const history = useRef(null);
 
-    const scrollToSection = (sectionRef) => {
-      sectionRef.current.scrollIntoView({ behavior: "smooth" });
-    };
+  const scrollToSection = (sectionRef) => {
+    sectionRef.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     if (isAudioAllowed) {
@@ -219,24 +220,29 @@ const Dashboard = () => {
                 {showLeaderboard ? (
                   <>
                     <h2 className="mb-4 catchy-heading">Leaderboard</h2>
-                    <table className="table table-striped" ref={leader}>
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Username</th>
-                          <th scope="col">Total Score</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {leaderboard.map((user, index) => (
-                          <tr key={user._id}>
-                            <th scope="row">{index + 1}</th>
-                            <td>{user.name.toUpperCase()}</td>
-                            <td>{user.totalScore}</td>
+                    <div className="table-responsive">
+                      <table
+                        className="table table-bordered table-hover table-striped"
+                        ref={leader}
+                      >
+                        <thead className="thead-dark">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Total Score</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {leaderboard.map((user, index) => (
+                            <tr key={user._id}>
+                              <th scope="row">{index + 1}</th>
+                              <td>{user.name.toUpperCase()}</td>
+                              <td>{user.totalScore}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </>
                 ) : (
                   <Carousel>

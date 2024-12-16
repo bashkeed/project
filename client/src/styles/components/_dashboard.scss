@@ -286,4 +286,23 @@ button {
   }
 
 
-  
+  .table-responsive {
+  margin-top: 20px;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+}
+
+.thead-dark th {
+  background-color: #343a40;
+  color: white;
+}
