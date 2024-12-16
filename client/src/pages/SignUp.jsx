@@ -7,6 +7,7 @@ import { MDBIcon } from "mdb-react-ui-kit";
 import Icon from "@mdi/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import the styles
+import api from "../utils/api";
 
 const SignUp = () => {
   const [errors, setErrors] = useState({}); // State to hold error messages
@@ -25,8 +26,8 @@ const SignUp = () => {
 
     if (validateForm()) {
       setLoading(true); // Show the loader
-      axios
-        .post("http://127.0.0.1:3000/api/auth/signup", formData)
+      api
+        .post("/auth/signup", formData)
         .then((result) => {
           setLoading(false); // Hide the loader
           setShowSuccess(true); // Show success message
