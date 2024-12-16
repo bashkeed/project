@@ -49,7 +49,7 @@ const SignUp = () => {
           if (error.response && error.response.status === 400) {
             toast.error("User already exists. Please log in.");
           } else {
-            toast.error("An error occurred. Please try again.");
+            toast.error("Server error. Please try again.");
           }
           console.log(error);
         });
