@@ -22,7 +22,7 @@ const Login = () => {
     e.preventDefault();
 
     if (validateForm()) {
-      setLoading(true); // Show the loader
+      setLoading(true); //Show the loader
       api
         .post("/auth/login", formData)
         .then((result) => {
