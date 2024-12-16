@@ -23,11 +23,13 @@ const Login = () => {
     if (validateForm()) {
       setLoading(true); // Show the loader
       axios
-        .post("http://127.0.0.1:3000/api/auth/login", formData)
+        .post("/auth/login", formData)
         .then((result) => {
           setLoading(false); // Hide the loader
           localStorage.setItem("token", result.data.token);
-          result.data.role==="admin"?navigate("/admin"):navigate("/dashboard");
+          result.data.role === "admin"
+            ? navigate("/admin")
+            : navigate("/dashboard");
         })
         .catch((error) => {
           setLoading(false); // Hide the loader
@@ -79,19 +81,12 @@ const Login = () => {
     return isValid;
   };
 
-               
-
-
   return (
     <>
-   
-
       <ToastContainer />
       <Helmet>
         <title>learnFly - Login</title>
       </Helmet>
-
-      
 
       <div className="d-flex justify-content-center align-items-center bg-secondary vh-100 style">
         <div className="bg-white p-3 rounded  ">
@@ -105,7 +100,6 @@ const Login = () => {
                 size="sm"
                 style={{ color: "blue" }}
               />
-             
 
               <input
                 type="email"
