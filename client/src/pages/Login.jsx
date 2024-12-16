@@ -6,6 +6,7 @@ import { MDBIcon } from "mdb-react-ui-kit";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import api from "../utils/api";
 
 const Login = () => {
   const [errors, setErrors] = useState({}); // State to hold error messages
@@ -22,7 +23,7 @@ const Login = () => {
 
     if (validateForm()) {
       setLoading(true); // Show the loader
-      axios
+      api
         .post("/auth/login", formData)
         .then((result) => {
           setLoading(false); // Hide the loader
