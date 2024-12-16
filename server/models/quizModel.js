@@ -1,12 +1,6 @@
 // server/models/Quiz.js
 import mongoose from "mongoose";
 
-const questionSchema = new mongoose.Schema({
-  question: String,
-  options: [String],
-  answer: String,
-});
-
 const quizSchema = new mongoose.Schema({
   title: { type: String, required: true },
   questions: [questionSchema],

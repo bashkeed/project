@@ -109,7 +109,6 @@ const Quiz = () => {
         setTime({ minutes: 0, seconds: 0 });
         toast.info("Quiz has ended due to time expiration.");
         handleQuitButton();
-  
       } else {
         setTime({ minutes, seconds });
       }
@@ -205,7 +204,7 @@ const Quiz = () => {
         }
       });
       while (true) {
-        const randomNumber = Math.round(Math.random() * 3);
+        const randomNumber = Math.round(Math.random() * options.length);
         if (
           randomNumber !== indexOfAnswer &&
           !previousRandomNumbers.includes(randomNumber)
@@ -219,7 +218,7 @@ const Quiz = () => {
           });
           break;
         }
-        if (previousRandomNumbers.length >= 3) break;
+        if (previousRandomNumbers.length >= options.length - 1) break;
       }
     }
   };
@@ -238,8 +237,8 @@ const Quiz = () => {
         quitAudio.pause();
         quitAudio.currentTime = 0;
       }
+      handleSubmit();
     }, 3000);
-    handleSubmit();
   };
 
   const handleStart = async () => {
