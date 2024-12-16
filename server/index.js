@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: ["learnfly-nine.vercel.app", "http://localhost:5173"],
   })
 );
 
@@ -27,8 +27,6 @@ app.use("/api/quiz", quizRoutes);
 app.use("/api/history", historyRoute);
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
-
-
 
 // Start the server
 app.listen(PORT, () => {

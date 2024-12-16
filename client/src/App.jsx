@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 // import Instructions from "./components/quiz/Instructions";
 import QuizSummary from "./pages/QuizSummary";
-import DailyQuestions from "./components/DailyQuestions";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -21,7 +20,7 @@ function App(){
       <Route path="/quiz" element={<Quiz />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/quizsummary" element={<QuizSummary />} />
-      <Route path="/questions" element={<DailyQuestions />} />
+ 
     </Routes>
   );
 }

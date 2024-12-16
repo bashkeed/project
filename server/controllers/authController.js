@@ -69,6 +69,15 @@ export const signup = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ message: "User already exists." });
     }
+
+
+    const usernameExist = await User.findOne({ name });
+    console.log(usernameExist);
+
+    if (usernameExist) {
+      return res.status(400).json({ message: "User already exists." });
+    }
+
     // Hash the password
     const hashedPassword = await argon2.hash(password);
 
