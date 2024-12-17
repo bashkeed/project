@@ -51,6 +51,7 @@ const Admin = () => {
   const [users, setUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [questionLoading, setQuestionLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
@@ -104,6 +105,7 @@ const Admin = () => {
 
   const handleQuestionSubmit = async (event) => {
     event.preventDefault();
+    setQuestionLoading(true);
     try {
       await api.post("/admin/question", {
         question,
@@ -120,6 +122,8 @@ const Admin = () => {
     } catch (error) {
       console.error("Error submitting question:", error);
       toast.error("Failed to submit the question.");
+    } finally {
+      setQuestionLoading(false);
     }
   };
 
@@ -147,16 +151,16 @@ const Admin = () => {
     page * rowsPerPage + rowsPerPage
   );
 
-    const getGreeting = () => {
-      const currentHour = new Date().getHours();
-      if (currentHour < 12) {
-        return "Good morning";
-      } else if (currentHour < 16) {
-        return "Good afternoon";
-      } else {
-        return "Good evening";
-      }
-    };
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      return "Good morning";
+    } else if (currentHour < 16) {
+      return "Good afternoon";
+    } else {
+      return "Good evening";
+    }
+  };
 
   return (
     <Box sx={{ flexGrow: 1, p: 3 }}>
@@ -168,8 +172,8 @@ const Admin = () => {
                 {getGreeting()}, Admin
               </Typography>
               <Typography variant="body1" component="p">
-                Welcome to the admin dashboard. Here you can manage & visualise user data
-                and track their progress.
+                Welcome to the admin dashboard. Here you can manage & visualize
+                user data and track their progress.
               </Typography>
               <Button
                 variant="contained"
@@ -294,7 +298,6 @@ const Admin = () => {
                   fullWidth
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  required
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -303,7 +306,6 @@ const Admin = () => {
                   fullWidth
                   value={option1}
                   onChange={(e) => setOption1(e.target.value)}
-                  required
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -312,7 +314,6 @@ const Admin = () => {
                   fullWidth
                   value={option2}
                   onChange={(e) => setOption2(e.target.value)}
-                  required
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -321,7 +322,6 @@ const Admin = () => {
                   fullWidth
                   value={option3}
                   onChange={(e) => setOption3(e.target.value)}
-                  required
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -330,17 +330,14 @@ const Admin = () => {
                   fullWidth
                   value={option4}
                   onChange={(e) => setOption4(e.target.value)}
-                  required
                   sx={{ mb: 2 }}
                 />
-                <FormControl
-                  variant="outlined"
-                  fullWidth
-                  required
-                  sx={{ mb: 2 }}
-                >
-                  <InputLabel>Correct Answer</InputLabel>
+                <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
+                  <InputLabel id="correct-answer-label">
+                    Correct Answer
+                  </InputLabel>
                   <Select
+                    labelId="correct-answer-label"
                     value={correctAnswer}
                     onChange={(e) => setCorrectAnswer(e.target.value)}
                     label="Correct Answer"
@@ -351,14 +348,18 @@ const Admin = () => {
                     <MenuItem value={option4}>Option 4</MenuItem>
                   </Select>
                 </FormControl>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  fullWidth
-                >
-                  Submit Question
-                </Button>
+                {questionLoading ? (
+                  <LoaderDash />
+                ) : (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
+                    Submit Question
+                  </Button>
+                )}
               </Box>
             </CardContent>
           </Card>
