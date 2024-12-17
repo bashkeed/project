@@ -9,7 +9,7 @@ import LoaderDash from "../components/LoaderDash";
 import confetti from "canvas-confetti";
 import correct from "../assets/img/audio/correct.mp3";
 import dragon from "../assets/img/audio/happy.mp3";
-
+import WhatsAppIcon from "@mui/icons-material/WhatsApp"; // Importing the WhatsApp icon from MUI
 
 const Dashboard = () => {
   const [cumulativeScore, setCumulativeScore] = useState(0);
@@ -265,6 +265,14 @@ const Dashboard = () => {
         </div>
         <ToastContainer />
       </div>
+      <a
+        href="https://wa.me/2348068849042"
+        className="whatsapp_float"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <WhatsAppIcon /> Chat with the developer
+      </a>
     </div>
   );
 };

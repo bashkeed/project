@@ -1132,6 +1132,25 @@ button {
   color: white;
 }
 
+.whatsapp_float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25d366;
+  color: white;
+  border-radius: 50px;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.whatsapp_float:hover {
+  background-color: #1ebea5;
+}
+
 /* From Uiverse.io by SouravBandyopadhyay */
 .hourglassBackground {
   position: relative;
