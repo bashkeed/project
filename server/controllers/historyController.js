@@ -7,7 +7,7 @@ const fetchHistoryData = async (req, res) => {
     today.setHours(0, 0, 0, 0); // Normalize to the start of the day
 
     // Format the date to MM/DD/YYYY string for comparison
-    const options = { month: "2-digit",day: "2-digit", year: "numeric",  };
+    const options = { month: "2-digit", day: "2-digit", year: "numeric",  };
     const todayString = today.toLocaleDateString("en-US", options);
 
     // Check if data has been fetched today

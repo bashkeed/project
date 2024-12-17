@@ -37,7 +37,6 @@ const validatePhoneNumber = (number) => {
 };
 
 export const signup = async (req, res) => {
-  console.log("i am here also");
   const { number,name, email, password } = req.body;
 
   // Simple validation
@@ -64,8 +63,6 @@ export const signup = async (req, res) => {
   try {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
-    console.log(existingUser);
-
     if (existingUser) {
       return res.status(400).json({ message: "User already exists." });
     }

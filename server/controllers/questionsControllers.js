@@ -9,12 +9,15 @@ export const getDailyQuestions = async (req, res) => {
 
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ error: "User not found" });
-
+    const today = new Date();
     //Check if the user has fetched and answered the daily questions today
     if (
       user.dailyQuestions.length &&
       isSameDay(user.lastDailyFetch, new Date())
     ) {
+      console.log(user.lastDailyFetch);
+      console.log(today);
+      console.log(isSameDay(user.lastDailyFetch, new Date()));
       if (user.hasAnsweredDailyQuestions) {
         return res.status(400).json({
           message: "Questions already fetched and answered for today.",
@@ -30,6 +33,8 @@ export const getDailyQuestions = async (req, res) => {
 
     // Fetch new set of daily questions
     const excludedQuestions = user.completedQuestions || [];
+    console.log(excludedQuestions);
+
     const dailyQuestions = await Question.aggregate([
       { $match: { _id: { $nin: excludedQuestions } } },
       { $sample: { size: 10 } },
@@ -51,7 +56,6 @@ export const getDailyQuestions = async (req, res) => {
   }
 };
 
-
 export const createQuestion = async (req, res) => {
   const { question, options, correctAnswer } = req.body;
 
@@ -62,11 +66,11 @@ export const createQuestion = async (req, res) => {
 
   const newQuestion = new Question({
     question,
-    options: options.map((opt) => (opt)),
+    options: options.map((opt) => opt),
     correctAnswer,
   });
 
   const createdQuestion = await newQuestion.save();
   res.status(201).json(createdQuestion);
-  console.log(createQuestion)
+  console.log(createQuestion);
 };
