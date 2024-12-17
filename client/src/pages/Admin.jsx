@@ -4,7 +4,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import api from "../utils/api";
-import LoaderDash from "../components/LoaderDash";
 import {
   BarChart,
   Bar,
@@ -36,6 +35,7 @@ import {
   Select,
   FormControl,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PeopleIcon from "@mui/icons-material/People";
@@ -136,7 +136,7 @@ const Admin = () => {
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
-        <LoaderDash />
+        <CircularProgress />
       </div>
     );
   }
@@ -349,7 +349,11 @@ const Admin = () => {
                   </Select>
                 </FormControl>
                 {questionLoading ? (
-                  <LoaderDash />
+                  <Box
+                    sx={{ display: "flex", justifyContent: "center", mb: 2 }}
+                  >
+                    <CircularProgress />
+                  </Box>
                 ) : (
                   <Button
                     type="submit"
