@@ -2,14 +2,17 @@ import { History, FetchHistory } from "../models/historyModel.js";
 
 const fetchHistoryData = async (req, res) => {
   try {
-    // Get the current date and set time to the start of the day
+    // Get the current date and set time to the start of the day in local time
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to the start of the day
 
+    // Format the date to local date string for comparison
+    const todayString = today.toLocaleDateString();
+
     // Check if data has been fetched today
-    const fetchHistory = await FetchHistory.findOne({ date: today }).populate(
-      "fetchedDocuments"
-    );
+    const fetchHistory = await FetchHistory.findOne({
+      date: todayString,
+    }).populate("fetchedDocuments");
 
     if (fetchHistory) {
       console.log(
@@ -31,10 +34,11 @@ const fetchHistoryData = async (req, res) => {
       // Normalize the date to store in the database
       const normalizedDate = new Date();
       normalizedDate.setHours(0, 0, 0, 0);
+      const normalizedDateString = normalizedDate.toLocaleDateString();
 
       // Save the fetch history
       const newFetchHistory = new FetchHistory({
-        date: normalizedDate,
+        date: normalizedDateString,
         fetchedDocuments: newDocuments.map((doc) => doc._id),
       });
       await newFetchHistory.save();
