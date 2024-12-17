@@ -13,7 +13,7 @@ const HistorySchema = new mongoose.Schema({
 
 const FetchHistorySchema = new mongoose.Schema({
   date: {
-    type: String, // Change date type to String to store the local date string
+    type: String, // Change date type to String to store the formatted date string
     required: true,
   },
   fetchedDocuments: [

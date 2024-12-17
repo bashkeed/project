@@ -6,8 +6,9 @@ const fetchHistoryData = async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to the start of the day
 
-    // Format the date to local date string for comparison
-    const todayString = today.toLocaleDateString();
+    // Format the date to MM/DD/YYYY string for comparison
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    const todayString = today.toLocaleDateString("en-US", options);
 
     // Check if data has been fetched today
     const fetchHistory = await FetchHistory.findOne({
@@ -34,7 +35,10 @@ const fetchHistoryData = async (req, res) => {
       // Normalize the date to store in the database
       const normalizedDate = new Date();
       normalizedDate.setHours(0, 0, 0, 0);
-      const normalizedDateString = normalizedDate.toLocaleDateString();
+      const normalizedDateString = normalizedDate.toLocaleDateString(
+        "en-US",
+        options
+      );
 
       // Save the fetch history
       const newFetchHistory = new FetchHistory({
