@@ -95,26 +95,68 @@ const Quiz = () => {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
+   const handleSubmit = async () => {
+     // console.log("i got here to hnadle");
 
-  const startTimer = () => {
-    const countDownTime = Date.now() + 300000;
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      const distance = countDownTime - now;
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+     try {
+       const numberOfQuestions = questions.length;
+       const response = await api.put("/quiz/submit", answers);
+       console.log("API response:", response.data);
+       updatePlayerStats({
+         score: Math.round((score / numberOfQuestions) * 100),
+         numberOfQuestions,
+         numberofAnsweredQuestions,
+         correctAnswers,
+         wrongAnswers,
+         fiftyFifty: 2 - fiftyFifty,
+         hints: 5 - hints,
+       });
+       navigate("/quizsummary");
+     } catch (err) {
+       console.log("failed to submit");
 
-      if (distance < 0) {
-        clearInterval(intervalId);
-        setTime({ minutes: 0, seconds: 0 });
-        toast.info("Quiz has ended due to time expiration.");
-        handleQuitButton();
-      } else {
-        setTime({ minutes, seconds });
-      }
-    }, 1000);
-    setIntervalState(intervalId);
+       console.error("API error:", err);
+     }
+   };
+
+  const playQuitSound = () => {
+    const quitAudio = document.getElementById("quit");
+    if (quitAudio) {
+      quitAudio.play();
+    }
   };
+  const handleQuitButton = () => {
+    playQuitSound();
+    setTimeout(() => {
+      const quitAudio = document.getElementById("quit");
+      if (quitAudio) {
+        quitAudio.pause();
+        quitAudio.currentTime = 0;
+      }
+      handleSubmit();
+    }, 3000);
+  };
+
+ const startTimer = () => {
+   const countDownTime = Date.now() + 300000; // 300000 ms = 5 minutes
+   const intervalId = setInterval(() => {
+     const now = Date.now(); // Use Date.now() for consistency
+     const distance = countDownTime - now;
+     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+     if (distance < 0) {
+       clearInterval(intervalId);
+       setTime({ minutes: 0, seconds: 0 });
+       toast.info("Quiz has ended due to time expiration.");
+       handleQuitButton();
+     } else {
+       setTime({ minutes, seconds });
+     }
+   }, 1000);
+   setIntervalState(intervalId);
+ };
+
 
   const getQuestions = async () => {
     if (!localStorage.getItem("token")) {
@@ -223,23 +265,7 @@ const Quiz = () => {
     }
   };
 
-  const playQuitSound = () => {
-    const quitAudio = document.getElementById("quit");
-    if (quitAudio) {
-      quitAudio.play();
-    }
-  };
-  const handleQuitButton = () => {
-    playQuitSound();
-    setTimeout(() => {
-      const quitAudio = document.getElementById("quit");
-      if (quitAudio) {
-        quitAudio.pause();
-        quitAudio.currentTime = 0;
-      }
-      handleSubmit();
-    }, 3000);
-  };
+  
 
   const handleStart = async () => {
     try {
@@ -262,29 +288,6 @@ const Quiz = () => {
     setQuitModalOpen(false);
   };
 
-  const handleSubmit = async () => {
-    // console.log("i got here to hnadle");
-
-    try {
-      const numberOfQuestions = questions.length;
-      const response = await api.put("/quiz/submit", answers);
-      console.log("API response:", response.data);
-      updatePlayerStats({
-        score: Math.round((score / numberOfQuestions) * 100),
-        numberOfQuestions,
-        numberofAnsweredQuestions,
-        correctAnswers,
-        wrongAnswers,
-        fiftyFifty: 2 - fiftyFifty,
-        hints: 5 - hints,
-      });
-      navigate("/quizsummary");
-    } catch (err) {
-      console.log("failed to submit");
-
-      console.error("API error:", err);
-    }
-  };
 
   useEffect(() => {
     showOptions();
