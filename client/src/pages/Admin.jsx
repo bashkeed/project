@@ -281,10 +281,10 @@ const Admin = () => {
                     onChange={(e) => setCorrectAnswer(e.target.value)}
                     required
                   >
-                    <MenuItem value="option1">Option 1</MenuItem>
-                    <MenuItem value="option2">Option 2</MenuItem>
-                    <MenuItem value="option3">Option 3</MenuItem>
-                    <MenuItem value="option4">Option 4</MenuItem>
+                    <MenuItem value={option1}>Option 1</MenuItem>
+                    <MenuItem value={option2}>Option 2</MenuItem>
+                    <MenuItem value={option3}>Option 3</MenuItem>
+                    <MenuItem value={option4}>Option 4</MenuItem>
                   </Select>
                 </FormControl>
                 <Button
