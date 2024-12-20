@@ -212,6 +212,94 @@ const Admin = () => {
             </CardContent>
           </StyledCard>
         </Grid>
+
+        {/* Add Question Form */}
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" component="div" gutterBottom>
+                Add Question of the Day
+              </Typography>
+              <form onSubmit={handleQuestionSubmit}>
+                <TextField
+                  label="Question"
+                  fullWidth
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  required
+                  sx={{ mb: 2 }}
+                />
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Option 1"
+                      fullWidth
+                      value={option1}
+                      onChange={(e) => setOption1(e.target.value)}
+                      required
+                      sx={{ mb: 2 }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Option 2"
+                      fullWidth
+                      value={option2}
+                      onChange={(e) => setOption2(e.target.value)}
+                      required
+                      sx={{ mb: 2 }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Option 3"
+                      fullWidth
+                      value={option3}
+                      onChange={(e) => setOption3(e.target.value)}
+                      required
+                      sx={{ mb: 2 }}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      label="Option 4"
+                      fullWidth
+                      value={option4}
+                      onChange={(e) => setOption4(e.target.value)}
+                      required
+                      sx={{ mb: 2 }}
+                    />
+                  </Grid>
+                </Grid>
+                <FormControl fullWidth sx={{ mb: 2 }}>
+                  <InputLabel id="correct-answer-label">
+                    Correct Answer
+                  </InputLabel>
+                  <Select
+                    labelId="correct-answer-label"
+                    value={correctAnswer}
+                    onChange={(e) => setCorrectAnswer(e.target.value)}
+                    required
+                  >
+                    <MenuItem value="option1">Option 1</MenuItem>
+                    <MenuItem value="option2">Option 2</MenuItem>
+                    <MenuItem value="option3">Option 3</MenuItem>
+                    <MenuItem value="option4">Option 4</MenuItem>
+                  </Select>
+                </FormControl>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={questionLoading}
+                >
+                  {questionLoading ? "Submitting..." : "Submit Question"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </Grid>
+
         <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
           <Card>
             <CardContent sx={{ display: "flex", alignItems: "center" }}>
