@@ -74,3 +74,13 @@ export const createQuestion = async (req, res) => {
   res.status(201).json(createdQuestion);
   console.log(createQuestion);
 };
+
+export const getTotalQuestions = async (req, res) => {
+  try {
+    const totalQuestions = await Question.countDocuments();
+    res.json({ totalQuestions });
+  } catch (error) {
+    console.error("Error counting questions:", error);
+    res.status(500).json({ error: "Failed to count questions" });
+  }
+};

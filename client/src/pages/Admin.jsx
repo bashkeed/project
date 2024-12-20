@@ -13,6 +13,9 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 import {
   Box,
@@ -40,12 +43,26 @@ import {
 import LogoutIcon from "@mui/icons-material/Logout";
 import PeopleIcon from "@mui/icons-material/People";
 import SearchIcon from "@mui/icons-material/Search";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { styled } from "@mui/system";
 
 const StyledCard = styled(Card)({
   background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
   color: "white",
 });
+
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#FF6666",
+  "#FF33CC",
+  "#9933FF",
+  "#66CCFF",
+  "#669999",
+  "#CCCCFF",
+];
 
 const Admin = () => {
   const [users, setUsers] = useState([]);
@@ -61,6 +78,7 @@ const Admin = () => {
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState("");
+  const [totalQuestions, setTotalQuestions] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,6 +87,9 @@ const Admin = () => {
         const usersResponse = await api.get("/admin/users");
         setUsers(usersResponse.data);
         setTotalUsers(usersResponse.data.length);
+
+        const questionsResponse = await api.get("/admin/total-questions");
+        setTotalQuestions(questionsResponse.data.totalQuestions);
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch data.");
@@ -141,7 +162,11 @@ const Admin = () => {
     );
   }
 
-  const chartData = filteredUsers.map((user) => ({
+  // Sorting users by totalScore in descending order and selecting top 10
+  const sortedUsers = filteredUsers.sort((a, b) => b.totalScore - a.totalScore);
+  const topTenUsers = sortedUsers.slice(0, 10);
+
+  const chartData = topTenUsers.map((user) => ({
     name: user.name,
     totalScore: user.totalScore,
   }));
@@ -202,6 +227,21 @@ const Admin = () => {
             </CardContent>
           </Card>
         </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+          <Card>
+            <CardContent sx={{ display: "flex", alignItems: "center" }}>
+              <QuestionAnswerIcon sx={{ fontSize: 40, marginRight: 2 }} />
+              <div>
+                <Typography variant="h6" component="div">
+                  Total Questions
+                </Typography>
+                <Typography variant="h3" component="div">
+                  {totalQuestions}
+                </Typography>
+              </div>
+            </CardContent>
+          </Card>
+        </Grid>
         <Grid item xs={12} sm={6} md={8} lg={8} xl={8}>
           <Card>
             <CardContent>
@@ -231,140 +271,92 @@ const Admin = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            label="Search Users"
-            variant="outlined"
-            fullWidth
-            value={searchText}
-            onChange={handleSearchChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-            sx={{ mb: 2 }}
-          />
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell>Username</TableCell>
-                  <TableCell>Phone Number</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Total Score</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {paginatedUsers.map((user, index) => (
-                  <TableRow key={user._id}>
-                    <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.number}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.totalScore}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={filteredUsers.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+        <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
           <Card>
             <CardContent>
               <Typography variant="h6" component="div">
-                Question of the Day
+                Most Active Users
               </Typography>
-              <Box
-                component="form"
-                onSubmit={handleQuestionSubmit}
-                sx={{ mt: 2 }}
-              >
-                <TextField
-                  label="Question"
-                  variant="outlined"
-                  fullWidth
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  label="Option 1"
-                  variant="outlined"
-                  fullWidth
-                  value={option1}
-                  onChange={(e) => setOption1(e.target.value)}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  label="Option 2"
-                  variant="outlined"
-                  fullWidth
-                  value={option2}
-                  onChange={(e) => setOption2(e.target.value)}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  label="Option 3"
-                  variant="outlined"
-                  fullWidth
-                  value={option3}
-                  onChange={(e) => setOption3(e.target.value)}
-                  sx={{ mb: 2 }}
-                />
-                <TextField
-                  label="Option 4"
-                  variant="outlined"
-                  fullWidth
-                  value={option4}
-                  onChange={(e) => setOption4(e.target.value)}
-                  sx={{ mb: 2 }}
-                />
-                <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-                  <InputLabel id="correct-answer-label">
-                    Correct Answer
-                  </InputLabel>
-                  <Select
-                    labelId="correct-answer-label"
-                    value={correctAnswer}
-                    onChange={(e) => setCorrectAnswer(e.target.value)}
-                    label="Correct Answer"
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    dataKey="totalScore"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    fill="#8884d8"
+                    label
                   >
-                    <MenuItem value={option1}>Option 1</MenuItem>
-                    <MenuItem value={option2}>Option 2</MenuItem>
-                    <MenuItem value={option3}>Option 3</MenuItem>
-                    <MenuItem value={option4}>Option 4</MenuItem>
-                  </Select>
-                </FormControl>
-                {questionLoading ? (
-                  <Box
-                    sx={{ display: "flex", justifyContent: "center", mb: 2 }}
-                  >
-                    <CircularProgress />
-                  </Box>
-                ) : (
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                  >
-                    Submit Question
-                  </Button>
-                )}
-              </Box>
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <TableContainer component={Paper}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    padding: 2,
+                  }}
+                >
+                  <TextField
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    label="Search Users"
+                    variant="outlined"
+                    size="small"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>User Name</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Total Score</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {paginatedUsers.map((user) => (
+                      <TableRow key={user._id}>
+                        <TableCell>{user.name}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>{user.totalScore}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={filteredUsers.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </CardContent>
           </Card>
         </Grid>
