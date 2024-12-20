@@ -149,7 +149,7 @@ const Quiz = () => {
        clearInterval(intervalId);
        setTime({ minutes: 0, seconds: 0 });
        toast.info("Quiz has ended due to time expiration.");
-       handleQuitButton();
+       handleSubmit();
      } else {
        setTime({ minutes, seconds });
      }

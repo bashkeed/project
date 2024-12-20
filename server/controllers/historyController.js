@@ -7,11 +7,11 @@ const fetchHistoryData = async (req, res) => {
     today.setHours(0, 0, 0, 0); // Normalize to the start of the day
 
     // Format the date to MM/DD/YYYY string for comparison
-    const options = { month: "2-digit", day: "2-digit", year: "numeric",  };
+    const options = { month: "2-digit", day: "2-digit", year: "numeric" };
     const todayString = today.toLocaleDateString("en-US", options);
 
     // Check if data has been fetched today
-    const fetchHistory = await FetchHistory.findOne({
+    let fetchHistory = await FetchHistory.findOne({
       date: todayString,
     }).populate("fetchedDocuments");
 
@@ -22,13 +22,9 @@ const fetchHistoryData = async (req, res) => {
       );
       return res.json(fetchHistory.fetchedDocuments); // Return the documents
     } else {
-      // Fetch up to 3 new documents, excluding previously fetched ones
-      const previouslyFetchedIds = fetchHistory
-        ? fetchHistory.fetchedDocuments.map((doc) => doc._id)
-        : [];
-      const newDocuments = await History.find({
-        _id: { $nin: previouslyFetchedIds },
-      })
+      // Fetch up to 3 new documents
+      const newDocuments = await History.find()
+        .sort({ date: 1 })
         .limit(3)
         .exec();
 
@@ -41,11 +37,11 @@ const fetchHistoryData = async (req, res) => {
       );
 
       // Save the fetch history
-      const newFetchHistory = new FetchHistory({
+      fetchHistory = new FetchHistory({
         date: normalizedDateString,
         fetchedDocuments: newDocuments.map((doc) => doc._id),
       });
-      await newFetchHistory.save();
+      await fetchHistory.save();
 
       console.log("Fetched new documents:", newDocuments);
       return res.json(newDocuments);
