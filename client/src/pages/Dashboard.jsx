@@ -10,7 +10,7 @@ import confetti from "canvas-confetti";
 import correct from "../assets/img/audio/correct.mp3";
 import dragon from "../assets/img/audio/happy.mp3";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp"; // Importing the WhatsApp icon from MUI
-
+import santa from "../assets/img/santa.svg";
 const Dashboard = () => {
   const [cumulativeScore, setCumulativeScore] = useState(0);
   const [latestScore, setLatestScore] = useState(0);
@@ -189,11 +189,20 @@ const Dashboard = () => {
             </button>
           </div>
           <div className="col-12 col-md-9 p-4 bg-info rounded ml-2 content">
-            <div className="card text-center shadow p-4 bg-info">
+            <div className="card text-center shadow p-4 bg-white">
               <div className="card-body">
-                <h1 className="card-title mb-4 catchy-heading">
+                <div className="text-center mb-4">
+                  <img
+                    src={santa}
+                    alt="Christmas Tree"
+                    style={{ width: "150px", height: "auto" }}
+                  />
+                  <h2 className="mt-2 catchy-heading">Seasons greetings!</h2>
+                </div>
+
+                {/* <h1 className="card-title mb-4 catchy-heading">
                   {getGreeting()}!
-                </h1>
+                </h1> */}
                 <div className="marquee-container bg-success text-white p-2 mt-1 rounded">
                   <marquee>
                     If you like this application, please consider financially
@@ -203,7 +212,7 @@ const Dashboard = () => {
                 </div>
 
                 <p className="lead fanciful-paragraph">
-                  Welcome to your dashboard. here you can access your
+                  Welcome to your dashboard. Here you can access your
                   personalized learning resources and track your progress.
                 </p>
                 <hr className="my-4" />
@@ -252,7 +261,7 @@ const Dashboard = () => {
                           className="history-card fanciful-history-card bg-info"
                           ref={history}
                         >
-                          <h2>Did you know ?</h2>
+                          <h2>Did you know?</h2>
                           <p>{item.text}</p>
                         </div>
                       </Carousel.Item>
