@@ -420,6 +420,7 @@ const Admin = () => {
                 <Table>
                   <TableHead>
                     <TableRow>
+                      <TableCell>Phone</TableCell>
                       <TableCell>User Name</TableCell>
                       <TableCell>Email</TableCell>
                       <TableCell>Total Score</TableCell>
@@ -428,6 +429,7 @@ const Admin = () => {
                   <TableBody>
                     {paginatedUsers.map((user) => (
                       <TableRow key={user._id}>
+                        <TableCell>{user.number}</TableCell>
                         <TableCell>{user.name}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.totalScore}</TableCell>
