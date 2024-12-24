@@ -65,7 +65,7 @@ const Dashboard = () => {
         setHistoryOfTheDay(historyResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
-        toast.error("Failed to fetch data.");
+        toast.error("Server error. Please try again after some time.");
         navigate("/login");
         if (error.response && error.response.status === 401) {
           localStorage.removeItem("token");

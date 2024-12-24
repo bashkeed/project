@@ -2,17 +2,23 @@ import { History, FetchHistory } from "../models/historyModel.js";
 
 const fetchHistoryData = async (req, res) => {
   try {
-    // Get the current date and set time to the start of the day in local time
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Normalize to the start of the day
+    // Get the current date and set time to the start of the day in UTC
+    const now = new Date();
+    const startOfDay = new Date(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate()
+    );
 
-    // Format the date to MM/DD/YYYY string for comparison
-    const options = { month: "2-digit", day: "2-digit", year: "numeric" };
-    const todayString = today.toLocaleDateString("en-US", options);
+    console.log("Current date and time:", now);
+    console.log("Start of the day (UTC):", startOfDay);
 
     // Check if data has been fetched today
     let fetchHistory = await FetchHistory.findOne({
-      date: todayString,
+      date: {
+        $gte: startOfDay,
+        $lt: new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000),
+      },
     }).populate("fetchedDocuments");
 
     if (fetchHistory) {
@@ -22,24 +28,34 @@ const fetchHistoryData = async (req, res) => {
       );
       return res.json(fetchHistory.fetchedDocuments); // Return the documents
     } else {
-      // Fetch up to 3 new documents
-      const newDocuments = await History.find()
+      // Fetch up to 3 new documents that haven't been fetched before
+      const newDocuments = await History.find({ fetched: false })
         .sort({ date: 1 })
         .limit(3)
         .exec();
 
-      // Normalize the date to store in the database
-      const normalizedDate = new Date();
-      normalizedDate.setHours(0, 0, 0, 0);
-      const normalizedDateString = normalizedDate.toLocaleDateString(
-        "en-US",
-        options
+      // Debug: Log the new documents fetched
+      console.log("New documents fetched:", newDocuments);
+
+      if (newDocuments.length === 0) {
+        console.log("No new documents to fetch.");
+        return res.status(404).json({ message: "No new documents to fetch." });
+      }
+
+      // Mark the fetched documents as fetched
+      const fetchedDocumentIds = newDocuments.map((doc) => doc._id);
+      const updateResult = await History.updateMany(
+        { _id: { $in: fetchedDocumentIds } },
+        { $set: { fetched: true } }
       );
+
+      // Debug: Log the update result
+      console.log("Update result:", updateResult);
 
       // Save the fetch history
       fetchHistory = new FetchHistory({
-        date: normalizedDateString,
-        fetchedDocuments: newDocuments.map((doc) => doc._id),
+        date: now, // Store the exact current date and time
+        fetchedDocuments: fetchedDocumentIds,
       });
       await fetchHistory.save();
 

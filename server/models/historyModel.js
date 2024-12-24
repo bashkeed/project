@@ -9,12 +9,18 @@ const HistorySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  fetched: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 
 const FetchHistorySchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
+    index: true, // Adding an index for better performance
   },
   fetchedDocuments: [
     {
