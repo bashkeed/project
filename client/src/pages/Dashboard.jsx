@@ -205,6 +205,7 @@ const Dashboard = () => {
                 </h1> */}
                 <div className="marquee-container bg-success text-white p-2 mt-1 rounded">
                   <marquee>
+                    We apologise for the downtime users may have experienced within the last 24 hours. we're delighted to inform you that normal service has since returned. 
                     If you like this application, please consider financially
                     supporting the developer by contacting him via this number
                     +234 8068849042. Thank you. Zubair Bashir
