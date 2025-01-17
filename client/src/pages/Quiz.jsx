@@ -72,6 +72,7 @@ const Quiz = () => {
         incorrectAudio.pause();
         incorrectAudio.currentTime = 0;
       }, 3000);
+       navigator.vibrate(1000);
       toast.error("Wrong answer");
       setConsecutiveCorrect(0); // Reset the count on wrong answer
       setWrongAnswers((prev) => prev + 1);
