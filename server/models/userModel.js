@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema({
       answeredAt: { type: Date, default: Date.now },
     },
   ],
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 const User = mongoose.model("User", userSchema);
 export default User;

@@ -28,7 +28,7 @@ app.use("/api/history", historyRoute);
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.get("/health", (req, res) => {
-  res.status(200).json({ message: "Server currently running" });
+res.status(200).json({ message: "Server currently running" });
 });
 
 // Start the server

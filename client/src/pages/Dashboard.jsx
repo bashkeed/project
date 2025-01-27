@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAudioAllowed, setIsAudioAllowed] = useState(false);
+  const [scoreHistory, setScoreHistory] = useState([]); // New state for score history
   const navigate = useNavigate();
 
   const leader = useRef(null);
@@ -52,11 +53,13 @@ const Dashboard = () => {
           scoresResponse,
           leaderboardResponse,
           historyResponse,
+          scoreHistoryResponse,
         ] = await Promise.all([
           api.get("/user/user-profile"),
           api.get("/user/user-scores"),
           api.get("/user/leaderboard"),
           api.get("/history"),
+          api.get("/score-history"),
         ]);
 
         setUsername(userProfileResponse.data.username);
@@ -64,6 +67,8 @@ const Dashboard = () => {
         setLatestScore(scoresResponse.data.latestScore);
         setLeaderboard(leaderboardResponse.data);
         setHistoryOfTheDay(historyResponse.data);
+        setScoreHistory(scoreHistoryResponse.data);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Server error. Please try again after some time.");
@@ -192,10 +197,9 @@ const Dashboard = () => {
           <div className="col-12 col-md-9 p-4 bg-info rounded ml-2 content">
             <div className="card text-center shadow p-4 bg-white">
               <div className="card-body">
-
-                 <h1 className="card-title mb-4 catchy-heading">
+                <h1 className="card-title mb-4 catchy-heading">
                   {getGreeting()}!
-                </h1> 
+                </h1>
                 <div className="marquee-container bg-success text-white p-2 mt-1 rounded">
                   <marquee>
                     If you like this application, please consider financially
@@ -219,6 +223,28 @@ const Dashboard = () => {
                 </div>
 
                 <hr className="my-4" />
+                <h2 className="mb-4 catchy-heading">Score History</h2>
+                <div className="table-responsive">
+                  <table className="table table-bordered table-hover table-striped">
+                    <thead className="thead-dark">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Latest Score</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {scoreHistory.map((entry, index) => (
+                        <tr key={user._id}>
+                          <th scope="row">{index + 1}</th>
+                          <td>{new Date(entry.date).toLocaleDateString()}</td>
+                          <td>{entry.latestScore}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
                 {showLeaderboard ? (
                   <>
                     <h2 className="mb-4 catchy-heading">Leaderboard</h2>

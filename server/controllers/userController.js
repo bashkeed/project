@@ -30,6 +30,7 @@ export const getUserScores = async (req, res) => {
       (score) => score.correct === true
     ).length;
     console.log(cumulativeScore);
+
     const latestScore = user.scores.filter(
       (score) =>
         score.correct &&
@@ -56,5 +57,31 @@ export const getLeaderboard = async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred while fetching the leaderboard." });
+  }
+};
+
+
+export const getScoreHistory = async (req, res) => {
+  const today = new Date().toISOString().split("T")[0]; // Get today's date in YYYY-MM-DD format
+  try {
+    const latestScore = User.scores.filter(
+      (score) =>
+        score.correct &&
+        score.answeredAt &&
+        new Date(score.answeredAt).toISOString().split("T")[0] === today
+    ).length;
+
+    const date = await User.find(
+      { role: { $ne: "admin" } },
+      "date"
+    )
+      .sort({ date: -1 })
+      .exec();
+    res.json(date, latestScore);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the score history." });
   }
 };
