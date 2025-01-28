@@ -10,7 +10,6 @@ import confetti from "canvas-confetti";
 import correct from "../assets/img/audio/correct.mp3";
 import dragon from "../assets/img/audio/happy.mp3";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp"; // Importing the WhatsApp icon from MUI
-import santa from "../assets/img/santa.svg";
 
 const Dashboard = () => {
   const [cumulativeScore, setCumulativeScore] = useState(0);
@@ -23,6 +22,7 @@ const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAudioAllowed, setIsAudioAllowed] = useState(false);
   const [scoreHistory, setScoreHistory] = useState([]); // New state for score history
+  const [scoreHistoryVisible, setScoreHistoryVisible] = useState(false); // Toggle for score history
   const navigate = useNavigate();
 
   const leader = useRef(null);
@@ -59,7 +59,7 @@ const Dashboard = () => {
           api.get("/user/user-scores"),
           api.get("/user/leaderboard"),
           api.get("/history"),
-          api.get("/score-history"),
+          api.get("/user/score-history"),
         ]);
 
         setUsername(userProfileResponse.data.username);
@@ -68,7 +68,7 @@ const Dashboard = () => {
         setLeaderboard(leaderboardResponse.data);
         setHistoryOfTheDay(historyResponse.data);
         setScoreHistory(scoreHistoryResponse.data);
-        
+        console.log("Score History Response:", scoreHistoryResponse.data); // Debugging
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Server error. Please try again after some time.");
@@ -156,8 +156,9 @@ const Dashboard = () => {
               className="btn btn-primary mb-3 w-100 box"
               onClick={() => {
                 setShowLeaderboard(false);
+                setScoreHistoryVisible(false);
                 handleMenuItemClick();
-                scrollToSection(leader);
+                scrollToSection(history);
               }}
             >
               📜 History of the Day
@@ -166,6 +167,7 @@ const Dashboard = () => {
               className="btn btn-primary mb-3 w-100 box "
               onClick={() => {
                 setShowLeaderboard(true);
+                setScoreHistoryVisible(false);
                 handleMenuItemClick();
                 celebrateWithConfetti();
                 const correctAudio = document.getElementById("correct");
@@ -174,6 +176,16 @@ const Dashboard = () => {
               }}
             >
               📈 Show Leaderboard
+            </button>
+            <button
+              className="btn btn-primary mb-3 w-100 box"
+              onClick={() => {
+                setShowLeaderboard(false);
+                setScoreHistoryVisible(true);
+                handleMenuItemClick();
+              }}
+            >
+              🕒 Show Score History
             </button>
             <button
               onClick={() => {
@@ -213,6 +225,7 @@ const Dashboard = () => {
                   personalized learning resources and track your progress.
                 </p>
                 <hr className="my-4" />
+
                 <div className="scores mb-4 fanciful-scores">
                   <p className="card-text">
                     Cumulative Score: <strong>{cumulativeScore}</strong>
@@ -222,29 +235,7 @@ const Dashboard = () => {
                   </p>
                 </div>
 
-                <hr className="my-4" />
-                <h2 className="mb-4 catchy-heading">Score History</h2>
-                <div className="table-responsive">
-                  <table className="table table-bordered table-hover table-striped">
-                    <thead className="thead-dark">
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Latest Score</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {scoreHistory.map((entry, index) => (
-                        <tr key={user._id}>
-                          <th scope="row">{index + 1}</th>
-                          <td>{new Date(entry.date).toLocaleDateString()}</td>
-                          <td>{entry.latestScore}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
+                {/* Render the appropriate section */}
                 {showLeaderboard ? (
                   <>
                     <h2 className="mb-4 catchy-heading">Leaderboard</h2>
@@ -272,6 +263,42 @@ const Dashboard = () => {
                       </table>
                     </div>
                   </>
+                ) : scoreHistoryVisible ? (
+                  <div className="score-history">
+                    <hr className="my-4" />
+                    <h2 className="mb-4 catchy-heading">Score History</h2>
+                    <div className="overflow-x-auto">
+                      <table className="table table-bordered table-hover table-striped">
+                        <caption>List of user's score history</caption>
+                        <thead className="thead-dark">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Scores</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {scoreHistory.length === 0 ? (
+                            <tr>
+                              <td colSpan="3" className="text-center">
+                                No score history available.
+                              </td>
+                            </tr>
+                          ) : (
+                            scoreHistory.map((entry, index) => (
+                              <tr key={entry.id || index}>
+                                <th scope="row">{index + 1}</th>
+                                <td>
+                                  {new Date(entry.date).toLocaleDateString()}
+                                </td>
+                                <td>{entry.totalScore}</td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 ) : (
                   <Carousel>
                     {historyOfTheDay.map((item, index) => (
@@ -291,16 +318,8 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <ToastContainer />
       </div>
-      <a
-        href="https://wa.me/2348068849042"
-        className="whatsapp_float"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <WhatsAppIcon /> Chat with the developer
-      </a>
+      <ToastContainer />
     </div>
   );
 };
