@@ -287,7 +287,7 @@ const Dashboard = () => {
                           ) : (
                             scoreHistory.map((entry, index) => (
                               <tr key={entry.id || index}>
-                                <th scope="row">{index + 1}</th>
+                                <th scope="row">{scoreHistory.length - index}</th>
                                 <td>
                                   {new Date(entry.date).toLocaleDateString()}
                                 </td>
