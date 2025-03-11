@@ -229,6 +229,9 @@ const Dashboard = () => {
                 <div className="scores mb-4 fanciful-scores">
                   <p className="card-text">
                     Cumulative Score: <strong>{cumulativeScore}</strong>
+                    {cumulativeScore >= 200 && (
+                      <span className="star-animate"> ⭐</span>
+                    )}
                   </p>
                   <p className="card-text">
                     Latest Score: <strong>{latestScore}</strong>
@@ -287,7 +290,9 @@ const Dashboard = () => {
                           ) : (
                             scoreHistory.map((entry, index) => (
                               <tr key={entry.id || index}>
-                                <th scope="row">{scoreHistory.length - index}</th>
+                                <th scope="row">
+                                  {scoreHistory.length - index}
+                                </th>
                                 <td>
                                   {new Date(entry.date).toLocaleDateString()}
                                 </td>
