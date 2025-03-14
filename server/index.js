@@ -30,7 +30,6 @@ app.use("/api/admin", adminRoutes);
 app.get("/health", (req, res) => {
 res.status(200).json({ message: "Server currently running" });
 });
-
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
