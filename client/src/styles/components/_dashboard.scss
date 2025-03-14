@@ -344,3 +344,14 @@ button {
   }
 }
 
+.star-animate {
+  animation: bounce 1s infinite;
+  font-size: 1.5rem;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+
