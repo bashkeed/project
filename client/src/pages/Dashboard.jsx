@@ -247,6 +247,7 @@ const Dashboard = () => {
                         className="table table-bordered table-hover table-striped"
                         ref={leader}
                       >
+                        <caption>The star indicate a user with score above 200</caption>
                         <thead className="thead-dark">
                           <tr>
                             <th scope="col">#</th>
@@ -259,10 +260,12 @@ const Dashboard = () => {
                             <tr key={user._id}>
                               <th scope="row">{index + 1}</th>
                               <td>{user.name.toUpperCase()}</td>
-                              <td>{user.totalScore}  {user.totalScore >=200 && (
-                      <span className="star-animate"> ⭐</span>
-                    )
-                                }</td>
+                              <td>
+                                {user.totalScore}{" "}
+                                {user.totalScore >= 200 && (
+                                  <span className="star-animate"> ⭐</span>
+                                )}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
