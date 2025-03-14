@@ -432,7 +432,12 @@ const Admin = () => {
                         <TableCell>{user.number}</TableCell>
                         <TableCell>{user.name}</TableCell>
                         <TableCell>{user.email}</TableCell>
-                        <TableCell>{user.totalScore}</TableCell>
+                        <TableCell>
+                          {user.totalScore}{" "}
+                          {user.totalScore >= 200 && (
+                            <span className="star-animate"> ⭐</span>
+                          )}{" "}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
