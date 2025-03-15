@@ -27,6 +27,7 @@ const Dashboard = () => {
 
   const leader = useRef(null);
   const history = useRef(null);
+    const scoreHis3 = useRef(null);
 
   const scrollToSection = (sectionRef) => {
     sectionRef.current.scrollIntoView({ behavior: "smooth" });
@@ -247,7 +248,9 @@ const Dashboard = () => {
                         className="table table-bordered table-hover table-striped"
                         ref={leader}
                       >
-                        <caption>The star indicate a user with score above 200</caption>
+                        <caption>
+                          The star indicate a user with score above 200
+                        </caption>
                         <thead className="thead-dark">
                           <tr>
                             <th scope="col">#</th>
@@ -330,6 +333,15 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <a
+        href="https://wa.me/2348068849042"
+        className="whatsapp-float"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <WhatsAppIcon fontSize="large" />
+      </a>
+
       <ToastContainer />
     </div>
   );
