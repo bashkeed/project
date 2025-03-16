@@ -334,13 +334,15 @@ const Dashboard = () => {
         </div>
       </div>
       <a
-        href="https://wa.me/2348068849042"
-        className="whatsapp-float"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <WhatsAppIcon fontSize="large" />
-      </a>
+  href="https://wa.me/2348068849042"
+  className="whatsapp-float opacity-75 hover:opacity-100"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Chat with the developer
+  <WhatsAppIcon fontSize="large" />
+</a>
+
 
       <ToastContainer />
     </div>
