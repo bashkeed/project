@@ -213,7 +213,7 @@ const Dashboard = () => {
                 <h1 className="card-title mb-4 catchy-heading">
                   {getGreeting()}!
                 </h1>
-                <div className="marquee-container bg-success text-white p-2 mt-1 rounded">
+                <div className="marquee-container bg-info text-white p-2 mt-1 rounded">
                   <marquee>
                     If you like this application, please consider financially
                     supporting the developer by contacting him via this number
@@ -227,7 +227,7 @@ const Dashboard = () => {
                 </p>
                 <hr className="my-4" />
 
-                <div className="scores mb-4 fanciful-scores ">
+                <div className="scores mb-4 fanciful-scores border border-primary rounded-pill ">
                   <p className="card-text">
                     Cumulative Score: <strong>{cumulativeScore}</strong>
                     {cumulativeScore >= 200 && (
