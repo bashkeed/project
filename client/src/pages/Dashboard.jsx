@@ -227,7 +227,7 @@ const Dashboard = () => {
                 </p>
                 <hr className="my-4" />
 
-                <div className="scores mb-4 fanciful-scores border border-primary rounded-pill ">
+                <div className="scores mb-4 fanciful-scores border border-primary rounded-pill w-100 w-sm-auto px-3 ">
                   <p className="card-text no-wrap d-inline">
                     Cumulative&nbsp;Score: <strong>{cumulativeScore}</strong>
                     {cumulativeScore >= 200 && (
