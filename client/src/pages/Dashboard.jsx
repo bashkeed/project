@@ -225,7 +225,10 @@ const Dashboard = () => {
                   Welcome to your dashboard. Here you can access your
                   personalized learning resources and track your progress.
                 </p>
-                <hr className="my-4" />
+                <hr
+                  className="my-4 bg-info border-0"
+                  style={{ height: "4px" }}
+                />
 
                 <div className="scores mb-4 fanciful-scores w-100 w-sm-auto px-3 ">
                   <p className="card-text no-wrap d-inline">
@@ -238,7 +241,10 @@ const Dashboard = () => {
                     Latest Score: <strong>{latestScore}</strong>
                   </p>
                 </div>
-                <hr className="my-4" />
+                <hr
+                  className="my-4 bg-info border-0"
+                  style={{ height: "4px" }}
+                />
 
                 {/* Render the appropriate section */}
                 {showLeaderboard ? (
@@ -278,7 +284,7 @@ const Dashboard = () => {
                   </>
                 ) : scoreHistoryVisible ? (
                   <div className="score-history">
-                    <h2 className="mb-2 catchy-heading">Score History</h2>
+                    <h2 className="catchy-heading">Score History</h2>
                     <div className="overflow-x-auto">
                       <table className="table table-bordered table-hover table-striped">
                         <caption>List of user's score history</caption>
