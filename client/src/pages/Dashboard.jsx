@@ -278,7 +278,6 @@ const Dashboard = () => {
                   </>
                 ) : scoreHistoryVisible ? (
                   <div className="score-history">
-                    <hr className="my-4" />
                     <h2 className="mb-4 catchy-heading">Score History</h2>
                     <div className="overflow-x-auto">
                       <table className="table table-bordered table-hover table-striped">
