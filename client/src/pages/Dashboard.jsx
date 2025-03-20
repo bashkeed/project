@@ -228,7 +228,7 @@ const Dashboard = () => {
                 <hr className="my-4" />
 
                 <div className="scores mb-4 fanciful-scores border border-primary rounded-pill ">
-                  <p className="card-text">
+                  <p className="card-text d-inline">
                     Cumulative Score: <strong>{cumulativeScore}</strong>
                     {cumulativeScore >= 200 && (
                       <span className="star-animate"> ⭐🏆</span>
