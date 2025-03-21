@@ -313,6 +313,21 @@ const Quiz = () => {
   const currentQuestion = questions[currentQuestionIndex];
 
   return questions ? (
+      questions.length === 0 ? (
+    <div className="message-container d-flex justify-content-center align-items-center bg-warning flex-column">
+      <h1 className="text-dark text-center fancy-heading">
+        Questions unable to fetch at this time. Please try again later. 😞
+      </h1>
+      <p className="mt-3 text-center fancy-text">
+        <Link
+          to="/dashboard"
+          className="btn btn-primary text-white text-decoration-none box custom"
+        >
+          Go to Dashboard
+        </Link>
+      </p>
+    </div>
+    ):
     startQuiz ? (
       <Fragment>
         <ToastContainer />
@@ -417,8 +432,8 @@ const Quiz = () => {
         ;
       </Fragment>
     ) : takenError ? (
-      <div className="message-container d-flex justify-content-center align-items-center bg-dark flex-column">
-        <h1 className="text-white text-center fancy-heading">
+      <div className="message-container d-flex justify-content-center align-items-center bg-info flex-column">
+        <h1 className="text-light text-center fancy-heading">
           Oops! Looks like you've taken today's Quiz already!
           <span>🧐</span>
         </h1>
@@ -426,7 +441,7 @@ const Quiz = () => {
         <p className="mt-3 text-center fancy-text">
           <Link
             to="/dashboard"
-            className="btn btn-primary text-decoration-none box custom"
+            className="btn btn-primary text-danger text-decoration-none box custom"
           >
             Dashboard
           </Link>
@@ -440,6 +455,7 @@ const Quiz = () => {
         <div className="countdown-number">{countdown}</div>
       </div>
     )
+    
   ) : (
     <div>
       <h1>Loading...</h1>
