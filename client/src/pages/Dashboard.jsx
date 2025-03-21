@@ -230,10 +230,9 @@ const Dashboard = () => {
                   style={{ height: "4px" }}
                 />
 
-
-                <div className="scores mb-4 fanciful-scores w-100 w-sm-auto px-3 ">
-                  <p className="card-text no-wrap d-inline">
-                    Total&nbsp;Score: <strong>{cumulativeScore}</strong>
+                <div className="scores mb-4 fanciful-scores w-100 w-sm-auto px-3 d-flex flex-column align-items-center ">
+                  <p className="card-text ">
+                    Total Score: <strong>{cumulativeScore}</strong>
                     {cumulativeScore >= 200 && (
                       <span className="star-animate"> ⭐🏆</span>
                     )}
@@ -257,7 +256,7 @@ const Dashboard = () => {
                         ref={leader}
                       >
                         <caption>
-                          The star indicate a user with score above 200
+                          The star * indicate a user with score above 200
                         </caption>
                         <thead className="thead-dark">
                           <tr>
@@ -288,7 +287,7 @@ const Dashboard = () => {
                     <h2 className="catchy-heading">Score History</h2>
                     <div className="overflow-x-auto">
                       <table className="table table-bordered table-hover table-striped">
-                        <caption>List of user's score history</caption>
+                        <caption>Your score history</caption>
                         <thead className="thead-dark">
                           <tr>
                             <th scope="col">#</th>
