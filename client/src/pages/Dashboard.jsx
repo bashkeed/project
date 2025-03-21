@@ -256,7 +256,7 @@ const Dashboard = () => {
                         ref={leader}
                       >
                         <caption>
-                          The star * indicate a user with score above 200
+                          The star * indicate a user with a score of 200 and above
                         </caption>
                         <thead className="thead-dark">
                           <tr>
